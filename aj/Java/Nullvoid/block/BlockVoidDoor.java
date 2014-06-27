@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.IconFlipped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IIcon;
@@ -120,9 +121,7 @@ public class BlockVoidDoor extends BlockDoor {
 					.getServer()
 					.getConfigurationManager()
 					.transferPlayerToDimension(
-							MinecraftServer.getServer()
-									.getConfigurationManager()
-									.getPlayerForUsername(p.getDisplayName()),
+							(EntityPlayerMP)p,
 							0,
 							new TeleporterNullVoid(MinecraftServer.getServer()
 									.worldServerForDimension(0)));

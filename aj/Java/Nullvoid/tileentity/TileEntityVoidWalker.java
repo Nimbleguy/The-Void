@@ -19,7 +19,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -32,7 +31,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 		IChunkLoader {
 	private ItemStack[] inv;
 	public Slot[] slots = new Slot[4];
-	private String playername = "";
+	private String uuid = "";
 	private int timer = 0;
 	private int itimer = 0;
 	private boolean doITimer = false;
@@ -158,7 +157,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 			}
 		}
 		compound.setTag("ItemsVoidWalker", list);
-		compound.setString("PlayerInVoid", playername);
+		compound.setString("PlayerInVoid", uuid);
 		compound.setBoolean("doITimer", doITimer);
 		compound.setBoolean("doTimer", doTimer);
 		compound.setInteger("ITimer", itimer);
@@ -172,7 +171,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 		itimer = compound.getInteger("ITimer");
 		doTimer = compound.getBoolean("doTimer");
 		doITimer = compound.getBoolean("doITimer");
-		playername = compound.getString("PlayerInVoid");
+		uuid = compound.getString("PlayerInVoid");
 		NBTTagList list = compound.getTagList("ItemsVoidWalker", 10);
 
 		for (int i = 0; i < list.tagCount(); i++) {
@@ -210,25 +209,22 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 								.equals(VoidMod.circuts)
 								&& this.getStackInSlot(4).getItemDamage() == 4) {
 							if (player.dimension == 0
-									&& playername.compareTo(player
-											.getCommandSenderName()) != 0
-									&& playername.compareTo("") != 0) {
-								MinecraftServer minecraft = FMLCommonHandler.instance().getMinecraftServerInstance();
-								EntityPlayerMP p = minecraft
-										.getConfigurationManager()
-										.getPlayerForUsername(playername);
+									&& uuid.compareTo(player
+											.getUniqueID().toString()) != 0
+									&& uuid.compareTo("") != 0) {
+								EntityPlayerMP p = Utils.getPlayerFromUUID(uuid);
 								if (p != null) {
 									if (p.dimension != VoidMod.NullVoidDimID) {
 										Utils.setInVoid(p, false);
 										Utils.setEffects(p, new Effects());
 										PacketHandler.INSTANCE.sendTo(new PacketLighting(Utils.getBright(p), true), p);
-										playername = "";
+										uuid = "";
 										System.out.println("Exited");
 									}
 								}
 							}
 							if (player.dimension == 0
-									&& playername.compareTo("") == 0) {
+									&& uuid.compareTo("") == 0) {
 								// player.travelToDimension(VoidMod.NullVoidDimID);
 								// player.mcServer.getConfigurationManager().transferPlayerToDimension(player,
 								// VoidMod.NullVoidDimID);
@@ -245,7 +241,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 																	.worldServerForDimension(VoidMod.NullVoidDimID)));
 									player.timeUntilPortal = 10;
 									player.addStat(VoidMod.enterNull, 1);
-									playername = player.getCommandSenderName();
+									uuid = player.getUniqueID().toString();
 									Utils.setInVoid(player, true);
 									Utils.setEffects(player, new Effects());
 									PacketHandler.INSTANCE.sendTo(new PacketLighting(-1F), player);
@@ -255,8 +251,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 									doITimer = true;
 								}
 							} else if (player.dimension == 0
-									&& (playername.compareTo(player
-											.getCommandSenderName()) == 0)) {
+									&& (uuid.compareTo(player.getUniqueID().toString()) == 0)) {
 								// player.travelToDimension(VoidMod.NullVoidDimID);
 								// player.mcServer.getConfigurationManager().transferPlayerToDimension(player,
 								// VoidMod.NullVoidDimID);
@@ -273,7 +268,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 																	.worldServerForDimension(VoidMod.NullVoidDimID)));
 									player.timeUntilPortal = 10;
 									player.addStat(VoidMod.enterNull, 1);
-									playername = player.getCommandSenderName();
+									uuid = player.getUniqueID().toString();
 									Utils.setInVoid(player, true);
 									Utils.setEffects(player, new Effects());
 									PacketHandler.INSTANCE.sendTo(new PacketLighting(-1F), player);
@@ -283,7 +278,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 									doITimer = true;
 								}
 							} else if (player.dimension == VoidMod.NullVoidDimID) {
-								System.out.println("Player " + playername
+								System.out.println("Player " + Utils.getPlayerFromUUID(uuid).getCommandSenderName()
 										+ " is in the nullvoid!");
 								// player.travelToDimension(0);
 								// player.mcServer.getConfigurationManager().transferPlayerToDimension(player,
@@ -310,12 +305,12 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 											new ItemStack(VoidMod.circuts, 1, 0));
 									doITimer = true;
 								}
-							} else if (playername.compareTo(player
-									.getCommandSenderName()) != 0
-									&& playername.compareTo("") != 0) {
+							} else if (uuid.compareTo(player
+									.getUniqueID().toString()) != 0
+									&& uuid.compareTo("") != 0) {
 								player.addChatMessage(new ChatComponentText(
 										"Player "
-												+ playername
+												+ Utils.getPlayerFromUUID(uuid).getCommandSenderName()
 												+ " is already traversing the void!"));
 							}
 						} else {
@@ -334,12 +329,9 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 			doITimer = false;
 			doTimer = true;
 			timer = 0;
-			if (playername.compareTo("") != 0) {
-				MinecraftServer minecraft = FMLCommonHandler.instance().getMinecraftServerInstance();
-				EntityPlayerMP p = minecraft.getConfigurationManager()
-						.getPlayerForUsername(playername);
+			if (uuid.compareTo("") != 0) {
+				EntityPlayerMP p = Utils.getPlayerFromUUID(uuid);
 				if (p != null) {
-					System.out.println("Not null");
 					if (p.dimension == VoidMod.NullVoidDimID) {
 						boolean check = false;
 						boolean check1 = false;
@@ -419,16 +411,14 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 				itimer++;
 			}
 		}
-		if (playername.compareTo("") == 0) {
+		if (uuid.compareTo("") == 0) {
 			doITimer = false;
 			doTimer = false;
 			timer = 0;
 			itimer = 0;
 		}
-		if (playername.compareTo("") != 0) {
-			MinecraftServer minecraft = FMLCommonHandler.instance().getMinecraftServerInstance();
-			EntityPlayerMP p = minecraft.getConfigurationManager()
-					.getPlayerForUsername(playername);
+		if (uuid.compareTo("") != 0) {
+			EntityPlayerMP p = Utils.getPlayerFromUUID(uuid);
 			if (p != null) {
 				if (p.dimension != VoidMod.NullVoidDimID) {
 					doITimer = false;
@@ -438,7 +428,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 					Utils.setInVoid(p, false);
 					Utils.setEffects(p, new Effects());
 					PacketHandler.INSTANCE.sendTo(new PacketLighting(Utils.getBright(p), true), p);
-					playername = "";
+					uuid = "";
 				}
 			}
 		}

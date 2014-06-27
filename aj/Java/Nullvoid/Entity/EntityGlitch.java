@@ -44,7 +44,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 
 		this.setSize(0.6F, 1.8F);
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-				.setBaseValue(10000F);
+				.setBaseValue(1000F);
 	}
 
 	public EntityGlitch(World worldObj, double x, double y, double z) {
@@ -94,7 +94,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 			for (int i = 0; i < 20; i++) {
 				EntityFX glitch = new EntityGlitchFX(worldObj, (posX - 0.5D)
 						+ r.nextDouble(), posY, (posZ - 0.5D) + r.nextDouble(),
-						r.nextDouble(), 2D + r.nextDouble(), r.nextDouble());
+						r.nextDouble() - 0.5D, 2D + r.nextDouble(), r.nextDouble() - 0.5D);
 				Minecraft.getMinecraft().effectRenderer.addEffect(glitch);
 			}
 		}

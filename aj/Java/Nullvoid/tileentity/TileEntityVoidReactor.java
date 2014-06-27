@@ -38,7 +38,7 @@ public class TileEntityVoidReactor extends TileEntity implements IFluidHandler, 
 	private int maxNull = 0;
 	private ItemStack nullCrystals;
 	private FluidTank tank;
-	private String playername = "";
+	private String uuid = "";
 	private int itimer = 0;
 	private int timer = 0;
 	private boolean Timer = false;
@@ -83,7 +83,7 @@ public class TileEntityVoidReactor extends TileEntity implements IFluidHandler, 
 			}
 			// Teleporting code
 			if (worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0) {
-				if (playername.equals("")) {
+				if (uuid.equals("")) {
 					EntityPlayer player = worldObj.getClosestPlayer(xCoord,
 							yCoord, zCoord, -1);
 					if (player != null) {
@@ -94,7 +94,7 @@ public class TileEntityVoidReactor extends TileEntity implements IFluidHandler, 
 										&& nullCrystals.stackSize > 0) {
 									tank.drain(1000, true);
 									nullCrystals.stackSize--;
-									playername = p.getCommandSenderName();
+									uuid = p.getUniqueID().toString();
 									ITimer = true;
 									itimer = 0;
 									timer = 0;
@@ -155,28 +155,24 @@ public class TileEntityVoidReactor extends TileEntity implements IFluidHandler, 
 						Timer = true;
 					} else {
 						// Teleport
-						if (worldObj.getPlayerEntityByName(playername) instanceof EntityPlayerMP) {
+						EntityPlayerMP p = Utils.getPlayerFromUUID(uuid);
 							MinecraftServer
 									.getServer()
 									.getConfigurationManager()
 									.transferPlayerToDimension(
-											(EntityPlayerMP) worldObj
-													.getPlayerEntityByName(playername),
+											p,
 											0,
 											new TeleporterNullVoid(
 													MinecraftServer
 															.getServer()
 															.worldServerForDimension(
 																	0)));
-							EntityPlayer p = worldObj.getPlayerEntityByName(playername);
 							Utils.setEffects(p, new Effects());
 							Utils.setInVoid(p, false);
-							PacketHandler.INSTANCE.sendTo(new PacketLighting(Utils.getBright(p), true), (EntityPlayerMP)worldObj.getPlayerEntityByName(playername));
-							worldObj.getPlayerEntityByName(playername)
-									.addChatComponentMessage(
+							PacketHandler.INSTANCE.sendTo(new PacketLighting(Utils.getBright(p), true), p);
+							p.addChatComponentMessage(
 											new ChatComponentText(
 													"Out of Null Crystals! Ejecting from Void to prevent harm..."));
-						}
 					}
 				} else if (Timer) {
 					if (nullCrystals != null) {
@@ -187,24 +183,21 @@ public class TileEntityVoidReactor extends TileEntity implements IFluidHandler, 
 						Timer = true;
 					} else {
 						// Teleport
-						if (worldObj.getPlayerEntityByName(playername) instanceof EntityPlayerMP) {
+						EntityPlayerMP p = Utils.getPlayerFromUUID(uuid);
 							MinecraftServer
 									.getServer()
 									.getConfigurationManager()
 									.transferPlayerToDimension(
-											(EntityPlayerMP) worldObj
-													.getPlayerEntityByName(playername),
+											p,
 											0,
 											new TeleporterNullVoid(
 													MinecraftServer
 															.getServer()
 															.worldServerForDimension(
 																	0)));
-							worldObj.getPlayerEntityByName(playername)
-									.addChatComponentMessage(
+							p.addChatComponentMessage(
 											new ChatComponentText(
 													"Out of Null Crystals! Ejecting from Void to prevent harm..."));
-						}
 					}
 				}
 			}
@@ -215,17 +208,17 @@ public class TileEntityVoidReactor extends TileEntity implements IFluidHandler, 
 				itimer++;
 			}
 			// Person is not in anymore
-			if (worldObj.getPlayerEntityByName(playername) != null) {
-				if (worldObj.getPlayerEntityByName(playername).dimension != VoidMod.NullVoidDimID) {
+			if (Utils.getPlayerFromUUID(uuid) != null) {
+				EntityPlayerMP p = Utils.getPlayerFromUUID(uuid);
+				if (p.dimension != VoidMod.NullVoidDimID) {
 					itimer = 0;
 					timer = 0;
 					Timer = false;
 					ITimer = false;
-					EntityPlayer p = worldObj.getPlayerEntityByName(playername);
 					Utils.setInVoid(p, false);
 					Utils.setEffects(p, new Effects());
-					PacketHandler.INSTANCE.sendTo(new PacketLighting(Utils.getBright(p), true), (EntityPlayerMP)worldObj.getPlayerEntityByName(playername)); 
-					playername = "";
+					PacketHandler.INSTANCE.sendTo(new PacketLighting(Utils.getBright(p), true), p); 
+					uuid = "";
 				}
 			}
 		}

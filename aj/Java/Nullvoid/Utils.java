@@ -1,5 +1,8 @@
 package aj.Java.Nullvoid;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -9,7 +12,9 @@ import aj.Java.Nullvoid.Effects.Effect;
 import aj.Java.Nullvoid.Effects.Effects;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -67,5 +72,14 @@ public class Utils {
 			e.addEffect(Effect.valueOf(s[i]));
 		}
 		return e;
+	}
+	@SuppressWarnings("unchecked")
+	public static EntityPlayerMP getPlayerFromUUID(String s){
+		for(EntityPlayerMP p : (List<EntityPlayerMP>)MinecraftServer.getServer().getConfigurationManager().playerEntityList){
+			if(p.getUniqueID().compareTo(UUID.fromString(s)) == 0){
+				return p;
+			}
+		}
+		return null;
 	}
 }

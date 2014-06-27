@@ -21,13 +21,15 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityVoidCloud extends EntityTameable {
-
+	private NavigateFlying navigate;
 	public EntityVoidCloud(World par1World) {
 		super(par1World);
+		navigate = new NavigateFlying(this, worldObj);
 		this.setSize(0.6F, 0.8F);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
@@ -179,7 +181,7 @@ public class EntityVoidCloud extends EntityTameable {
                 }
             }
 
-            if (par1EntityPlayer.getCommandSenderName().equalsIgnoreCase(this.getOwnerName()) && !this.worldObj.isRemote)
+            if (this.func_152114_e(par1EntityPlayer) && !this.worldObj.isRemote)
             {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
@@ -209,7 +211,7 @@ public class EntityVoidCloud extends EntityTameable {
                     this.setAttackTarget((EntityLivingBase)null);
                     this.aiSit.setSitting(true);
                     this.setHealth(75.0F);
-                    this.setOwner(par1EntityPlayer.getCommandSenderName());
+                    this.func_152115_b(par1EntityPlayer.getUniqueID().toString());
                     this.playTameEffect(true);
                     this.worldObj.setEntityState(this, (byte)7);
                 }
@@ -224,5 +226,9 @@ public class EntityVoidCloud extends EntityTameable {
         }
 
         return super.interact(par1EntityPlayer);
+    }
+    @Override
+    public PathNavigate getNavigator(){
+    	return navigate;
     }
 }
