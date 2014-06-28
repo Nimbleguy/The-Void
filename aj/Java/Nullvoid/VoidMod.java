@@ -117,6 +117,7 @@ public class VoidMod implements LoadingCallback {
 	public static Achievement summonGlitch = null;
 	public static Achievement scat = null;
 	public static AchievementPage nullChievements = null;
+	public static Configuration config;
 	public static CreativeTabs ctab = new NullVoidTab(CreativeTabs.getNextID(),
 			"The Null Void");
 	public static int guiWalker = 0;
@@ -146,6 +147,7 @@ public class VoidMod implements LoadingCallback {
 	public static Block transparent = null;
 	public static Block storage = null;
 	public static int NullVoidDimID;
+	public static int NullVoidBioID;
 	public static final String MODID = "nullvoid";
 	public static final String VERSION = "1.7.2-2.0.2-BETA";
 	public static Fluid liquidFlux = null;
@@ -176,60 +178,12 @@ public class VoidMod implements LoadingCallback {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// Initing stuff
-		Configuration config = new Configuration(
+		config = new Configuration(
 				event.getSuggestedConfigurationFile());
-		config.load();
+		config();
 		NullArmorRender = proxy.addArmor("Null");
-		voiddoor = new BlockVoidDoor().setBlockName("voidDoor"); // iron
-		nullGoggles = new ArmorNull(NullArmor, NullArmorRender, 0)
-				.setUnlocalizedName("nullGoggles");
-		voidGear = new ArmorNull(NullArmor, NullArmorRender, 1)
-				.setUnlocalizedName("voidGear");
-		circuts = new ItemCircut().setUnlocalizedName("circuits");
-		ingotNull = new ItemIngotNull().setUnlocalizedName("ingotNull");
-		ingotVoid = new ItemIngotVoid().setUnlocalizedName("ingotVoid");
-		NullOre = new BlockNullOre().setBlockName("nullOre");
-		voidOre = new BlockVoidOre().setBlockName("voidOre");
-		generic = new BlockGeneric().setBlockName("generic");
-		VoidFabric = new BlockVoidFabric().setBlockName("voidFabric");
-		walker = new BlockVoidWalker().setBlockName("voidWalker"); // iron
-		swordWall = new BlockSwordWall().setBlockName("swordWall");
-		chamberWall = new BlockChamberWall().setBlockName("chamberWall");
-		glitchFrame = new BlockGlitchFrame().setBlockName("glitchFrame");
-		transparent = new BlockTransparent().setBlockName("transparent");
-		storage = new BlockStorage().setBlockName("storage");
-		NullVoidDimID = config.get(Configuration.CATEGORY_GENERAL,
-				"Null Void Dimention ID", 42).getInt();
-		liquidFlux = new FluidMoltenFlux("Molten Flux");
-		liquidFlux.setBlock(blockLiquidFlux);
-		voidReactor = new BlockVoidReactor(Material.iron)
-				.setBlockName("voidReactor");
-		blockLiquidFlux = new BlockMoltenFlux(liquidFlux)
-				.setBlockName("moltenFlux");
-		gravityBelt = new GravityBelt().setUnlocalizedName("gravBelt");
-		glitchAmulet = new GlitchAmulet().setUnlocalizedName("glitchAmulet");
-		ingotFrame = new ItemFrame().setUnlocalizedName("ingotFrame");
-		bucket = new ItemBucket(blockLiquidFlux);
-		baneOfDark = new ItemBaneOfDarkness(SpecialTool)
-				.setUnlocalizedName("darknessBane");
-		darkPick = new ItemDarknessPick().setUnlocalizedName("darkPick");
-		elementalHammer = new ItemElementalHammer(SpecialTool).setUnlocalizedName("elementHammer");
-		corruptAlloy = new ItemGlitchyAlloy()
-				.setUnlocalizedName("corruptAlloy");
-		nullVoidAlloy = new ItemNullVoidAlloy()
-				.setUnlocalizedName("nullVoidAlloy");
-		tablet = new ItemTablet().setUnlocalizedName("tablet");
-		lightEssence = new ItemEssenceLight().setUnlocalizedName("lightEssence");
-		darkEssence = new ItemEssenceDark().setUnlocalizedName("darkEssence");
-		yingYang = new ItemYingYang().setUnlocalizedName("yingYang");
-		glitchCore = new ItemAntiGlitchCore().setUnlocalizedName("antiGlitchCore");
-		voidBook = (ItemVoidBook) new ItemVoidBook().setUnlocalizedName("voidBook");
-		scatman = new ItemVoidRecord("scatman").setUnlocalizedName("record");
-		pier = new ItemVoidRecord("piertonowhere").setUnlocalizedName("record");
-		biomeNullVoid = new BiomeGenNull(config.get(
-				Configuration.CATEGORY_GENERAL, "Null Void Biome ID", 34)
-				.getInt());
-		config.save();
+		items();
+		blocks();
 
 		// Fluids
 		FluidRegistry.registerFluid(liquidFlux);
@@ -495,5 +449,62 @@ public class VoidMod implements LoadingCallback {
 				}
 			}
 		}
+	}
+	
+	private void config(){
+		config.load();
+		NullVoidDimID = config.get(Configuration.CATEGORY_GENERAL,
+				"Null Void Dimention ID", 42).getInt();
+		NullVoidBioID = config.get(
+				Configuration.CATEGORY_GENERAL, "Null Void Biome ID", 34)
+				.getInt();
+		config.save();
+	}
+	private void items(){
+		nullGoggles = new ArmorNull(NullArmor, NullArmorRender, 0).setUnlocalizedName("nullGoggles");
+		voidGear = new ArmorNull(NullArmor, NullArmorRender, 1).setUnlocalizedName("voidGear");
+		circuts = new ItemCircut().setUnlocalizedName("circuits");
+		ingotNull = new ItemIngotNull().setUnlocalizedName("ingotNull");
+		ingotVoid = new ItemIngotVoid().setUnlocalizedName("ingotVoid");
+		gravityBelt = new GravityBelt().setUnlocalizedName("gravBelt");
+		glitchAmulet = new GlitchAmulet().setUnlocalizedName("glitchAmulet");
+		ingotFrame = new ItemFrame().setUnlocalizedName("ingotFrame");
+		bucket = new ItemBucket(blockLiquidFlux);
+		baneOfDark = new ItemBaneOfDarkness(SpecialTool)
+				.setUnlocalizedName("darknessBane");
+		darkPick = new ItemDarknessPick().setUnlocalizedName("darkPick");
+		elementalHammer = new ItemElementalHammer(SpecialTool).setUnlocalizedName("elementHammer");
+		corruptAlloy = new ItemGlitchyAlloy()
+				.setUnlocalizedName("corruptAlloy");
+		nullVoidAlloy = new ItemNullVoidAlloy()
+				.setUnlocalizedName("nullVoidAlloy");
+		tablet = new ItemTablet().setUnlocalizedName("tablet");
+		lightEssence = new ItemEssenceLight().setUnlocalizedName("lightEssence");
+		darkEssence = new ItemEssenceDark().setUnlocalizedName("darkEssence");
+		yingYang = new ItemYingYang().setUnlocalizedName("yingYang");
+		glitchCore = new ItemAntiGlitchCore().setUnlocalizedName("antiGlitchCore");
+		voidBook = (ItemVoidBook) new ItemVoidBook().setUnlocalizedName("voidBook");
+		scatman = new ItemVoidRecord("scatman").setUnlocalizedName("record");
+		pier = new ItemVoidRecord("piertonowhere").setUnlocalizedName("record");
+	}
+	private void blocks(){
+		voiddoor = new BlockVoidDoor().setBlockName("voidDoor"); // iron
+		NullOre = new BlockNullOre().setBlockName("nullOre");
+		voidOre = new BlockVoidOre().setBlockName("voidOre");
+		generic = new BlockGeneric().setBlockName("generic");
+		VoidFabric = new BlockVoidFabric().setBlockName("voidFabric");
+		walker = new BlockVoidWalker().setBlockName("voidWalker"); // iron
+		swordWall = new BlockSwordWall().setBlockName("swordWall");
+		chamberWall = new BlockChamberWall().setBlockName("chamberWall");
+		glitchFrame = new BlockGlitchFrame().setBlockName("glitchFrame");
+		transparent = new BlockTransparent().setBlockName("transparent");
+		storage = new BlockStorage().setBlockName("storage");
+		liquidFlux = new FluidMoltenFlux("Molten Flux");
+		liquidFlux.setBlock(blockLiquidFlux);
+		voidReactor = new BlockVoidReactor(Material.iron)
+				.setBlockName("voidReactor");
+		blockLiquidFlux = new BlockMoltenFlux(liquidFlux)
+				.setBlockName("moltenFlux");
+		biomeNullVoid = new BiomeGenNull(NullVoidBioID);
 	}
 }
