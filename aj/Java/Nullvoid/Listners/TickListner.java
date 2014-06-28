@@ -36,6 +36,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
@@ -356,6 +357,12 @@ public class TickListner {
 			event.player.addStat(VoidMod.craftGoggle, 1);
 		}
 	}
+	
+   @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
+        if(eventArgs.modID.equals("nullvoid"))
+            VoidMod.config();
+    }
 
 	/*
 	 * @SubscribeEvent public void onKeyInput(KeyInputEvent event) { if

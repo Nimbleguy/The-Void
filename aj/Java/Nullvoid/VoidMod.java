@@ -104,7 +104,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.util.EnumHelper;
 
-@Mod(modid = VoidMod.MODID, name = "The Void", version = VoidMod.VERSION)
+@Mod(modid = VoidMod.MODID, name = "The Void", version = VoidMod.VERSION, guiFactory = "aj.Java.Nullvoid.client.VoidModGUIFactory")
 public class VoidMod implements LoadingCallback {
 	public static List<Block> VoidReactorValidBlocks = new ArrayList<Block>(10);
 	public static Achievement mineNull = null;
@@ -451,12 +451,13 @@ public class VoidMod implements LoadingCallback {
 		}
 	}
 	
-	private void config(){
+	public static void config(){
 		config.load();
-		NullVoidDimID = config.get(Configuration.CATEGORY_GENERAL,
+		config.getCategory("generation");
+		NullVoidDimID = config.get("generation",
 				"Null Void Dimention ID", 42).getInt();
 		NullVoidBioID = config.get(
-				Configuration.CATEGORY_GENERAL, "Null Void Biome ID", 34)
+				"generation", "Null Void Biome ID", 34)
 				.getInt();
 		config.save();
 	}
