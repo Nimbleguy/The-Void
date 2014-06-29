@@ -10,6 +10,6 @@ public class VoidModGuiConfig extends GuiConfig {
 	public VoidModGuiConfig(GuiScreen parent) {
         super(parent,
                 new ConfigElement(VoidMod.config.getCategory("generation")).getChildElements(),
-                "nullvoid", true, true, "The Void", "Generation");
+                "nullvoid", false, false, "The Void", "Generation");
     }
 }

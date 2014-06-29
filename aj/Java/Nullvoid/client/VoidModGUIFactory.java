@@ -2,6 +2,7 @@ package aj.Java.Nullvoid.client;
 
 import java.util.Set;
 
+import aj.Java.Nullvoid.GUI.VoidModGuiConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import cpw.mods.fml.client.IModGuiFactory;
@@ -17,7 +18,7 @@ public class VoidModGUIFactory implements IModGuiFactory {
 	@Override
 	public Class<? extends GuiScreen> mainConfigGuiClass() {
 		// TODO Auto-generated method stub
-		return null;
+		return VoidModGuiConfig.class;
 	}
 
 	@Override
