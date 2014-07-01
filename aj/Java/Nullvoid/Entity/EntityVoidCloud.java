@@ -2,6 +2,7 @@ package aj.Java.Nullvoid.Entity;
 
 import aj.Java.Nullvoid.item.ItemIngotNull;
 import aj.Java.Nullvoid.item.ItemIngotVoid;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -66,31 +67,29 @@ public class EntityVoidCloud extends EntityTameable {
     /**
      * Moves the entity based on the specified heading.  Args: strafe, forward
      */
-    public void moveEntityWithHeading(float par1, float par2)
+    @Override
+	public void moveEntityWithHeading(float par1, float par2)
     {
-        if (this.isInWater())
-        {
-            this.moveFlying(par1, par2, 0.02F);
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
-            this.motionX *= 0.800000011920929D;
-            this.motionY *= 0.800000011920929D;
-            this.motionZ *= 0.800000011920929D;
-        }
-        else if (this.handleLavaMovement())
+        if (this.handleLavaMovement())
         {
             this.moveFlying(par1, par2, 0.02F);
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
             this.motionX *= 0.5D;
             this.motionY *= 0.5D;
             this.motionZ *= 0.5D;
-        }
-        else
+        } else
         {
             float f2 = 0.91F;
 
             if (this.onGround)
             {
-                f2 = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ)).slipperiness * 0.91F;
+                f2 = 0.54600006F;
+                Block i = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+
+                if (i != null)
+                {
+                    f2 = i.slipperiness * 0.91F;
+                }
             }
 
             float f3 = 0.16277136F / (f2 * f2 * f2);
@@ -99,27 +98,29 @@ public class EntityVoidCloud extends EntityTameable {
 
             if (this.onGround)
             {
-                f2 = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ)).slipperiness * 0.91F;
+                f2 = 0.54600006F;
+                Block j = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+
+                if (j != null)
+                {
+                    f2 = j.slipperiness * 0.91F;
+                }
             }
 
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
-            this.motionX *= (double)f2;
-            this.motionY *= (double)f2;
-            this.motionZ *= (double)f2;
+            this.motionX *= (double) f2;
+            this.motionY *= (double) f2;
+            this.motionZ *= (double) f2;
         }
 
-        this.prevLimbSwingAmount = this.limbSwingAmount;
-        double d1 = this.posX - this.prevPosX;
-        double d0 = this.posZ - this.prevPosZ;
-        float f4 = MathHelper.sqrt_double(d1 * d1 + d0 * d0) * 4.0F;
+        double d0 = this.posX - this.prevPosX;
+        double d1 = this.posZ - this.prevPosZ;
+        float f4 = MathHelper.sqrt_double(d0 * d0 + d1 * d1) * 4.0F;
 
         if (f4 > 1.0F)
         {
             f4 = 1.0F;
         }
-
-        this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
-        this.limbSwing += this.limbSwingAmount;
     }
 
     /**

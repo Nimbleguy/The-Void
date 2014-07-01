@@ -284,7 +284,6 @@ public class NavigateFlying extends PathNavigate {
 	 * path swim or not
 	 */
 	private int getPathableYPos() {
-		System.out.println("path");
 		int i = (int) this.theEntity.boundingBox.minY;
 		Block block = this.worldObj.getBlock(
 				MathHelper.floor_double(this.theEntity.posX), i,
@@ -310,7 +309,6 @@ public class NavigateFlying extends PathNavigate {
 	 * If on ground or swimming and can swim
 	 */
 	private boolean canNavigate() {
-		System.out.println("nav");
 		return true;
 	}
 

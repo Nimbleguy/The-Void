@@ -182,8 +182,8 @@ public class VoidMod implements LoadingCallback {
 				event.getSuggestedConfigurationFile());
 		config();
 		NullArmorRender = proxy.addArmor("Null");
-		items();
 		blocks();
+		items();
 
 		// Fluids
 		FluidRegistry.registerFluid(liquidFlux);
@@ -270,12 +270,12 @@ public class VoidMod implements LoadingCallback {
 		// Entities: Spawn
 		EntityRegistry.addSpawn(EntityNullFloater.class, 15, 3, 10, EnumCreatureType.waterCreature, biomeNullVoid);
 		EntityRegistry.addSpawn(EntityVoidCloud.class, 10, 3, 5, EnumCreatureType.ambient, biomeNullVoid);
-		EntityRegistry.addSpawn(EntityVoidMaster.class, 5, 1, 1, EnumCreatureType.creature, biomeNullVoid);
+		//EntityRegistry.addSpawn(EntityVoidMaster.class, 5, 1, 1, EnumCreatureType.creature, biomeNullVoid);
 		// Entities: Eggs
 		EntityList.addMapping(EntityNullFloater.class, "Null Floater", 3, 0x8000FF, 0x0B0B61);
 		EntityList.addMapping(EntityBuilder.class, "Builder", 4, 0x2EFE2E, 0x8000FF);
 		EntityList.addMapping(EntityVoidCloud.class, "Void Cloud", 5, 0x9966FF, 0x352B47);
-		EntityList.addMapping(EntityVoidMaster.class, "Void Master", 6, 0x000000, 0x6600FF);
+		//EntityList.addMapping(EntityVoidMaster.class, "Void Master", 6, 0x000000, 0x6600FF);
 
 		// Chunkloading
 		ForgeChunkManager.setForcedChunkLoadingCallback(VoidMod.me, null);
@@ -428,7 +428,8 @@ public class VoidMod implements LoadingCallback {
 		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(tablet, 1, 1), 1, 40, 2));
 		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_DISPENSER, new WeightedRandomChestContent(new ItemStack(tablet, 1, 5), 1, 40, 2));
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CROSSING, new WeightedRandomChestContent(new ItemStack(glitchCore, 8), 1, 20, 19));
-		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(VoidMod.voidBook.getStack(), 40, 60, 40));
+		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(VoidMod.voidBook.getStack(0), 40, 60, 40));
+		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(VoidMod.voidBook.getStack(1), 20, 30, 20));
 	}
 
 	@EventHandler
@@ -501,11 +502,11 @@ public class VoidMod implements LoadingCallback {
 		transparent = new BlockTransparent().setBlockName("transparent");
 		storage = new BlockStorage().setBlockName("storage");
 		liquidFlux = new FluidMoltenFlux("Molten Flux");
+		blockLiquidFlux = new BlockMoltenFlux(liquidFlux)
+			.setBlockName("moltenFlux");
 		liquidFlux.setBlock(blockLiquidFlux);
 		voidReactor = new BlockVoidReactor(Material.iron)
 				.setBlockName("voidReactor");
-		blockLiquidFlux = new BlockMoltenFlux(liquidFlux)
-				.setBlockName("moltenFlux");
 		biomeNullVoid = new BiomeGenNull(NullVoidBioID);
 	}
 }

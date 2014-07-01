@@ -300,9 +300,8 @@ public class TickListner {
 					for (Entity e : l) {
 						if (e.dimension == VoidMod.NullVoidDimID) {
 							if (!(e instanceof IVoidWalker)
-									&& (!(e instanceof EntityLiving) || !(e instanceof EntityPlayer))) {
+									&& (e instanceof EntityLiving && !(e instanceof EntityPlayer))) {
 								e.setDead();
-								System.out.println("NOPE");
 							}
 						}
 					}

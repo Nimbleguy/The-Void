@@ -14,10 +14,12 @@ public class BlockMoltenFlux extends BlockFluidFinite {
 
 	public BlockMoltenFlux(Fluid fluid) {
 		super(fluid, Material.water);
+		this.setTickRandomly(true);
+		needsRandomTick = true;
 	}
 	@Override
 	public void registerBlockIcons(IIconRegister i){
-		
+		this.blockIcon = Blocks.water.getIcon(0, 0);
 	}
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -20,31 +20,264 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemVoidBook extends ItemEditableBook {
 	public ItemVoidBook(){
 		super();
 		this.setCreativeTab(VoidMod.ctab);
+		setHasSubtypes(true);
+		setMaxDamage(0);
 	}
-	public ItemStack getStack(){
-		ItemStack tomeStack = new ItemStack(this);
-		NBTTagList bookPages = new NBTTagList();
-		for(String s : getPages()){
-			bookPages.appendTag(new NBTTagString(s));
+	public static final String[] names = new String[] {"myth", "craft"};
+	public ItemStack getStack(int meta){
+		ItemStack tomeStack = new ItemStack(this, 1, meta);
+		if(meta == 0){
+			NBTTagList bookPages = new NBTTagList();
+			for(String s : getPagesMyth()){
+				bookPages.appendTag(new NBTTagString(s));
+			}
+			tomeStack.setTagInfo("pages", bookPages);
+			tomeStack.setTagInfo("author", new NBTTagString("Eglarbroad Vandelsnatch"));
+			tomeStack.setTagInfo("title", new NBTTagString("Void Mythology"));
 		}
-		tomeStack.setTagInfo("pages", bookPages);
-		tomeStack.setTagInfo("author", new NBTTagString("Eglarbroad Vandelsnatch"));
-		tomeStack.setTagInfo("title", new NBTTagString("Void Mythology"));
+		else{
+			NBTTagList bookPages = new NBTTagList();
+			for(String s : getPagesCraft()){
+				bookPages.appendTag(new NBTTagString(s));
+			}
+			tomeStack.setTagInfo("pages", bookPages);
+			tomeStack.setTagInfo("author", new NBTTagString("Vandelgrot Shnelesky"));
+			tomeStack.setTagInfo("title", new NBTTagString("Forging Void Instruments"));
+		}
 		return tomeStack;
 	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public void getSubItems(Item i, CreativeTabs t, @SuppressWarnings("rawtypes") List l){
-		l.add(getStack());
+		l.add(getStack(0));
+		l.add(getStack(1));
 	}
-	private List<String> getPages(){
-		List<String> l = new ArrayList<String>(10);
+	private List<String> getPagesCraft(){
+		List<String> l = new ArrayList<String>();
+		l.add(
+				setFormat(setFormat("    FORGING VOID\n"
+						+ "     INSTRUMENTS", EnumChatFormatting.GRAY), EnumChatFormatting.BOLD)
+				+ setFormat(setFormat("\n", EnumChatFormatting.RESET), EnumChatFormatting.BLACK)
+				+ "A bit of background, I am Vandelgrot Shnelesky. I am a Void Master, able to traverse across the dimensions."
+				+ " Unlike my cousins the Endermen, my kind can traverse the veil surrounding the Void."
+				);
+		l.add(
+				"I wrote this tome to let any ambitious others who want to traverse the Void know how to"
+				+ " forge the magical constructs that allow non-voidwalkers to enter."
+				);
+		l.add(setFormat(setFormat("TABLE OF CONTENTS:", EnumChatFormatting.BOLD), EnumChatFormatting.DARK_GREEN)
+				+ setFormat(setFormat(setFormat("\nCircuits - Page 4", EnumChatFormatting.RESET), EnumChatFormatting.ITALIC), EnumChatFormatting.WHITE)
+				+ "\nVoidwalker - Page 9"
+				+ "\nNull Goggles - Page 10"
+				+ "\nSword Wall - Page 11"
+				+ "\nIngot Frame - Page 12"
+				+ "\nWeak Glitch Frame - Page 13"
+				+ "\nAnti-Glitch Amulet - Page 14"
+				+ "\nBane of Darkness - Page 15"
+				+ "\nPickaxe of Darkness - Page 16"
+				+ "\nOther Notes - Page 17"
+				);
+		l.add(
+				setFormat("INERT NULL CIRCUIT", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "PRP\n"
+				+ "NEN\n"
+				+ "QNQ\n"
+				+ "R = Redstone Dust. "
+				+ "P = Pie. "
+				+ "N = Null Crystal. "
+				+ "Q = Nether Quartz. "
+				+ "E = Lime Dye."
+				);
+		if (OreDictionary.getOres("ingotCopper").size() != 0
+				&& OreDictionary.getOres("ingotElectrum").size() != 0) {
+			l.add(
+					setFormat("ENERGIZED NULL CIRCUIT", EnumChatFormatting.BOLD)
+					+ setFormat("\n", EnumChatFormatting.RESET)
+					+ "CGC\n"
+					+ "NIN\n"
+					+ "RRR\n"
+					+ "R = Redstone Dust. "
+					+ "G = Electrum. "
+					+ "N = Null Crystal. "
+					+ "I = Inert Null Circuit. "
+					+ "C = Copper."
+					);
+		}
+		else if (OreDictionary.getOres("ingotCopper").size() != 0) {
+			l.add(
+					setFormat("ENERGIZED NULL CIRCUIT", EnumChatFormatting.BOLD)
+					+ setFormat("\n", EnumChatFormatting.RESET)
+					+ "CGC\n"
+					+ "NIN\n"
+					+ "RRR\n"
+					+ "R = Redstone Dust. "
+					+ "G = Glowstone Dust. "
+					+ "N = Null Crystal. "
+					+ "I = Inert Null Circuit. "
+					+ "C = Copper."
+					);
+		}
+		else{
+			l.add(
+					setFormat("ENERGIZED NULL CIRCUIT", EnumChatFormatting.BOLD)
+					+ setFormat("\n", EnumChatFormatting.RESET)
+					+ "GGG\n"
+					+ "NIN\n"
+					+ "RRR\n"
+					+ "R = Redstone Dust. "
+					+ "G = Glowstone Dust. "
+					+ "N = Null Crystal. "
+					+ "I = Inert Null Circuit. "
+					);
+		}
+		l.add(
+				setFormat("DESTABILIZED NULL CIRCUIT", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "NNN\n"
+				+ "NCN\n"
+				+ "NRN\n"
+				+ "R = Redstone Block. "
+				+ "N = Null Crystal. "
+				+ "C = Energized Null Circuit. "
+				);
+		l.add(
+				setFormat("FLUXUATING NULL CIRCUIT", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "REB\n"
+				+ "NCN\n"
+				+ "YQP\n"
+				+ "R = Red Dye. "
+				+ "B = Cyan Dye. "
+				+ "Y = Yellow Dye. "
+				+ "P = Purple Dye. "
+				+ "E = Redstone Block. "
+				+ "N = Null Crystal. "
+				+ "Q = Nether Quartz. "
+				+ "C = Destabilized Null Circuit. "
+				);
+		l.add(
+				setFormat("ACTIVATED NULL CIRCUIT", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "NNN\n"
+				+ "RCR\n"
+				+ "EDE\n"
+				+ "R = Redstone Block. "
+				+ "N = Null Crystal. "
+				+ "C = Fluxuating Null Circuit. "
+				+ "D = Diamond Block. "
+				+ "E = End Stone. "
+				);
+		l.add(
+				setFormat("     VOIDWALKER", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "NCN\n"
+				+ "EDE\n"
+				+ "NIN\n"
+				+ "E = End Stone. "
+				+ "N = Null Crystal. "
+				+ "C = Inert Null Circuit. "
+				+ "I = Fluxuating Null Circuit. "
+				);
+		l.add(
+				setFormat("    NULL GOGGLES", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "SCS\n"
+				+ "GLG\n"
+				+ "NGN\n"
+				+ "G = Glass Pane. "
+				+ "N = Null Crystal. "
+				+ "S = String. "
+				+ "L = Leather. "
+				+ "C = Activated Null Circuit. "
+				);
+		l.add(
+				setFormat("     SWORD WALL", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "NVN\n"
+				+ "GSG\n"
+				+ "CVC\n"
+				+ "V = Void Fabric. "
+				+ "N = Null Crystal. "
+				+ "C = Fluxuating Null Circuit. "
+				+ "S = Bane of Darkness. "
+				+ "G = Void Gem. "
+				);
+		l.add(
+				setFormat("     INGOT FRAME", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "SWS\n"
+				+ "VNV\n"
+				+ "SGS\n"
+				+ "V = Void Gem. "
+				+ "N = Null Crystal. "
+				+ "W = Wooden Plank. "
+				+ "G = Slimeball. "
+				+ "S = String. "
+				);
+		l.add(
+				setFormat(" WEAK GLITCH FRAME", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "NAN\n"
+				+ "VGV\n"
+				+ "FAF\n"
+				+ "V = Void Fabric. "
+				+ "N = Null Crystal. "
+				+ "G = Perfectly Generic Object. "
+				+ "F = Void Fabric. "
+				+ "A = Anti-Glitch Core. "
+				);
+		l.add(
+				setFormat("  BANE OF DARKNESS", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "ABA\n"
+				+ "CBC\n"
+				+ " G \n"
+				+ "A = Null-Void Alloy. "
+				+ "B = Essence of Light. "
+				+ "C = Activated Null Circuit. "
+				+ "G = Anti-Glitch Core. "
+				);
+		l.add(
+				setFormat("PICKAXE OF DARKNESS", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "DDD\n"
+				+ "CGC\n"
+				+ " A \n"
+				+ "D = Essence of Darkness. "
+				+ "G = Alloy of the Destroyer. "
+				+ "C = Activated Null Circuit. "
+				+ "A = Anti-Glitch Core. "
+				);
+		l.add(
+				setFormat("ANTI-GLITCH AMULET", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "SYS\n"
+				+ "YCY\n"
+				+ "YYY\n"
+				+ "Y = Ying-Yang Ingot. "
+				+ "S = String. "
+				+ "C = Anti-Glitch Core. "
+				);
+		l.add(
+				setFormat("OTHER NOTES", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "Some items will react strangely when covered in Molten Flux, maybe even"
+				+ " become moldable."
+				+ "Other materials will react when taken to 2^10Y or the inhabitable void."
+				);
+		return l;
+	}
+	private List<String> getPagesMyth(){
+		List<String> l = new ArrayList<String>(15);
 		l.add(
 				setFormat(setFormat("    VOID MYTHOLOGY", EnumChatFormatting.GRAY), EnumChatFormatting.BOLD)
 				+ setFormat(setFormat("\n", EnumChatFormatting.RESET), EnumChatFormatting.BLACK)
@@ -153,5 +386,10 @@ public class ItemVoidBook extends ItemEditableBook {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister i){
 		this.itemIcon = i.registerIcon("nullvoid:voidBook");
+	}
+	public String getUnlocalizedName(ItemStack par1ItemStack)
+	{
+	    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 15);
+	    return "item.voidBook." + names[i];
 	}
 }

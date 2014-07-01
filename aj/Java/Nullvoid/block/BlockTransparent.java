@@ -11,7 +11,7 @@ public class BlockTransparent extends BlockVoidFabric {
 		super();
 		setHardness(5F);
 		this.setBlockUnbreakable();
-		this.setResistance(99999F);
+		this.setResistance(999999F);
 	}
 	@SideOnly(Side.CLIENT)
 	@Override

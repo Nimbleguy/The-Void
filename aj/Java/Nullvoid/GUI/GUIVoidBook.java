@@ -56,7 +56,8 @@ public class GUIVoidBook extends GuiScreen {
 	public GUIVoidBook(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack,
 			boolean par3) {
 		this.editingPlayer = par1EntityPlayer;
-		par2ItemStack = ((ItemVoidBook)par2ItemStack.getItem()).getStack();
+		System.out.println(par2ItemStack.getItemDamage());
+		par2ItemStack = ((ItemVoidBook)par2ItemStack.getItem()).getStack(par2ItemStack.getItemDamage());
 		this.bookObj = par2ItemStack;
 		this.bookIsUnsigned = par3;
 
