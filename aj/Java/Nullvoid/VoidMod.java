@@ -120,7 +120,6 @@ public class VoidMod implements LoadingCallback {
 	public static Configuration config;
 	public static CreativeTabs ctab = new NullVoidTab(CreativeTabs.getNextID(),
 			"The Null Void");
-	public static int guiWalker = 0;
 	public static Item circuts = null;
 	public static Item ingotNull = null;
 	public static Item ingotVoid = null;
@@ -148,8 +147,13 @@ public class VoidMod implements LoadingCallback {
 	public static Block storage = null;
 	public static int NullVoidDimID;
 	public static int NullVoidBioID;
+	public static int EntIDBuild;
+	public static int EntIDWalk;
+	public static int EntIDCloud;
+	public static int EntIDFloat;
+	public static int EntIDGlitch;
 	public static final String MODID = "nullvoid";
-	public static final String VERSION = "1.7.2-2.0.2-BETA";
+	public static final String VERSION = "1.7.2-2.2.1-BETA";
 	public static Fluid liquidFlux = null;
 	public static Block blockLiquidFlux = null;
 	public static Item nullGoggles = null;
@@ -258,25 +262,27 @@ public class VoidMod implements LoadingCallback {
 
 		// Entities
 		EntityRegistry.registerModEntity(EntityVoidMaster.class, "Void Master",
-				1, this, 80, 10, true);
+				EntIDWalk, this, 80, 10, true);
 		EntityRegistry.registerModEntity(EntityNullFloater.class, "Null Floater",
-				2, this, 80, 10, true);
+				EntIDFloat, this, 80, 10, true);
 		EntityRegistry.registerModEntity(EntityBuilder.class, "Builder",
-				3, this, 80, 10, true);
+				EntIDBuild, this, 80, 10, true);
 		EntityRegistry.registerModEntity(EntityGlitch.class, "Glitch",
-				4, this, 80, 10, true);
+				EntIDGlitch, this, 80, 10, true);
 		EntityRegistry.registerModEntity(EntityVoidCloud.class, "Void Cloud",
-				5, this, 80, 10, true);
+				EntIDCloud, this, 80, 10, true);
 		// Entities: Spawn
 		EntityRegistry.addSpawn(EntityNullFloater.class, 15, 3, 10, EnumCreatureType.waterCreature, biomeNullVoid);
 		EntityRegistry.addSpawn(EntityVoidCloud.class, 10, 3, 5, EnumCreatureType.ambient, biomeNullVoid);
 		//EntityRegistry.addSpawn(EntityVoidMaster.class, 5, 1, 1, EnumCreatureType.creature, biomeNullVoid);
 		// Entities: Eggs
-		EntityList.addMapping(EntityNullFloater.class, "Null Floater", 3, 0x8000FF, 0x0B0B61);
-		EntityList.addMapping(EntityBuilder.class, "Builder", 4, 0x2EFE2E, 0x8000FF);
-		EntityList.addMapping(EntityVoidCloud.class, "Void Cloud", 5, 0x9966FF, 0x352B47);
+		EntityList.addMapping(EntityNullFloater.class, "Null Floater", EntIDFloat, 0x8000FF, 0x0B0B61);
+		EntityList.addMapping(EntityBuilder.class, "Builder", EntIDBuild, 0x2EFE2E, 0x8000FF);
+		EntityList.addMapping(EntityVoidCloud.class, "Void Cloud", EntIDCloud, 0x9966FF, 0x352B47);
 		//EntityList.addMapping(EntityVoidMaster.class, "Void Master", 6, 0x000000, 0x6600FF);
-
+		// Entities: Register
+		EntityList.addMapping(EntityGlitch.class, "Glitch", EntIDGlitch);
+		
 		// Chunkloading
 		ForgeChunkManager.setForcedChunkLoadingCallback(VoidMod.me, null);
 
@@ -455,11 +461,22 @@ public class VoidMod implements LoadingCallback {
 	public static void config(){
 		config.load();
 		config.getCategory("generation");
+		config.getCategory("entity");
 		NullVoidDimID = config.get("generation",
 				"Null Void Dimention ID", 42).getInt();
 		NullVoidBioID = config.get(
 				"generation", "Null Void Biome ID", 34)
 				.getInt();
+		EntIDBuild = config.get("entity",
+				"The Builder Entity ID", 1337).getInt();
+		EntIDWalk = config.get("entity",
+				"Void Walker Entity ID", 1338).getInt();
+		EntIDCloud = config.get("entity",
+				"Void Cloud Entity ID", 1339).getInt();
+		EntIDFloat = config.get("entity",
+				"Null Floater Entity ID", 1340).getInt();
+		EntIDGlitch = config.get("entity",
+				"Glitch Entity ID", 1341).getInt();
 		config.save();
 	}
 	private void items(){

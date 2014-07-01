@@ -40,7 +40,7 @@ public class BlockVoidWalker extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z,
 			EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
-			player.openGui(VoidMod.me, VoidMod.guiWalker, world, x, y, z);
+			player.openGui(VoidMod.me, 0, world, x, y, z);
 		}
 		return true;
 	}
