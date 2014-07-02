@@ -54,19 +54,8 @@ public class EntityNullFloater extends EntitySquid implements IVoidWalker {
         {
             float f2 = 0.91F;
 
-            if (this.onGround)
-            {
-                f2 = 0.54600006F;
-                Block i = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
-
-                if (i != null)
-                {
-                    f2 = i.slipperiness * 0.91F;
-                }
-            }
-
             float f3 = 0.16277136F / (f2 * f2 * f2);
-            this.moveFlying(par1, par2, this.onGround ? 0.1F * f3 : 0.02F);
+            this.moveFlying(par1, par2, f3);
             f2 = 0.91F;
 
             if (this.onGround)
@@ -87,8 +76,9 @@ public class EntityNullFloater extends EntitySquid implements IVoidWalker {
         }
 
         double d0 = this.posX - this.prevPosX;
+        double d2 = this.posY - this.prevPosY;
         double d1 = this.posZ - this.prevPosZ;
-        float f4 = MathHelper.sqrt_double(d0 * d0 + d1 * d1) * 4.0F;
+        float f4 = MathHelper.sqrt_double(d0 * d0 + d1 * d1 + d2 * d2) * 4.0F;
 
         if (f4 > 1.0F)
         {
