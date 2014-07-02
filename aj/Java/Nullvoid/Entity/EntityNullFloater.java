@@ -2,7 +2,6 @@ package aj.Java.Nullvoid.Entity;
 
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.block.BlockMoltenFlux;
-import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.item.ItemStack;
@@ -10,6 +9,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityNullFloater extends EntitySquid implements IVoidWalker {
+	private float randomMotionSpeed;
+    /** change in squidRotation in radians. */
+    private float rotationVelocity;
+    private float field_70871_bB;
+    private float randomMotionVecX;
+    private float randomMotionVecY;
+    private float randomMotionVecZ;
 	public EntityNullFloater(World par1World) {
 		super(par1World);
 		
@@ -40,53 +46,97 @@ public class EntityNullFloater extends EntitySquid implements IVoidWalker {
     {
         return this.worldObj.checkNoEntityCollision(this.boundingBox) && this.dimension == VoidMod.NullVoidDimID && this.worldObj.getBlock((int)posX, (int)posY, (int)posZ) instanceof BlockMoltenFlux;
     }
-	@Override
-	public void moveEntityWithHeading(float par1, float par2)
+	public void onLivingUpdate()
     {
-        if (this.handleLavaMovement())
-        {
-            this.moveFlying(par1, par2, 0.02F);
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
-            this.motionX *= 0.5D;
-            this.motionY *= 0.5D;
-            this.motionZ *= 0.5D;
-        } else
-        {
-            float f2 = 0.91F;
+        super.onLivingUpdate();
+        this.prevSquidPitch = this.squidPitch;
+        this.prevSquidYaw = this.squidYaw;
+        this.prevSquidRotation = this.squidRotation;
+        this.lastTentacleAngle = this.tentacleAngle;
+        this.squidRotation += this.rotationVelocity;
 
-            float f3 = 0.16277136F / (f2 * f2 * f2);
-            this.moveFlying(par1, par2, f3);
-            f2 = 0.91F;
+        if (this.squidRotation > ((float)Math.PI * 2F))
+        {
+            this.squidRotation -= ((float)Math.PI * 2F);
 
-            if (this.onGround)
+            if (this.rand.nextInt(10) == 0)
             {
-                f2 = 0.54600006F;
-                Block j = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+                this.rotationVelocity = 1.0F / (this.rand.nextFloat() + 1.0F) * 0.2F;
+            }
+        }
 
-                if (j != null)
+        if (this.isInWater())
+        {
+            float f;
+
+            if (this.squidRotation < (float)Math.PI)
+            {
+                f = this.squidRotation / (float)Math.PI;
+                this.tentacleAngle = MathHelper.sin(f * f * (float)Math.PI) * (float)Math.PI * 0.25F;
+
+                if ((double)f > 0.75D)
                 {
-                    f2 = j.slipperiness * 0.91F;
+                    this.randomMotionSpeed = 1.0F;
+                    this.field_70871_bB = 1.0F;
+                }
+                else
+                {
+                    this.field_70871_bB *= 0.8F;
                 }
             }
+            else
+            {
+                this.tentacleAngle = 0.0F;
+                this.randomMotionSpeed *= 0.9F;
+                this.field_70871_bB *= 0.99F;
+            }
 
-            this.moveEntity(this.motionX, this.motionY, this.motionZ);
-            this.motionX *= (double) f2;
-            this.motionY *= (double) f2;
-            this.motionZ *= (double) f2;
+            if (!this.worldObj.isRemote)
+            {
+                this.motionX = (double)(this.randomMotionVecX * this.randomMotionSpeed);
+                this.motionY = (double)(this.randomMotionVecY * this.randomMotionSpeed);
+                this.motionZ = (double)(this.randomMotionVecZ * this.randomMotionSpeed);
+            }
+
+            f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            this.renderYawOffset += (-((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI - this.renderYawOffset) * 0.1F;
+            this.rotationYaw = this.renderYawOffset;
+            this.squidYaw += (float)Math.PI * this.field_70871_bB * 1.5F;
+            this.squidPitch += (-((float)Math.atan2((double)f, this.motionY)) * 180.0F / (float)Math.PI - this.squidPitch) * 0.1F;
         }
-
-        double d0 = this.posX - this.prevPosX;
-        double d2 = this.posY - this.prevPosY;
-        double d1 = this.posZ - this.prevPosZ;
-        float f4 = MathHelper.sqrt_double(d0 * d0 + d1 * d1 + d2 * d2) * 4.0F;
-
-        if (f4 > 1.0F)
+        else
         {
-            f4 = 1.0F;
+            this.tentacleAngle = MathHelper.abs(MathHelper.sin(this.squidRotation)) * (float)Math.PI * 0.25F;
+
+            if (!this.worldObj.isRemote)
+            {
+                this.motionX = 0.0D;
+                this.motionY -= 0.08D;
+                this.motionY *= 0.9800000190734863D;
+                this.motionZ = 0.0D;
+            }
+
+            this.squidPitch = (float)((double)this.squidPitch + (double)(-90.0F - this.squidPitch) * 0.02D);
         }
     }
-	@Override
-	protected void updateEntityActionState() {}
+
+    /**
+     * Moves the entity based on the specified heading.  Args: strafe, forward
+     */
+    public void moveEntityWithHeading(float p_70612_1_, float p_70612_2_)
+    {
+        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+    }
+	protected void updateEntityActionState()
+    {
+        if (this.rand.nextInt(50) == 0 || this.randomMotionVecX == 0.0F && this.randomMotionVecY == 0.0F && this.randomMotionVecZ == 0.0F)
+        {
+            float f = this.rand.nextFloat() * (float)Math.PI * 2.0F;
+            this.randomMotionVecX = MathHelper.cos(f) * 0.2F;
+            this.randomMotionVecY = -0.1F + this.rand.nextFloat() * 0.2F;
+            this.randomMotionVecZ = MathHelper.sin(f) * 0.2F;
+        }
+    }
 	@Override
 	protected void fall(float par1) {}
 	@Override

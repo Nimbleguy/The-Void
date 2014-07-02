@@ -51,8 +51,6 @@ public class EntityVoidCloud extends EntityFlying {
 			float f1 = MathHelper.wrapAngleTo180_float(f - this.rotationYaw);
 			this.moveForward = 0.5F;
 			this.rotationYaw += f1;
-		} else {
-			System.out.println("NULL");
 		}
 	}
 
