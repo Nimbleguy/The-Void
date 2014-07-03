@@ -1,5 +1,7 @@
 package aj.Java.Nullvoid;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import aj.Java.Nullvoid.Liquids.BucketHandler;
 import aj.Java.Nullvoid.Liquids.FluidMoltenFlux;
 import aj.Java.Nullvoid.Listners.TickListner;
 import aj.Java.Nullvoid.Packet.PacketHandler;
+import aj.Java.Nullvoid.Potion.PotionDissolving;
 import aj.Java.Nullvoid.Tools.ItemBaneOfDarkness;
 import aj.Java.Nullvoid.Tools.ItemDarknessPick;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
@@ -67,6 +70,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -152,6 +156,7 @@ public class VoidMod implements LoadingCallback {
 	public static int EntIDCloud;
 	public static int EntIDFloat;
 	public static int EntIDGlitch;
+	public static int PotIDDiss;
 	public static final String MODID = "nullvoid";
 	public static final String VERSION = "1.7.2-2.2.1-BETA";
 	public static Fluid liquidFlux = null;
@@ -182,12 +187,12 @@ public class VoidMod implements LoadingCallback {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// Initing stuff
-		config = new Configuration(
-				event.getSuggestedConfigurationFile());
+		config = new Configuration(event.getSuggestedConfigurationFile());
 		config();
 		NullArmorRender = proxy.addArmor("Null");
 		blocks();
 		items();
+		potions();
 
 		// Fluids
 		FluidRegistry.registerFluid(liquidFlux);
@@ -263,8 +268,8 @@ public class VoidMod implements LoadingCallback {
 		// Entities
 		EntityRegistry.registerModEntity(EntityVoidMaster.class, "Void Master",
 				EntIDWalk, this, 80, 10, true);
-		EntityRegistry.registerModEntity(EntityNullFloater.class, "Null Floater",
-				EntIDFloat, this, 80, 10, true);
+		EntityRegistry.registerModEntity(EntityNullFloater.class,
+				"Null Floater", EntIDFloat, this, 80, 10, true);
 		EntityRegistry.registerModEntity(EntityBuilder.class, "Builder",
 				EntIDBuild, this, 80, 10, true);
 		EntityRegistry.registerModEntity(EntityGlitch.class, "Glitch",
@@ -272,17 +277,24 @@ public class VoidMod implements LoadingCallback {
 		EntityRegistry.registerModEntity(EntityVoidCloud.class, "Void Cloud",
 				EntIDCloud, this, 80, 10, true);
 		// Entities: Spawn
-		EntityRegistry.addSpawn(EntityNullFloater.class, 15, 3, 10, EnumCreatureType.waterCreature, biomeNullVoid);
-		EntityRegistry.addSpawn(EntityVoidCloud.class, 10, 3, 5, EnumCreatureType.ambient, biomeNullVoid);
-		//EntityRegistry.addSpawn(EntityVoidMaster.class, 5, 1, 1, EnumCreatureType.creature, biomeNullVoid);
+		EntityRegistry.addSpawn(EntityNullFloater.class, 15, 3, 10,
+				EnumCreatureType.waterCreature, biomeNullVoid);
+		EntityRegistry.addSpawn(EntityVoidCloud.class, 10, 3, 5,
+				EnumCreatureType.ambient, biomeNullVoid);
+		// EntityRegistry.addSpawn(EntityVoidMaster.class, 5, 1, 1,
+		// EnumCreatureType.creature, biomeNullVoid);
 		// Entities: Eggs
-		EntityList.addMapping(EntityNullFloater.class, "Null Floater", EntIDFloat, 0x8000FF, 0x0B0B61);
-		EntityList.addMapping(EntityBuilder.class, "Builder", EntIDBuild, 0x2EFE2E, 0x8000FF);
-		EntityList.addMapping(EntityVoidCloud.class, "Void Cloud", EntIDCloud, 0x9966FF, 0x352B47);
-		//EntityList.addMapping(EntityVoidMaster.class, "Void Master", 6, 0x000000, 0x6600FF);
+		EntityList.addMapping(EntityNullFloater.class, "Null Floater",
+				EntIDFloat, 0x8000FF, 0x0B0B61);
+		EntityList.addMapping(EntityBuilder.class, "Builder", EntIDBuild,
+				0x2EFE2E, 0x8000FF);
+		EntityList.addMapping(EntityVoidCloud.class, "Void Cloud", EntIDCloud,
+				0x9966FF, 0x352B47);
+		// EntityList.addMapping(EntityVoidMaster.class, "Void Master", 6,
+		// 0x000000, 0x6600FF);
 		// Entities: Register
 		EntityList.addMapping(EntityGlitch.class, "Glitch", EntIDGlitch);
-		
+
 		// Chunkloading
 		ForgeChunkManager.setForcedChunkLoadingCallback(VoidMod.me, null);
 
@@ -299,15 +311,15 @@ public class VoidMod implements LoadingCallback {
 
 		// Renderers
 		proxy.registerRenderers();
-		
-		//Packets
+
+		// Packets
 		PacketHandler.init();
-		
-		//Keys
-		if(FMLCommonHandler.instance().getSide().isClient()){
+
+		// Keys
+		if (FMLCommonHandler.instance().getSide().isClient()) {
 			ClientRegistry.registerKeyBinding(Utils.specialKey);
 		}
-		
+
 		// Events
 		FMLCommonHandler.instance().bus().register(new TickListner());
 		MinecraftForge.EVENT_BUS.register(new TickListner());
@@ -322,7 +334,8 @@ public class VoidMod implements LoadingCallback {
 		enterNull = new Achievement("achievement.GoToVoid", "GoToVoid", 0, 0,
 				new ItemStack(walker, 1, 0), mineNull).setSpecial()
 				.registerStat();
-		scat = new Achievement("achievement.scat", "scat", -1, -2, VoidMod.scatman, enterNull).registerStat();
+		scat = new Achievement("achievement.scat", "scat", -1, -2,
+				VoidMod.scatman, enterNull).registerStat();
 		useTardis = new Achievement("achievement.UseTARDIS", "UseTARDIS", 2, 0,
 				new ItemStack(Blocks.lapis_block, 1, 0), enterNull)
 				.registerStat();
@@ -336,7 +349,9 @@ public class VoidMod implements LoadingCallback {
 		makeReactor = new Achievement("achievement.MakeReactor", "MakeReactor",
 				2, 4, new ItemStack(voidReactor, 1, 0), mineVoid).setSpecial()
 				.registerStat();
-		summonGlitch = new Achievement("achievement.SummonGlitch", "SummonGlitch", 2, 6, new ItemStack(corruptAlloy), makeReactor).setSpecial().registerStat();
+		summonGlitch = new Achievement("achievement.SummonGlitch",
+				"SummonGlitch", 2, 6, new ItemStack(corruptAlloy), makeReactor)
+				.setSpecial().registerStat();
 		nullChievements = new AchievementPage("The Null Void", mineNull,
 				enterNull, craftGoggle, useTardis, fallVoid, mineVoid,
 				makeReactor, summonGlitch, scat);
@@ -396,46 +411,48 @@ public class VoidMod implements LoadingCallback {
 				"crystalNull", 'G', "slimeball", 'S', new ItemStack(
 						Items.string)));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(glitchFrame),
-				"NAN", "VGV", "FAF",
-				'N', "crystalNull",
-				'V', "gemVoid",
-				'G', generic,
-				'F', VoidFabric,
-				'A', glitchCore
-				));
+				"NAN", "VGV", "FAF", 'N', "crystalNull", 'V', "gemVoid", 'G',
+				generic, 'F', VoidFabric, 'A', glitchCore));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(baneOfDark),
-				"ABA", "CBC", " G ",
-				'A', nullVoidAlloy,
-				'B', lightEssence,
-				'G', glitchCore,
-				'C', new ItemStack(circuts, 1, 4)
-				));
+				"ABA", "CBC", " G ", 'A', nullVoidAlloy, 'B', lightEssence,
+				'G', glitchCore, 'C', new ItemStack(circuts, 1, 4)));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(darkPick),
-				"DDD", "CGC", " A ",
-				'D', darkEssence,
-				'C', new ItemStack(circuts, 1, 4),
-				'G', corruptAlloy,
-				'A', glitchCore
-				));
+				"DDD", "CGC", " A ", 'D', darkEssence, 'C', new ItemStack(
+						circuts, 1, 4), 'G', corruptAlloy, 'A', glitchCore));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(glitchAmulet),
-				"SYS", "YCY", "YYY",
-				'S', Items.string,
-				'Y', yingYang,
-				'C', glitchCore
-				));
-		//Smelting
+				"SYS", "YCY", "YYY", 'S', Items.string, 'Y', yingYang, 'C',
+				glitchCore));
+		// Smelting
 		GameRegistry.addSmelting(NullOre, new ItemStack(ingotNull), 0.5f);
 		GameRegistry.addSmelting(voidOre, new ItemStack(ingotVoid), 1f);
-		//Dungeon Loot
-		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(tablet, 1, 3), 1, 40, 2));
-		ChestGenHooks.addItem(ChestGenHooks.MINESHAFT_CORRIDOR, new WeightedRandomChestContent(new ItemStack(tablet, 1, 4), 1, 40, 2));
-		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY, new WeightedRandomChestContent(new ItemStack(tablet, 1, 0), 50, 60, 51));
-		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_DESERT_CHEST, new WeightedRandomChestContent(new ItemStack(tablet, 1, 2), 1, 40, 2));
-		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(tablet, 1, 1), 1, 40, 2));
-		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_DISPENSER, new WeightedRandomChestContent(new ItemStack(tablet, 1, 5), 1, 40, 2));
-		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CROSSING, new WeightedRandomChestContent(new ItemStack(glitchCore, 8), 1, 20, 19));
-		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(VoidMod.voidBook.getStack(0), 40, 60, 40));
-		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(VoidMod.voidBook.getStack(1), 20, 30, 20));
+		// Dungeon Loot
+		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST,
+				new WeightedRandomChestContent(new ItemStack(tablet, 1, 3), 1,
+						40, 2));
+		ChestGenHooks.addItem(ChestGenHooks.MINESHAFT_CORRIDOR,
+				new WeightedRandomChestContent(new ItemStack(tablet, 1, 4), 1,
+						40, 2));
+		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY,
+				new WeightedRandomChestContent(new ItemStack(tablet, 1, 0), 50,
+						60, 51));
+		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_DESERT_CHEST,
+				new WeightedRandomChestContent(new ItemStack(tablet, 1, 2), 1,
+						40, 2));
+		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH,
+				new WeightedRandomChestContent(new ItemStack(tablet, 1, 1), 1,
+						40, 2));
+		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_DISPENSER,
+				new WeightedRandomChestContent(new ItemStack(tablet, 1, 5), 1,
+						40, 2));
+		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CROSSING,
+				new WeightedRandomChestContent(new ItemStack(glitchCore, 8), 1,
+						20, 19));
+		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH,
+				new WeightedRandomChestContent(VoidMod.voidBook.getStack(0),
+						40, 60, 40));
+		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH,
+				new WeightedRandomChestContent(VoidMod.voidBook.getStack(1),
+						20, 30, 20));
 	}
 
 	@EventHandler
@@ -445,43 +462,47 @@ public class VoidMod implements LoadingCallback {
 		VoidReactorValidBlocks.add(swordWall);
 		System.out.println("[NULLVOID]: Shall we traverse the void?");
 	}
+
 	@Override
 	public void ticketsLoaded(List<Ticket> tickets, World world) {
-		for(Ticket t : tickets){
-			if(t != null){
-				for(ChunkCoordIntPair chunk : t.getChunkList()){
-					if(chunk != null){
+		for (Ticket t : tickets) {
+			if (t != null) {
+				for (ChunkCoordIntPair chunk : t.getChunkList()) {
+					if (chunk != null) {
 						ForgeChunkManager.forceChunk(t, chunk);
 					}
 				}
 			}
 		}
 	}
-	
-	public static void config(){
+
+	public static void config() {
 		config.load();
 		config.getCategory("generation");
 		config.getCategory("entity");
-		NullVoidDimID = config.get("generation",
-				"Null Void Dimention ID", 42).getInt();
-		NullVoidBioID = config.get(
-				"generation", "Null Void Biome ID", 34)
+		config.getCategory("potion");
+		NullVoidDimID = config.get("generation", "Null Void Dimention ID", 42)
 				.getInt();
-		EntIDBuild = config.get("entity",
-				"The Builder Entity ID", 1337).getInt();
-		EntIDWalk = config.get("entity",
-				"Void Walker Entity ID", 1338).getInt();
-		EntIDCloud = config.get("entity",
-				"Void Cloud Entity ID", 1339).getInt();
-		EntIDFloat = config.get("entity",
-				"Null Floater Entity ID", 1340).getInt();
-		EntIDGlitch = config.get("entity",
-				"Glitch Entity ID", 1341).getInt();
+		NullVoidBioID = config.get("generation", "Null Void Biome ID", 34)
+				.getInt();
+		EntIDBuild = config.get("entity", "The Builder Entity ID", 1337)
+				.getInt();
+		EntIDWalk = config.get("entity", "Void Walker Entity ID", 1338)
+				.getInt();
+		EntIDCloud = config.get("entity", "Void Cloud Entity ID", 1339)
+				.getInt();
+		EntIDFloat = config.get("entity", "Null Floater Entity ID", 1340)
+				.getInt();
+		EntIDGlitch = config.get("entity", "Glitch Entity ID", 1341).getInt();
+		PotIDDiss = config.get("potion", "Dissolving Potion ID", 42).getInt();
 		config.save();
 	}
-	private void items(){
-		nullGoggles = new ArmorNull(NullArmor, NullArmorRender, 0).setUnlocalizedName("nullGoggles");
-		voidGear = new ArmorNull(NullArmor, NullArmorRender, 1).setUnlocalizedName("voidGear");
+
+	private void items() {
+		nullGoggles = new ArmorNull(NullArmor, NullArmorRender, 0)
+				.setUnlocalizedName("nullGoggles");
+		voidGear = new ArmorNull(NullArmor, NullArmorRender, 1)
+				.setUnlocalizedName("voidGear");
 		circuts = new ItemCircut().setUnlocalizedName("circuits");
 		ingotNull = new ItemIngotNull().setUnlocalizedName("ingotNull");
 		ingotVoid = new ItemIngotVoid().setUnlocalizedName("ingotVoid");
@@ -492,21 +513,26 @@ public class VoidMod implements LoadingCallback {
 		baneOfDark = new ItemBaneOfDarkness(SpecialTool)
 				.setUnlocalizedName("darknessBane");
 		darkPick = new ItemDarknessPick().setUnlocalizedName("darkPick");
-		elementalHammer = new ItemElementalHammer(SpecialTool).setUnlocalizedName("elementHammer");
+		elementalHammer = new ItemElementalHammer(SpecialTool)
+				.setUnlocalizedName("elementHammer");
 		corruptAlloy = new ItemGlitchyAlloy()
 				.setUnlocalizedName("corruptAlloy");
 		nullVoidAlloy = new ItemNullVoidAlloy()
 				.setUnlocalizedName("nullVoidAlloy");
 		tablet = new ItemTablet().setUnlocalizedName("tablet");
-		lightEssence = new ItemEssenceLight().setUnlocalizedName("lightEssence");
+		lightEssence = new ItemEssenceLight()
+				.setUnlocalizedName("lightEssence");
 		darkEssence = new ItemEssenceDark().setUnlocalizedName("darkEssence");
 		yingYang = new ItemYingYang().setUnlocalizedName("yingYang");
-		glitchCore = new ItemAntiGlitchCore().setUnlocalizedName("antiGlitchCore");
-		voidBook = (ItemVoidBook) new ItemVoidBook().setUnlocalizedName("voidBook");
+		glitchCore = new ItemAntiGlitchCore()
+				.setUnlocalizedName("antiGlitchCore");
+		voidBook = (ItemVoidBook) new ItemVoidBook()
+				.setUnlocalizedName("voidBook");
 		scatman = new ItemVoidRecord("scatman").setUnlocalizedName("record");
 		pier = new ItemVoidRecord("piertonowhere").setUnlocalizedName("record");
 	}
-	private void blocks(){
+
+	private void blocks() {
 		voiddoor = new BlockVoidDoor().setBlockName("voidDoor"); // iron
 		NullOre = new BlockNullOre().setBlockName("nullOre");
 		voidOre = new BlockVoidOre().setBlockName("voidOre");
@@ -520,10 +546,43 @@ public class VoidMod implements LoadingCallback {
 		storage = new BlockStorage().setBlockName("storage");
 		liquidFlux = new FluidMoltenFlux("Molten Flux");
 		blockLiquidFlux = new BlockMoltenFlux(liquidFlux)
-			.setBlockName("moltenFlux");
+				.setBlockName("moltenFlux");
 		liquidFlux.setBlock(blockLiquidFlux);
 		voidReactor = new BlockVoidReactor(Material.iron)
 				.setBlockName("voidReactor");
 		biomeNullVoid = new BiomeGenNull(NullVoidBioID);
 	}
+
+	private void potions() {
+		Potion[] potionTypes = null;
+		for (Field f : Potion.class.getDeclaredFields()) {
+			f.setAccessible(true);
+			try {
+				if (f.getName().equals("potionTypes")
+						|| f.getName().equals("field_76425_a")) {
+					Field modfield = Field.class.getDeclaredField("modifiers");
+					modfield.setAccessible(true);
+					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+
+					potionTypes = (Potion[]) f.get(null);
+					final Potion[] newPotionTypes = new Potion[256];
+					System.arraycopy(potionTypes, 0, newPotionTypes, 0,
+							potionTypes.length);
+					if(newPotionTypes[PotIDDiss] == null){
+						newPotionTypes[PotIDDiss] = new PotionDissolving(PotIDDiss, true, 0x260060);
+					}
+					else{
+						System.err
+						.println("VERI IMPORTANT WARNING: POTION ID " + PotIDDiss + " IS ALREADY USED! PLEASE CHANGE THE POTION ID.");
+					}
+					f.set(null, newPotionTypes);
+				}
+			} catch (Exception e) {
+				System.err
+						.println("Severe error, please report this to the mod author:");
+				System.err.println(e);
+			}
+		}
+	}
+	
 }

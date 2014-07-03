@@ -21,7 +21,8 @@ public class VoidModGuiConfig extends GuiConfig {
     {
         List<IConfigElement> list = new ArrayList<IConfigElement>();
         list.add(new DummyConfigElement.DummyCategoryElement("Generation", "config.Generation", new ConfigElement(VoidMod.config.getCategory("generation")).getChildElements()));
-        list.add(new DummyConfigElement.DummyCategoryElement("Entity", "config.Entity", new ConfigElement(VoidMod.config.getCategory("entity")).getChildElements()));
+        list.add(new DummyConfigElement.DummyCategoryElement("Entities", "config.Entity", new ConfigElement(VoidMod.config.getCategory("entity")).getChildElements()));
+        list.add(new DummyConfigElement.DummyCategoryElement("Potions", "config.Potion", new ConfigElement(VoidMod.config.getCategory("potion")).getChildElements()));
         return list;
     }
 }
