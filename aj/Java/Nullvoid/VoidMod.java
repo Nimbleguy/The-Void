@@ -376,9 +376,9 @@ public class VoidMod implements LoadingCallback {
 				"dyeRed", 'B', "dyeCyan", 'Y', "dyeYellow", 'P', "dyePurple",
 				'Q', "gemQuartz", 'E', "blockRedstone"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(circuts, 1, 4), "NNN", "RCR", "EDE", 'R',
+				new ItemStack(circuts, 1, 4), "NNN", "RCR", "IEI", 'R',
 				"blockRedstone", 'C', new ItemStack(circuts, 1, 3), 'N',
-				"crystalNull", 'D', "blockDiamond", 'E', Blocks.end_stone));
+				"crystalNull", 'D', "blockIron", 'E', Blocks.end_stone));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(walker),
 				"NCN", "EDE", "NIN", 'D', "blockDiamond", 'C', new ItemStack(
 						circuts, 1, 0), 'I', new ItemStack(circuts, 1, 3), 'N',

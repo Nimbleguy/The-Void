@@ -169,11 +169,11 @@ public class ItemVoidBook extends ItemEditableBook {
 				+ setFormat("\n", EnumChatFormatting.RESET)
 				+ "NNN\n"
 				+ "RCR\n"
-				+ "EDE\n"
+				+ "IEI\n"
 				+ "R = Redstone Block. "
 				+ "N = Null Crystal. "
 				+ "C = Fluxuating Null Circuit. "
-				+ "D = Diamond Block. "
+				+ "I = Iron Block. "
 				+ "E = End Stone. "
 				);
 		l.add(
