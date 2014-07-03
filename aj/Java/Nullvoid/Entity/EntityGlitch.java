@@ -19,9 +19,13 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 public class EntityGlitch extends EntityMob implements IBossDisplayData,
@@ -46,29 +50,11 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
 				.setBaseValue(1000F);
 	}
-
 	public EntityGlitch(World worldObj, double x, double y, double z) {
-		super(worldObj);
+		this(worldObj);
 		this.posX = x;
 		this.posY = y;
 		this.posZ = z;
-		this.getNavigator().setCanSwim(true);
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIArrowAttack(this, 1.0D, 40, 20.0F));
-		this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this,
-				EntityPlayer.class, 8.0F));
-		this.tasks.addTask(7, new EntityAILookIdle(this));
-
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this,
-				EntityPlayer.class, 0, false, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this,
-				EntityBuilder.class, 1, false, false));
-
-		this.setSize(0.6F, 1.8F);
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-				.setBaseValue(10000F);
 	}
 
 	@Override
@@ -88,8 +74,19 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 	}
 
 	@Override
+	public void onLivingUpdate() {
+		EntityPlayer e = worldObj.getClosestPlayerToEntity(this, 50);
+		if(e != null){
+			this.motionX = e.posX - this.posX;
+			this.motionY = e.posY - this.posY;
+			this.motionZ = e.posZ - this.posZ;
+		}
+		BossStatus.setBossStatus(this, true);
+	}
+	
+	@Override
 	public void onUpdate() {
-		if (FMLCommonHandler.instance().getSide().isClient()) {
+		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			Random r = new Random();
 			for (int i = 0; i < 20; i++) {
 				EntityFX glitch = new EntityGlitchFX(worldObj, (posX - 0.5D)
@@ -98,6 +95,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 				Minecraft.getMinecraft().effectRenderer.addEffect(glitch);
 			}
 		}
+		super.onUpdate();
 	}
 
 	@Override
@@ -158,4 +156,10 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 		}
 		return true;
 	}
+	@Override
+    public IChatComponent func_145748_c_(){
+    	return new ChatComponentText(EnumChatFormatting.OBFUSCATED.toString() + "OOO" + 
+    			EnumChatFormatting.RESET.toString() + EnumChatFormatting.DARK_PURPLE.toString() + "The Glitch"
+    			+ EnumChatFormatting.WHITE.toString() + EnumChatFormatting.OBFUSCATED.toString() + "OOO");
+    }
 }

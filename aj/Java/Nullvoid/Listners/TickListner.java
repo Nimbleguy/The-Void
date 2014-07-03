@@ -87,13 +87,11 @@ public class TickListner {
 					for (int z = (int) (event.player.posZ) - 3; z < (int) (event.player.posZ) + 4; z++) {
 						System.out.println(x + ", " + y + ", " + z);
 						if (event.player.worldObj.getBlock(x, y, z) instanceof BlockGlitchFrame) {
-							System.out.println("FRAME");
 							if (event.player.worldObj.getBlockMetadata(x, y, z) == 1) {
 								coords[0] = x;
 								coords[1] = y;
 								coords[2] = z;
 								b = true;
-								System.out.println("TRUE");
 							}
 						}
 					}
@@ -102,7 +100,6 @@ public class TickListner {
 			if (b) {
 				if (hasCircle(coords[0], coords[1], coords[2],
 						event.player.worldObj)) {
-					System.out.println("IT HAPPENED.");
 					event.component = new ChatComponentTranslation(
 							"<"
 									+ event.username
