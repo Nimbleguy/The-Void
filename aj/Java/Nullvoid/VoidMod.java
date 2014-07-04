@@ -502,8 +502,7 @@ public class VoidMod implements LoadingCallback {
 				.getInt();
 		EntIDGlitch = config.get("entity", "Glitch Entity ID", 1341).getInt();
 		PotIDDiss = config.get("potion", "Dissolving Potion ID", 42).getInt();
-		//PotBitDiss = config.get("potion", "Dissolving Potion Bits", "-0+1+2+3+5-6-7+13").getString();
-		PotBitDiss = "+0+1-2+3+&4-4+13";
+		PotBitDiss = config.get("potion", "Dissolving Potion Bits", "+0+1-2+3+&4-4+13").getString();
 		config.save();
 	}
 
