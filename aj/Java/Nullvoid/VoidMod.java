@@ -3,6 +3,7 @@ package aj.Java.Nullvoid;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import aj.Java.Nullvoid.Armor.ArmorNull;
@@ -51,6 +52,7 @@ import aj.Java.Nullvoid.item.ItemFrame;
 import aj.Java.Nullvoid.item.ItemGlitchyAlloy;
 import aj.Java.Nullvoid.item.ItemIngotNull;
 import aj.Java.Nullvoid.item.ItemIngotVoid;
+import aj.Java.Nullvoid.item.ItemNullInk;
 import aj.Java.Nullvoid.item.ItemNullVoidAlloy;
 import aj.Java.Nullvoid.item.ItemTablet;
 import aj.Java.Nullvoid.item.ItemVoidBook;
@@ -71,6 +73,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionHelper;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -137,6 +140,8 @@ public class VoidMod implements LoadingCallback {
 	public static ItemVoidBook voidBook = null;
 	public static Item scatman = null;
 	public static Item pier = null;
+	public static Item nullInk = null;
+	public static Potion dissolving = null;
 	public static Block NullOre = null;
 	public static Block VoidFabric = null;
 	public static Block walker = null;
@@ -157,6 +162,7 @@ public class VoidMod implements LoadingCallback {
 	public static int EntIDFloat;
 	public static int EntIDGlitch;
 	public static int PotIDDiss;
+	public static String PotBitDiss;
 	public static final String MODID = "nullvoid";
 	public static final String VERSION = "1.7.2-2.2.1-BETA";
 	public static Fluid liquidFlux = null;
@@ -236,6 +242,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerItem(voidBook, "voidBook");
 		GameRegistry.registerItem(scatman, "scatman");
 		GameRegistry.registerItem(pier, "piertonowhere");
+		GameRegistry.registerItem(nullInk, "nullInk");
 
 		// Tile entities
 		GameRegistry.registerTileEntity(TileEntityVoidWalker.class,
@@ -495,6 +502,8 @@ public class VoidMod implements LoadingCallback {
 				.getInt();
 		EntIDGlitch = config.get("entity", "Glitch Entity ID", 1341).getInt();
 		PotIDDiss = config.get("potion", "Dissolving Potion ID", 42).getInt();
+		//PotBitDiss = config.get("potion", "Dissolving Potion Bits", "-0+1+2+3+5-6-7+13").getString();
+		PotBitDiss = "+0+1-2+3+&4-4+13";
 		config.save();
 	}
 
@@ -530,6 +539,7 @@ public class VoidMod implements LoadingCallback {
 				.setUnlocalizedName("voidBook");
 		scatman = new ItemVoidRecord("scatman").setUnlocalizedName("record");
 		pier = new ItemVoidRecord("piertonowhere").setUnlocalizedName("record");
+		nullInk = new ItemNullInk().setUnlocalizedName("nullInk");
 	}
 
 	private void blocks() {
@@ -553,6 +563,7 @@ public class VoidMod implements LoadingCallback {
 		biomeNullVoid = new BiomeGenNull(NullVoidBioID);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void potions() {
 		Potion[] potionTypes = null;
 		for (Field f : Potion.class.getDeclaredFields()) {
@@ -568,13 +579,6 @@ public class VoidMod implements LoadingCallback {
 					final Potion[] newPotionTypes = new Potion[256];
 					System.arraycopy(potionTypes, 0, newPotionTypes, 0,
 							potionTypes.length);
-					if(newPotionTypes[PotIDDiss] == null){
-						newPotionTypes[PotIDDiss] = new PotionDissolving(PotIDDiss, true, 0x260060);
-					}
-					else{
-						System.err
-						.println("VERI IMPORTANT WARNING: POTION ID " + PotIDDiss + " IS ALREADY USED! PLEASE CHANGE THE POTION ID.");
-					}
 					f.set(null, newPotionTypes);
 				}
 			} catch (Exception e) {
@@ -583,6 +587,57 @@ public class VoidMod implements LoadingCallback {
 				System.err.println(e);
 			}
 		}
+		for (Field f : PotionHelper.class.getDeclaredFields()) {
+			try {
+				if (f.getName().equals("potionRequirements")) {
+					Field modfield = Field.class.getDeclaredField("modifiers");
+					f.setAccessible(true);
+					modfield.setAccessible(true);
+					modfield.setInt(f, f.getModifiers() & ~Modifier.PRIVATE);
+					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+					char[] c = PotBitDiss.toCharArray();
+					StringBuilder b = new StringBuilder();
+					int firstPlus = -1;
+					loop:
+					for(int where = 0; where < c.length; where++){
+						switch(Character.valueOf(c[where])){
+						case '-':
+							if(where == 0){
+								b.append('!');
+							}
+							else{
+								b.append(" !");
+							}
+							break;
+						case '+':
+							if(where != 0){
+								b.append(" ");
+							}
+							if(firstPlus == -1){
+								firstPlus = Integer.valueOf(c[where + 1]);
+							}
+							break;
+						case '3':
+							b.append("3");
+							break loop;
+						default:
+							b.append(c[where] + " &");
+							break;
+						}
+					}
+					b.append(" & " + firstPlus + "+6");
+					System.out.println(PotBitDiss);
+					System.out.println(b.toString());
+					((HashMap<Integer, String>) f.get(null)).put(PotIDDiss, b.toString());
+				}
+			} catch (Exception e) {
+				System.err
+						.println("Severe error, please report this to the mod author:");
+				System.err.println(e);
+			}
+		}
+		dissolving = new PotionDissolving(PotIDDiss, true,
+				0x260060).setPotionName("potion.Dissolving");
 	}
-	
+
 }
