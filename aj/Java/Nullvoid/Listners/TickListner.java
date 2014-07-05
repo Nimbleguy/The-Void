@@ -7,12 +7,14 @@ import java.util.Random;
 
 import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
+import aj.Java.Nullvoid.Biome.BiomeGenNull;
 import aj.Java.Nullvoid.Dimention.TeleporterNullVoid;
 import aj.Java.Nullvoid.Effects.Effects;
 import aj.Java.Nullvoid.Entity.EntityGlitch;
 import aj.Java.Nullvoid.Entity.IVoidWalker;
 import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketLighting;
+import aj.Java.Nullvoid.Potion.DissolvingRender;
 import aj.Java.Nullvoid.Tools.ItemBaneOfDarkness;
 import aj.Java.Nullvoid.block.BlockGlitchFrame;
 import baubles.api.BaublesApi;
@@ -36,6 +38,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.terraingen.OreGenEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -56,20 +59,40 @@ public class TickListner {
 	}
 	private Random r = new Random();
 	public static float brightness = 0F;
-	/**
-	 * @SubscribeEvent public void worldGen(PopulateChunkEvent.Post event){
-	 *                 int[] xa = new int[16]; int[] za = new int[16]; for(int i
-	 *                 = 0; i < 16; i++){ xa[i] = (event.chunkX * 16) + i; za[i]
-	 *                 = (event.chunkZ * 16) + i; } for(int x : xa){ for(int z :
-	 *                 za){ if(event.world.getBiomeGenForCoords(x, z) instanceof
-	 *                 BiomeGenNull){ for(int y = 1; y < 256; y++){
-	 *                 if(event.world.getBlock(x, y, z).equals(Blocks.stone)){
-	 *                 if(event.rand.nextInt(4) != 3){ event.world.setBlock(x,
-	 *                 y, z, VoidMod.VoidFabric); } } else
-	 *                 if(event.world.getBlock(x, y, z).equals(Blocks.bedrock)){
-	 *                 if(event.rand.nextInt(8) == 6){ event.world.setBlock(x,
-	 *                 y, z, VoidMod.VoidFabric); } } } } } } }
-	 */
+	DissolvingRender[] dissolve;
+	int dissolvetimer = 0;
+
+	@SubscribeEvent
+	public void worldGen(OreGenEvent.Post event) {
+		int[] xa = new int[16];
+		int[] za = new int[16];
+		for (int i = 0; i < 16; i++) {
+			xa[i] = (event.worldX * 16) + i;
+			za[i] = (event.worldZ * 16) + i;
+		}
+		for (int x : xa) {
+			for (int z : za) {
+				if (event.world.getBiomeGenForCoords(x, z) instanceof BiomeGenNull) {
+					System.out.println(xa[0] + ", " + za[0]);
+					for (int y = 1; y < 256; y++) {
+						if (event.world.getBlock(x, y, z).equals(Blocks.stone)) {
+							if (event.rand.nextInt(2) != 0) {
+								event.world.setBlock(x, y, z,
+										VoidMod.VoidFabric);
+							}
+						} else if (event.world.getBlock(x, y, z).equals(
+								Blocks.bedrock)) {
+							if (event.rand.nextInt(5) == 2) {
+								event.world.setBlock(x, y, z,
+										VoidMod.VoidFabric);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	Integer i = null;
 
 	@SubscribeEvent
@@ -334,7 +357,7 @@ public class TickListner {
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void renderGlitch(RenderGameOverlayEvent event) {
+	public void renderOverlay(RenderGameOverlayEvent event) {
 		if (VoidMod.glitchAmulet != null && m.thePlayer != null) {
 			if (BaublesApi.getBaubles(m.thePlayer).getStackInSlot(0) != null) {
 				if (!BaublesApi.getBaubles(m.thePlayer).getStackInSlot(0)
@@ -345,6 +368,32 @@ public class TickListner {
 				glitch();
 			}
 		}
+		if(m.thePlayer != null){
+			if(m.thePlayer.getActivePotionEffect(VoidMod.dissolving) != null){
+				if(dissolve == null){
+					dissolve = new DissolvingRender[10];
+				}
+				if(dissolvetimer != 0){
+					dissolvetimer--;
+					return;
+				}
+				loop:
+				for(int i = 0; i < 10; i++){
+					if(dissolve[i] == null){
+						dissolvetimer = 400;
+						Random r = new Random();
+						dissolve[i] = new DissolvingRender(r.nextInt(m.displayWidth), r.nextInt(m.displayHeight), r.nextInt(m.displayWidth), r.nextInt(m.displayHeight));
+						break loop;
+					}
+					else{
+						dissolve[i].render();
+					}
+				}
+			}
+			else{
+				dissolve = null;
+			}
+		}
 	}
 
 	@SubscribeEvent
@@ -353,12 +402,13 @@ public class TickListner {
 			event.player.addStat(VoidMod.craftGoggle, 1);
 		}
 	}
-	
-   @SubscribeEvent
-    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-        if(eventArgs.modID.equals("nullvoid"))
-            VoidMod.config();
-    }
+
+	@SubscribeEvent
+	public void onConfigChanged(
+			ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
+		if (eventArgs.modID.equals("nullvoid"))
+			VoidMod.config();
+	}
 
 	/*
 	 * @SubscribeEvent public void onKeyInput(KeyInputEvent event) { if
