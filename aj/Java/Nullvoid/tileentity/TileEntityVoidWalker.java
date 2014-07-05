@@ -38,7 +38,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 	private boolean doTimer = false;
 
 	public TileEntityVoidWalker() {
-		inv = new ItemStack[5];
+		inv = new ItemStack[4];
 	}
 
 	/**

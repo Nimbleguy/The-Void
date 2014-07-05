@@ -35,13 +35,14 @@ public class TileEntitySwordWall extends TileEntity {
 		}
 		else{
 			data.setBoolean("hasSword", true);
+			data.setInteger("swordDamage", sword.getItemDamage());
 		}
 	}
 	@Override
 	public void readFromNBT(NBTTagCompound data) {
 		super.readFromNBT(data);
 		if(data.getBoolean("hasSword")){
-			sword = new ItemStack(VoidMod.baneOfDark);
+			sword = new ItemStack(VoidMod.baneOfDark, 1, data.getInteger("swordDamage"));
 		}
 		else{
 			sword = null;

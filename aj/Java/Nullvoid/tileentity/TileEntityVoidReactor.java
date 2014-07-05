@@ -36,7 +36,7 @@ public class TileEntityVoidReactor extends TileEntity implements IFluidHandler, 
 	TileEntity[] upgrades = new TileEntity[4];
 	private int walkerUpgrades = 0;
 	private int maxNull = 0;
-	private ItemStack nullCrystals;
+	public ItemStack nullCrystals;
 	private FluidTank tank;
 	private String uuid = "";
 	private int itimer = 0;

@@ -5,6 +5,7 @@ import aj.Java.Nullvoid.tileentity.TileEntityVoidReactor;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -82,6 +83,9 @@ public class BlockVoidReactor extends BlockContainer {
 					new ChunkCoordIntPair(
 							w.getChunkFromBlockCoords(x, z).xPosition, w
 									.getChunkFromBlockCoords(x, z).zPosition));
+		}
+		if(((TileEntityVoidReactor) w.getTileEntity(x, y, z)).nullCrystals != null){
+			w.spawnEntityInWorld(new EntityItem(w, x, y, z, ((TileEntityVoidReactor) w.getTileEntity(x, y, z)).nullCrystals));
 		}
 	}
 
