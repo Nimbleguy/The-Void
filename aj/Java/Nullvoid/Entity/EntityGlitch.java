@@ -139,7 +139,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 					boolean check = false;
 					for (int bla = 0; bla < 8; bla++) {
 						for (int value = 0; value < 8; value++) {
-							if (!(values[value] == values[bla])) {
+							if (values[value] != values[bla]) {
 								check = true;
 							}
 						}

@@ -88,11 +88,11 @@ public class ItemVoidBook extends ItemEditableBook {
 		l.add(
 				setFormat("INERT NULL CIRCUIT", EnumChatFormatting.BOLD)
 				+ setFormat("\n", EnumChatFormatting.RESET)
-				+ "PRP\n"
+				+ "RPR\n"
 				+ "NEN\n"
 				+ "QNQ\n"
 				+ "R = Redstone Dust. "
-				+ "P = Pie. "
+				+ "P = Pumpkin Pie. "
 				+ "N = Null Crystal. "
 				+ "Q = Nether Quartz. "
 				+ "E = Lime Dye."

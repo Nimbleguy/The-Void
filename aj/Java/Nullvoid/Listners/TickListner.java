@@ -382,7 +382,11 @@ public class TickListner {
 					if(dissolve[i] == null){
 						dissolvetimer = 400;
 						Random r = new Random();
-						dissolve[i] = new DissolvingRender(r.nextInt(m.displayWidth), r.nextInt(m.displayHeight), r.nextInt(m.displayWidth), r.nextInt(m.displayHeight));
+						int w = r.nextInt(m.displayWidth - m.displayWidth/4);
+						int h = r.nextInt(m.displayHeight - m.displayHeight/4);
+						int wa = r.nextInt(m.displayWidth/4);
+						int ha = r.nextInt(m.displayHeight/4);
+						dissolve[i] = new DissolvingRender(w, h, wa, ha);
 						break loop;
 					}
 					else{

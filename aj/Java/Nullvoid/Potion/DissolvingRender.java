@@ -1,10 +1,10 @@
 package aj.Java.Nullvoid.Potion;
 
+import aj.Java.Nullvoid.GUI.GUIDissolving;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 
 @SideOnly(Side.CLIENT)
 public class DissolvingRender {
@@ -24,6 +24,6 @@ public class DissolvingRender {
 		}
 	}
 	public void render(){
-		GuiScreen.drawRect(xo, yo, xt, yt, 0);
+		GUIDissolving.drawRect(xo, yo, xt, yt, 0);
 	}
 }
