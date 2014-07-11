@@ -48,7 +48,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 
 		this.setSize(0.6F, 1.8F);
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-				.setBaseValue(1000F);
+				.setBaseValue(4242.413F);
 	}
 	public EntityGlitch(World worldObj, double x, double y, double z) {
 		this(worldObj);
@@ -70,18 +70,12 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase var1, float var2) {
 		// worldObj.spawnEntityInWorld(new EntityGlitchists(this.worldObj));
-
 	}
 
 	@Override
 	public void onLivingUpdate() {
-		EntityPlayer e = worldObj.getClosestPlayerToEntity(this, 50);
-		if(e != null){
-			this.motionX = e.posX - this.posX;
-			this.motionY = e.posY - this.posY;
-			this.motionZ = e.posZ - this.posZ;
-		}
 		BossStatus.setBossStatus(this, true);
+		super.onLivingUpdate();
 	}
 	
 	@Override
@@ -161,5 +155,10 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
     	return new ChatComponentText(EnumChatFormatting.OBFUSCATED.toString() + "OOO" + 
     			EnumChatFormatting.RESET.toString() + EnumChatFormatting.DARK_PURPLE.toString() + "The Glitch"
     			+ EnumChatFormatting.WHITE.toString() + EnumChatFormatting.OBFUSCATED.toString() + "OOO");
+    }
+	@Override
+	protected String getLivingSound()
+    {
+		return "mob.glitch.ambient";
     }
 }

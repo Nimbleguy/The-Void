@@ -41,8 +41,14 @@ public class BlockGlitchFrame extends Block {
 		if (p.inventory.getCurrentItem() != null) {
 			if (p.inventory.getCurrentItem().getItem() == VoidMod.corruptAlloy) {
 				if (w.getBlockMetadata(x, y, z) == 0) {
-					p.inventory.setInventorySlotContents(
-							p.inventory.currentItem, null);
+					if(p.inventory.getCurrentItem().stackSize == 1){
+						p.inventory.setInventorySlotContents(
+								p.inventory.currentItem, null);
+					}
+					else{
+						p.inventory.setInventorySlotContents(
+								p.inventory.currentItem, new ItemStack(VoidMod.corruptAlloy, p.inventory.getCurrentItem().stackSize - 1));
+					}
 					w.setBlockMetadataWithNotify(x, y, z, 1, 3);
 					return true;
 				}
@@ -70,6 +76,7 @@ public class BlockGlitchFrame extends Block {
 						w.spawnEntityInWorld(new EntityItem(w, (double) x,
 								200D, (double) z, new ItemStack(Blocks.sapling,
 										32)));
+						w.setBlock(x, y, z, this);
 					}
 				} else if (p.inventory.getCurrentItem().getItemDamage() == 4) {
 					boolean b = true;
@@ -99,6 +106,7 @@ public class BlockGlitchFrame extends Block {
 						w.spawnEntityInWorld(new EntityItem(w, (double) x,
 								200D, (double) z, new ItemStack(
 										Items.lava_bucket, 4)));
+						w.setBlock(x, y, z, this);
 					}
 				} else if (p.inventory.getCurrentItem().getItemDamage() == 5) {
 					boolean b = true;
@@ -147,6 +155,7 @@ public class BlockGlitchFrame extends Block {
 						w.spawnEntityInWorld(new EntityItem(w, (double) x,
 								200D, (double) z, new ItemStack(Items.diamond,
 										2)));
+						w.setBlock(x, y, z, this);
 					}
 				} else if (p.inventory.getCurrentItem().getItemDamage() == 6) {
 					int[] values = new int[8];

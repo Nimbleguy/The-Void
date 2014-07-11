@@ -5,6 +5,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class DissolvingRender {
@@ -23,7 +24,8 @@ public class DissolvingRender {
 			m = Minecraft.getMinecraft();
 		}
 	}
-	public void render(){
-		GUIDissolving.drawRect(xo, yo, xt, yt, 0);
+	public void render(GUIDissolving dissolving){
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("nullvoid", "/textures/blocks/voidFabric"));;
+		dissolving.drawTexturedModalRect(xo, yo, 0, 0, xt, yt);
 	}
 }

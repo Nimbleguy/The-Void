@@ -12,6 +12,7 @@ import aj.Java.Nullvoid.Dimention.TeleporterNullVoid;
 import aj.Java.Nullvoid.Effects.Effects;
 import aj.Java.Nullvoid.Entity.EntityGlitch;
 import aj.Java.Nullvoid.Entity.IVoidWalker;
+import aj.Java.Nullvoid.GUI.GUIDissolving;
 import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketLighting;
 import aj.Java.Nullvoid.Potion.DissolvingRender;
@@ -60,6 +61,7 @@ public class TickListner {
 	private Random r = new Random();
 	public static float brightness = 0F;
 	DissolvingRender[] dissolve;
+	GUIDissolving dissolving;
 	int dissolvetimer = 0;
 
 	@SubscribeEvent
@@ -142,9 +144,11 @@ public class TickListner {
 					event.player.worldObj.setBlock(coords[0], coords[1],
 							coords[2], Blocks.air);
 					event.player.addStat(VoidMod.summonGlitch, 1);
-					event.player.worldObj.spawnEntityInWorld(new EntityGlitch(
+					EntityGlitch ent = new EntityGlitch(
 							event.player.worldObj, (double) coords[0],
-							(double) coords[1], (double) coords[2]));
+							(double) coords[1], (double) coords[2]);
+					ent.setHealth(ent.getMaxHealth());
+					event.player.worldObj.spawnEntityInWorld(ent);
 					// TODO: Add Void Check
 				} else {
 					if (BaublesApi.getBaubles(event.player).getStackInSlot(0) != null) {
@@ -373,28 +377,33 @@ public class TickListner {
 				if(dissolve == null){
 					dissolve = new DissolvingRender[10];
 				}
+				if(dissolving == null){
+					dissolving = new GUIDissolving();
+				}
 				if(dissolvetimer != 0){
 					dissolvetimer--;
-					return;
 				}
 				loop:
 				for(int i = 0; i < 10; i++){
 					if(dissolve[i] == null){
-						dissolvetimer = 400;
-						Random r = new Random();
-						int w = r.nextInt(m.displayWidth - m.displayWidth/4);
-						int h = r.nextInt(m.displayHeight - m.displayHeight/4);
-						int wa = r.nextInt(m.displayWidth/4);
-						int ha = r.nextInt(m.displayHeight/4);
-						dissolve[i] = new DissolvingRender(w, h, wa, ha);
-						break loop;
+						if(dissolvetimer == 0){
+							dissolvetimer = 4000;
+							Random r = new Random();
+							int w = r.nextInt(m.displayWidth - m.displayWidth/4);
+							int h = r.nextInt(m.displayHeight - m.displayHeight/4);
+							int wa = r.nextInt(m.displayWidth/4);
+							int ha = r.nextInt(m.displayHeight/4);
+							dissolve[i] = new DissolvingRender(w, h, wa, ha);
+							break loop;
+						}
 					}
 					else{
-						dissolve[i].render();
+						dissolve[i].render(dissolving);
 					}
 				}
 			}
 			else{
+				dissolving = null;
 				dissolve = null;
 			}
 		}

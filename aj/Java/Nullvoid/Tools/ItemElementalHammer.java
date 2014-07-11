@@ -94,7 +94,7 @@ public class ItemElementalHammer extends ItemTool {
 		for(int bla = 0; bla < 8; bla++){
 			check = false;
 			for(int value = 0; value < 8; value++){
-				if(!(values[value] == values[bla])){
+				if(values[value] != values[bla]){
 					check = true;
 				}
 			}
