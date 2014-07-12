@@ -583,7 +583,7 @@ public class VoidMod implements LoadingCallback {
 			} catch (Exception e) {
 				System.err
 						.println("Severe error, please report this to the mod author:");
-				System.err.println(e);
+				e.printStackTrace(System.err);
 			}
 		}
 		for (Field f : PotionHelper.class.getDeclaredFields()) {
@@ -632,7 +632,7 @@ public class VoidMod implements LoadingCallback {
 			} catch (Exception e) {
 				System.err
 						.println("Severe error, please report this to the mod author:");
-				System.err.println(e);
+				e.printStackTrace(System.err);
 			}
 		}
 		dissolving = new PotionDissolving(PotIDDiss, true,
