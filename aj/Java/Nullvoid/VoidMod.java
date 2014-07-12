@@ -164,7 +164,7 @@ public class VoidMod implements LoadingCallback {
 	public static int PotIDDiss;
 	public static String PotBitDiss;
 	public static final String MODID = "nullvoid";
-	public static final String VERSION = "1.7.2-2.2.1-BETA";
+	public static final String VERSION = "1.7.10-3.0.0-BETA";
 	public static Fluid liquidFlux = null;
 	public static Block blockLiquidFlux = null;
 	public static Item nullGoggles = null;
