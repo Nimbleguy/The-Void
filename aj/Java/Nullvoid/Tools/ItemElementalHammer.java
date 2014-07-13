@@ -65,7 +65,7 @@ public class ItemElementalHammer extends ItemTool {
 		for(int bla = 0; bla < 8; bla++){
 			check = false;
 			for(int value = 0; value < 8; value++){
-				if(!(values[value] == values[bla])){
+				if(values[value] != values[bla]){
 					check = true;
 				}
 			}
@@ -129,7 +129,8 @@ public class ItemElementalHammer extends ItemTool {
 					//TODO: ORDER EFFECT
 					return;
 				case 5:
-					//TODO: ENTROPY EFFECT
+					p.addPotionEffect(new PotionEffect(VoidMod.PotIDDiss, 100000, 100000, true));
+					p.worldObj.createExplosion(p, p.posX, p.posY, p.posZ, 9999F, false);
 					return;
 				case 6:
 					p.addPotionEffect(new PotionEffect(Potion.blindness.id, 100000, 100000, true));

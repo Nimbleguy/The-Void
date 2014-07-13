@@ -502,7 +502,8 @@ public class VoidMod implements LoadingCallback {
 				.getInt();
 		EntIDGlitch = config.get("entity", "Glitch Entity ID", 1341).getInt();
 		PotIDDiss = config.get("potion", "Dissolving Potion ID", 42).getInt();
-		PotBitDiss = config.get("potion", "Dissolving Potion Bits", "+0+1-2+3+&4-4+13").getString();
+		PotBitDiss = config.get("potion", "Dissolving Potion Bit", "+0+1-2+3")
+				.getString();
 		config.save();
 	}
 
@@ -595,39 +596,33 @@ public class VoidMod implements LoadingCallback {
 					modfield.setInt(f, f.getModifiers() & ~Modifier.PRIVATE);
 					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
 					char[] c = PotBitDiss.toCharArray();
-					StringBuilder b = new StringBuilder();
 					int firstPlus = -1;
-					loop:
-					for(int where = 0; where < c.length; where++){
-						switch(Character.valueOf(c[where])){
+					StringBuilder b = new StringBuilder();
+					for (int where = 0; where < c.length; where++) {
+						switch (Character.valueOf(c[where])) {
 						case '-':
-							if(where == 0){
+							if (where == 0) {
 								b.append('!');
-							}
-							else{
+							} else {
 								b.append(" !");
 							}
 							break;
 						case '+':
-							if(where != 0){
+							if (where != 0) {
 								b.append(" ");
 							}
-							if(firstPlus == -1){
+							if (firstPlus == -1) {
 								firstPlus = Integer.valueOf(c[where + 1]);
 							}
 							break;
-						case '3':
-							b.append("3");
-							break loop;
 						default:
 							b.append(c[where] + " &");
 							break;
 						}
 					}
-					b.append(" & " + firstPlus + "+6");
-					System.out.println(PotBitDiss);
-					System.out.println(b.toString());
-					((HashMap<Integer, String>) f.get(null)).put(PotIDDiss, b.toString());
+					b.append(" " + firstPlus + "+6");
+					((HashMap<Integer, String>) f.get(null)).put(PotIDDiss,
+							b.toString());
 				}
 			} catch (Exception e) {
 				System.err
@@ -635,8 +630,8 @@ public class VoidMod implements LoadingCallback {
 				e.printStackTrace(System.err);
 			}
 		}
-		dissolving = new PotionDissolving(PotIDDiss, true,
-				0x260060).setPotionName("potion.Dissolving");
+		dissolving = new PotionDissolving(PotIDDiss, true, 0x260060)
+				.setPotionName("potion.Dissolving");
 	}
 
 }
