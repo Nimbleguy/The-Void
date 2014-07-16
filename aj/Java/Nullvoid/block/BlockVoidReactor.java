@@ -21,6 +21,8 @@ public class BlockVoidReactor extends BlockContainer {
 	public BlockVoidReactor(Material p_i45386_1_) {
 		super(p_i45386_1_);
 		this.setCreativeTab(VoidMod.ctab);
+		this.setBlockUnbreakable();
+		this.setResistance(9999999999F);
 	}
 
 	@Override
