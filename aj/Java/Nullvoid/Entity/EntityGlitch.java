@@ -162,8 +162,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
     			+ EnumChatFormatting.WHITE.toString() + EnumChatFormatting.OBFUSCATED.toString() + "OOO");
     }
 	@Override
-	protected String getLivingSound()
-    {
-		return "mob.glitch.ambient";
+	public void playLivingSound(){
+		this.playSound("nullvoid:mob.glitch.ambient", this.getSoundVolume(), this.getSoundPitch());
     }
 }

@@ -17,7 +17,10 @@ import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketLighting;
 import aj.Java.Nullvoid.Potion.DissolvingRender;
 import aj.Java.Nullvoid.Tools.ItemBaneOfDarkness;
+import aj.Java.Nullvoid.block.BlockGeneric;
 import aj.Java.Nullvoid.block.BlockGlitchFrame;
+import aj.Java.Nullvoid.block.BlockStorage;
+import aj.Java.Nullvoid.block.BlockVoidFabric;
 import baubles.api.BaublesApi;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.client.Minecraft;
@@ -121,31 +124,50 @@ public class TickListner {
 			if (b) {
 				if (hasCircle(coords[0], coords[1], coords[2],
 						event.player.worldObj)) {
-					event.component = new ChatComponentTranslation(
-							"<"
-									+ event.username
-									+ "> .won uoy evas nac cigam oN .gnimoc si hctilG ehT");
-					event.component.setChatStyle(new ChatStyle()
+					if(hasShell(coords[0], coords[1], coords[2], event.player.worldObj)){
+						event.component = new ChatComponentTranslation(
+								"<"
+										+ event.username
+										+ "> .won uoy evas nac cigam oN .gnimoc si hctilG ehT");
+						event.component.setChatStyle(new ChatStyle()
 							.setColor(EnumChatFormatting.DARK_PURPLE));
-					for (int i = 0; i < 10; i++) {
-						event.player.worldObj
+						for (int i = 0; i < 10; i++) {
+							event.player.worldObj
 								.spawnEntityInWorld(new EntityLightningBolt(
 										event.player.worldObj,
 										(double) coords[0], (double) coords[1],
 										(double) coords[2]));
+						}
+						event.player.worldObj.createExplosion((Entity) null,
+								(double) coords[0], (double) coords[1],
+								(double) coords[2], 4F, false);
+						event.player.worldObj.setBlock(coords[0], coords[1],
+								coords[2], Blocks.air);
+						event.player.addStat(VoidMod.summonGlitch, 1);
+						EntityGlitch ent = new EntityGlitch(
+								event.player.worldObj, (double) coords[0],
+								(double) coords[1], (double) coords[2]);
+						ent.setHealth(ent.getMaxHealth());
+						event.player.worldObj.spawnEntityInWorld(ent);
+						// TODO: Add Void Check
 					}
-					event.player.worldObj.createExplosion((Entity) null,
-							(double) coords[0], (double) coords[1],
-							(double) coords[2], 4F, false);
-					event.player.worldObj.setBlock(coords[0], coords[1],
-							coords[2], Blocks.air);
-					event.player.addStat(VoidMod.summonGlitch, 1);
-					EntityGlitch ent = new EntityGlitch(
-							event.player.worldObj, (double) coords[0],
-							(double) coords[1], (double) coords[2]);
-					ent.setHealth(ent.getMaxHealth());
-					event.player.worldObj.spawnEntityInWorld(ent);
-					// TODO: Add Void Check
+					else{
+						if(BaublesApi.getBaubles(event.player).getStackInSlot(0) != null && BaublesApi.getBaubles(event.player)
+								.getStackInSlot(0).getItem()
+								.equals(VoidMod.glitchAmulet)){
+							event.player
+							.addChatComponentMessage(new ChatComponentText(
+									"<Glitch>*placeholderstuff*").setChatStyle(new ChatStyle()
+									.setColor(EnumChatFormatting.DARK_PURPLE)));
+						}
+						else{
+							event.player
+							.addChatComponentMessage(new ChatComponentText(
+									"<Glitch>*placeholderstuff*").setChatStyle(new ChatStyle()
+									.setColor(EnumChatFormatting.DARK_PURPLE).setObfuscated(true)));
+						}
+					}
+					
 				} else {
 					if (BaublesApi.getBaubles(event.player).getStackInSlot(0) != null) {
 						if (BaublesApi.getBaubles(event.player)
@@ -203,7 +225,179 @@ public class TickListner {
 			}
 		}
 	}
-
+	private boolean hasShell(int x, int y, int z, World w){
+		//Four corner generic objects
+		if(w.getBlock(x - 1, y, z - 1) instanceof BlockGeneric){
+			if(w.getBlock(x + 1, y, z - 1) instanceof BlockGeneric){
+				if(w.getBlock(x - 1, y, z + 1) instanceof BlockGeneric){
+					if(w.getBlock(x + 1, y, z + 1) instanceof BlockGeneric){
+						System.out.println("corner");
+						//Four lower generic objects
+						if(w.getBlock(x - 1, y - 1, z) instanceof BlockGeneric){
+							if(w.getBlock(x + 1, y - 1, z) instanceof BlockGeneric){
+								if(w.getBlock(x, y - 1, z - 1) instanceof BlockGeneric){
+									if(w.getBlock(x, y - 1, z + 1) instanceof BlockGeneric){
+										System.out.println("lower");
+										//Tiny ring of Void Fabric
+										//First fourth
+										if(w.getBlock(x - 2, y - 1, z) instanceof BlockVoidFabric){
+											if(w.getBlock(x - 2, y - 1, z - 1) instanceof BlockVoidFabric){
+												if(w.getBlock(x - 2, y - 1, z + 1) instanceof BlockVoidFabric){
+													System.out.println("fab1");
+													//Second fourth
+													if(w.getBlock(x + 2, y - 1, z - 1) instanceof BlockVoidFabric){
+														if(w.getBlock(x + 2, y - 1, z + 1) instanceof BlockVoidFabric){
+															if(w.getBlock(x + 2, y - 1, z) instanceof BlockVoidFabric){
+																System.out.println("fab2");
+																//Third fourth
+																if(w.getBlock(x, y - 1, z - 2) instanceof BlockVoidFabric){
+																	if(w.getBlock(x - 1, y - 1, z - 2) instanceof BlockVoidFabric){
+																		if(w.getBlock(x + 1, y - 1, z - 2) instanceof BlockVoidFabric){
+																			System.out.println("fab3");
+																			//Last fourth
+																			if(w.getBlock(x - 1, y - 1, z + 2) instanceof BlockVoidFabric){
+																				if(w.getBlock(x, y - 1, z + 2) instanceof BlockVoidFabric){
+																					if(w.getBlock(x + 1, y - 1, z + 2) instanceof BlockVoidFabric){
+																						System.out.println("fab4");
+																						//Generic ring
+																						// Center-Center
+																						if (w.getBlock(x - 3, y - 1, z) instanceof BlockGeneric) {
+																							if (w.getBlock(x, y - 1, z - 3) instanceof BlockGeneric) {
+																								if (w.getBlock(x + 3, y - 1, z) instanceof BlockGeneric) {
+																									if (w.getBlock(x, y - 1, z + 3) instanceof BlockGeneric) {
+																										// Sides-Center
+																										if (w.getBlock(x - 3, y - 1, z - 1) instanceof BlockGeneric) {
+																											if (w.getBlock(x - 3, y - 1, z + 1) instanceof BlockGeneric) {
+																												if (w.getBlock(x + 3, y - 1, z - 1) instanceof BlockGeneric) {
+																													if (w.getBlock(x + 3, y - 1, z + 1) instanceof BlockGeneric) {
+																														if (w.getBlock(x - 1, y - 1, z - 3) instanceof BlockGeneric) {
+																															if (w.getBlock(x + 1, y - 1, z - 3) instanceof BlockGeneric) {
+																																if (w.getBlock(x - 1, y - 1, z + 3) instanceof BlockGeneric) {
+																																	if (w.getBlock(x + 1, y - 1,
+																																			z + 3) instanceof BlockGeneric) {
+																																		// Connections
+																																		if (w.getBlock(x - 2,
+																																				y - 1, z - 2) instanceof BlockGeneric) {
+																																			if (w.getBlock(
+																																					x + 2, y - 1,
+																																					z + 2) instanceof BlockGeneric) {
+																																				if (w.getBlock(
+																																						x - 2,
+																																						y - 1,
+																																						z + 2) instanceof BlockGeneric) {
+																																					if (w.getBlock(
+																																							x + 2,
+																																							y - 1,
+																																							z - 2) instanceof BlockGeneric) {
+																																						System.out.println("ring");
+																																						//Pillars
+																																						//Pillar 1
+																																						if(w.getBlock(x - 4, y, z) instanceof BlockStorage){
+																																							if(w.getBlockMetadata(x - 4, y, z) == 1){
+																																								if(w.getBlock(x - 4, y + 1, z) instanceof BlockStorage){
+																																									if(w.getBlockMetadata(x - 4, y + 1, z) == 0){
+																																										if(w.getBlock(x - 4, y + 2, z) instanceof BlockGeneric){
+																																											if(w.getBlock(x - 3, y + 2, z) instanceof BlockGeneric){
+																																												if(w.getBlock(x - 3, y + 3, z) instanceof BlockGeneric){
+																																													if(w.getBlock(x - 2, y + 3, z) instanceof BlockGeneric){
+																																														//Pillar 2
+																																														if(w.getBlock(x + 4, y, z) instanceof BlockStorage){
+																																															if(w.getBlockMetadata(x + 4, y, z) == 1){
+																																																if(w.getBlock(x + 4, y + 1, z) instanceof BlockStorage){
+																																																	if(w.getBlockMetadata(x + 4, y + 1, z) == 0){
+																																																		if(w.getBlock(x + 4, y + 2, z) instanceof BlockGeneric){
+																																																			if(w.getBlock(x + 3, y + 2, z) instanceof BlockGeneric){
+																																																				if(w.getBlock(x + 3, y + 3, z) instanceof BlockGeneric){
+																																																					if(w.getBlock(x + 2, y + 3, z) instanceof BlockGeneric){
+																																																						//Pillar 3
+																																																						if(w.getBlock(x, y, z + 4) instanceof BlockStorage){
+																																																							if(w.getBlockMetadata(x, y, z + 4) == 1){
+																																																								if(w.getBlock(x, y + 1, z + 4) instanceof BlockStorage){
+																																																									if(w.getBlockMetadata(x, y + 1, z + 4) == 0){
+																																																										if(w.getBlock(x, y + 2, z + 4) instanceof BlockGeneric){
+																																																											if(w.getBlock(x, y + 2, z + 3) instanceof BlockGeneric){
+																																																												if(w.getBlock(x, y + 3, z + 3) instanceof BlockGeneric){
+																																																													if(w.getBlock(x, y + 3, z + 2) instanceof BlockGeneric){
+																																																														//Pillar 4
+																																																														if(w.getBlock(x, y, z - 4) instanceof BlockStorage){
+																																																															if(w.getBlockMetadata(x, y, z - 4) == 1){
+																																																																if(w.getBlock(x, y + 1, z - 4) instanceof BlockStorage){
+																																																																	if(w.getBlockMetadata(x, y + 1, z - 4) == 0){
+																																																																		if(w.getBlock(x, y + 2, z - 4) instanceof BlockGeneric){
+																																																																			if(w.getBlock(x, y + 2, z - 3) instanceof BlockGeneric){
+																																																																				if(w.getBlock(x, y + 3, z - 3) instanceof BlockGeneric){
+																																																																					if(w.getBlock(x, y + 3, z - 2) instanceof BlockGeneric){
+																																																																						return true;
+																																																																					}
+																																																																				}
+																																																																			}
+																																																																		}
+																																																																	}
+																																																																}
+																																																															}
+																																																														}
+																																																													}
+																																																												}
+																																																											}
+																																																										}
+																																																									}
+																																																								}
+																																																							}
+																																																						}
+																																																					}
+																																																				}
+																																																			}
+																																																		}
+																																																	}
+																																																}
+																																															}
+																																														}
+																																													}
+																																												}
+																																											}
+																																										}
+																																									}
+																																								}
+																																							}
+																																						}
+																																					}
+																																				}
+																																			}
+																																		}
+																																	}
+																																}
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 	private boolean hasCircle(int x, int y, int z, World w) {
 		// Center-Center
 		if (w.getBlock(x - 3, y, z) instanceof BlockTorch) {
