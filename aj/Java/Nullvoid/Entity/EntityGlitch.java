@@ -49,6 +49,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 		this.setSize(0.6F, 1.8F);
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
 				.setBaseValue(4242.413F);
+		this.setHealth(4242.413F);
 	}
 	public EntityGlitch(World worldObj, double x, double y, double z) {
 		this(worldObj);
@@ -94,7 +95,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 
 	@Override
 	public boolean hitByEntity(Entity e) {
-		if (this.getHealth() > 5000) {
+		if (this.getHealth() > 4242.413/2) {
 			if (e instanceof EntityPlayer) {
 				if (((EntityPlayer) e).inventory.getCurrentItem().getItem() instanceof ItemElementalHammer) {
 					int[] values = new int[8];

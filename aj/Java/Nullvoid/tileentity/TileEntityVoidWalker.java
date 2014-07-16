@@ -11,6 +11,7 @@ import aj.Java.Nullvoid.Dimention.TeleporterNullVoid;
 import aj.Java.Nullvoid.Effects.Effects;
 import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketLighting;
+import aj.Java.Nullvoid.item.ItemIngotNull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -150,9 +151,9 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 
 			if (itemstack != null) {
 				NBTTagCompound item = new NBTTagCompound();
-
 				item.setByte("SlotVoidWalker", (byte) i);
-				item = itemstack.writeToNBT(item);
+				item.setBoolean("IsCrystal", itemstack.getItem() instanceof ItemIngotNull);
+				item.setInteger("Amount", itemstack.stackSize);
 				list.appendTag(item);
 			}
 		}
@@ -179,8 +180,15 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 			int slot = item.getByte("SlotVoidWalker");
 
 			if (slot >= 0 && slot < getSizeInventory()) {
+				ItemStack itemstack;
+				if(item.getBoolean("IsCrystal")){
+					itemstack = new ItemStack(VoidMod.ingotNull, item.getInteger("Amount"));
+				}
+				else{
+					itemstack = new ItemStack(VoidMod.circuts, item.getInteger("Amount"), 4);
+				}
 				setInventorySlotContents(slot,
-						ItemStack.loadItemStackFromNBT(item));
+						itemstack);
 			}
 		}
 	}

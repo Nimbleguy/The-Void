@@ -103,7 +103,6 @@ public class TickListner {
 		if (event.message
 				.equals("Qui exterminabat, et hodie victor. Non gratia datur. Non remansit integra. Vade, et interfice regni.")) {
 			boolean b = false;
-			System.out.println("MUCH GUSTO");
 			Integer[] coords = new Integer[3];
 			for (int x = (int) (event.player.posX) - 3; x < (int) (event.player.posX) + 4; x++) {
 				System.out.println("1");
