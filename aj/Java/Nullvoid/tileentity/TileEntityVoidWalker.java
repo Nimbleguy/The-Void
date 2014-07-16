@@ -30,7 +30,7 @@ import net.minecraft.world.chunk.storage.IChunkLoader;
 public class TileEntityVoidWalker extends TileEntity implements IInventory,
 		IChunkLoader {
 	private ItemStack[] inv;
-	public Slot[] slots = new Slot[4];
+	public Slot[] slots = new Slot[5];
 	private String uuid = "";
 	private int timer = 0;
 	private int itimer = 0;
@@ -38,7 +38,7 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 	private boolean doTimer = false;
 
 	public TileEntityVoidWalker() {
-		inv = new ItemStack[4];
+		inv = new ItemStack[5];
 	}
 
 	/**
