@@ -136,13 +136,11 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 					for (int bla = 0; bla < 8; bla++) {
 						for (int value = 0; value < 8; value++) {
 							if (values[value] != values[bla]) {
-								System.out.println("BLERG " + bla + " " + value);
 								check = true;
 							}
 						}
 					}
 					if (!check) {
-						System.out.println("FERLSE");
 						return false;
 					}
 				}
