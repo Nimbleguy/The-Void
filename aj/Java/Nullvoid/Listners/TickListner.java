@@ -105,11 +105,8 @@ public class TickListner {
 			boolean b = false;
 			Integer[] coords = new Integer[3];
 			for (int x = (int) (event.player.posX) - 3; x < (int) (event.player.posX) + 4; x++) {
-				System.out.println("1");
 				for (int y = (int) (event.player.posY) - 3; y < (int) (event.player.posY) + 4; y++) {
-					System.out.println("2");
 					for (int z = (int) (event.player.posZ) - 3; z < (int) (event.player.posZ) + 4; z++) {
-						System.out.println(x + ", " + y + ", " + z);
 						if (event.player.worldObj.getBlock(x, y, z) instanceof BlockGlitchFrame) {
 							if (event.player.worldObj.getBlockMetadata(x, y, z) == 1) {
 								coords[0] = x;

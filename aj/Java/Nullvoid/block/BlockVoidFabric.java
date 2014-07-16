@@ -11,6 +11,7 @@ public class BlockVoidFabric extends Block {
 	public BlockVoidFabric() {
 		super(Material.iron);
 		setHardness(5F);
+		this.setResistance(1F);
 		setCreativeTab(VoidMod.ctab);
 	}
 	@SideOnly(Side.CLIENT)

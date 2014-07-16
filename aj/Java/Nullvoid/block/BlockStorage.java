@@ -19,6 +19,8 @@ public class BlockStorage extends Block {
 	public BlockStorage() {
 		super(Material.iron);
 		this.setCreativeTab(VoidMod.ctab);
+		this.setHardness(20F);
+		this.setResistance(30F);
 	}
 	@SuppressWarnings("unchecked")
 	@Override

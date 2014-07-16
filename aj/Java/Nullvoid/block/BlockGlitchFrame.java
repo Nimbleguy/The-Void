@@ -23,7 +23,8 @@ public class BlockGlitchFrame extends Block {
 	public BlockGlitchFrame() {
 		super(Material.wood);
 		this.setCreativeTab(VoidMod.ctab);
-
+		this.setHardness(10F);
+		this.setResistance(10F);
 	}
 
 	private IIcon[] icons = new IIcon[2];

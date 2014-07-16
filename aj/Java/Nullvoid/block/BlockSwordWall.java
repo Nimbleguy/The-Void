@@ -15,6 +15,8 @@ public class BlockSwordWall extends BlockContainer {
 	public BlockSwordWall() {
 		super(Material.rock);
 		this.setCreativeTab(VoidMod.ctab);
+		this.setHardness(10F);
+		this.setResistance(11F);
 	}
 	@Override
 	public void registerBlockIcons(IIconRegister i){

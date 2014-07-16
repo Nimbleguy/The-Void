@@ -56,6 +56,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 		this.posX = x;
 		this.posY = y;
 		this.posZ = z;
+		this.setLocationAndAngles(x, y, z, 0F, 0F);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 	public boolean hitByEntity(Entity e) {
 		if (this.getHealth() > 4242.413/2) {
 			if (e instanceof EntityPlayer) {
-				if (((EntityPlayer) e).inventory.getCurrentItem().getItem() instanceof ItemElementalHammer) {
+				if (((EntityPlayer) e).inventory.getCurrentItem() != null && ((EntityPlayer) e).inventory.getCurrentItem().getItem() instanceof ItemElementalHammer) {
 					int[] values = new int[8];
 					values[0] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
@@ -135,17 +136,20 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 					for (int bla = 0; bla < 8; bla++) {
 						for (int value = 0; value < 8; value++) {
 							if (values[value] != values[bla]) {
+								System.out.println("BLERG " + bla + " " + value);
 								check = true;
 							}
 						}
 					}
 					if (!check) {
+						System.out.println("FERLSE");
 						return false;
 					}
 				}
 			}
 		} else {
 			if (e instanceof EntityBuilder) {
+				System.out.println("BANE");
 				return false;
 			}
 		}

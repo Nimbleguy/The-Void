@@ -32,6 +32,8 @@ public class BlockVoidDoor extends BlockDoor {
 		float f1 = 1.0F;
 		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
 		this.setCreativeTab(VoidMod.ctab);
+		this.setHardness(10F);
+		this.setResistance(15F);
 	}
 
 	/**
