@@ -180,7 +180,7 @@ public class VoidMod implements LoadingCallback {
 	@SideOnly(Side.CLIENT)
 	public static TextureNullOre texNullOre;
 	public static ArmorMaterial NullArmor = EnumHelper.addArmorMaterial(
-			"NullArmor", 8, new int[] { 6, 12, 10, 6 }, 30);
+			"NullArmor", 8, new int[] {2, 4, 3, 1}, 15);
 	public static ToolMaterial SpecialTool = EnumHelper.addToolMaterial(
 			"NullVoidSpecial", 100, 10000, 100F, 14F, 100);
 	public static int NullArmorRender;
