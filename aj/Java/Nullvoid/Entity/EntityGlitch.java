@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class EntityGlitch extends EntityMob implements IBossDisplayData,
@@ -160,7 +161,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
     			+ EnumChatFormatting.WHITE.toString() + EnumChatFormatting.OBFUSCATED.toString() + "OOO");
     }
 	@Override
-	public void playLivingSound(){
-		this.playSound("nullvoid:mob.glitch.ambient", this.getSoundVolume(), this.getSoundPitch());
-    }
+	protected String getLivingSound(){
+		return "nullvoid:mob.glitch.ambient";
+	}
 }
