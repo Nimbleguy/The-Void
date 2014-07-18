@@ -53,8 +53,18 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 
 		this.setSize(0.6F, 1.8F);
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-				.setBaseValue(4242.413F);
-		this.setHealth(4242.413F);
+				.setBaseValue(4242.413F * 2);
+		this.setHealth(4242.413F * 2);
+		/*
+		 * Hello. I am the Glitch. This is the only place we can safely talk.
+		 * Well. You know about the basic structure, right?
+		 * Well here is how to make the rest of it:
+		 * http://imgur.com/p8BJDjM
+		 * ...
+		 * ....
+		 * h--p
+		 * -e
+		 */
 	}
 	public EntityGlitch(World worldObj, double x, double y, double z) {
 		this(worldObj);
@@ -82,6 +92,12 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 	@Override
 	public void onLivingUpdate() {
 		BossStatus.setBossStatus(this, true);
+		Random r = new Random();
+		if(r.nextInt(5000) == 42){
+			//TODO: Morph.
+			//if(this.re)
+			//switch(r.nextInt())
+		}
 		super.onLivingUpdate();
 	}
 	
@@ -101,7 +117,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 
 	@Override
 	public boolean hitByEntity(Entity e) {
-		if (this.getHealth() > 4242.413/2) {
+		if (this.getHealth() > 4242.413) {
 			if (e instanceof EntityPlayer) {
 				if (((EntityPlayer) e).inventory.getCurrentItem() != null && ((EntityPlayer) e).inventory.getCurrentItem().getItem() instanceof ItemElementalHammer) {
 					int[] values = new int[8];
@@ -152,7 +168,6 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 			}
 		} else {
 			if (e instanceof EntityBuilder) {
-				System.out.println("BANE");
 				return false;
 			}
 		}

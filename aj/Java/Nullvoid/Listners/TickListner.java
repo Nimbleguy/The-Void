@@ -157,13 +157,13 @@ public class TickListner {
 								.equals(VoidMod.glitchAmulet)){
 							event.player
 							.addChatComponentMessage(new ChatComponentText(
-									"<Glitch>*placeholderstuff*").setChatStyle(new ChatStyle()
+									"<Gli--h> https://github.com/Nimbleguy/The-Void/blob/master/aj/Java/Nullvoid/Entity/EntityGlitch.java").setChatStyle(new ChatStyle()
 									.setColor(EnumChatFormatting.DARK_PURPLE)));
 						}
 						else{
 							event.player
 							.addChatComponentMessage(new ChatComponentText(
-									"<Glitch>*placeholderstuff*").setChatStyle(new ChatStyle()
+									"<G----h> https://github.com/Nimbleguy/The-Void/blob/master/aj/Java/Nullvoid/Entity/EntityGlitch.java").setChatStyle(new ChatStyle()
 									.setColor(EnumChatFormatting.DARK_PURPLE).setObfuscated(true)));
 						}
 					}
@@ -175,12 +175,12 @@ public class TickListner {
 								.equals(VoidMod.glitchAmulet)) {
 							event.player
 									.addChatComponentMessage(new ChatComponentText(
-											"<Gh>Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.").setChatStyle(new ChatStyle()
+											"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.").setChatStyle(new ChatStyle()
 											.setColor(EnumChatFormatting.DARK_PURPLE)));
 						} else {
 							event.player
 									.addChatComponentMessage(new ChatComponentText(
-											"<Gh>Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
+											"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
 											.setChatStyle(new ChatStyle()
 													.setObfuscated(true)
 													.setColor(
@@ -189,7 +189,7 @@ public class TickListner {
 					} else {
 						event.player
 								.addChatComponentMessage(new ChatComponentText(
-										"<Gh>Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
+										"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
 										.setChatStyle(new ChatStyle()
 												.setObfuscated(true)
 												.setColor(
@@ -202,12 +202,12 @@ public class TickListner {
 							.getItem().equals(VoidMod.glitchAmulet)) {
 						event.player
 								.addChatComponentMessage(new ChatComponentText(
-										"<Gh>Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.").setChatStyle(new ChatStyle()
+										"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.").setChatStyle(new ChatStyle()
 										.setColor(EnumChatFormatting.DARK_PURPLE)));
 					} else {
 						event.player
 								.addChatComponentMessage(new ChatComponentText(
-										"<Gh>Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
+										"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
 										.setChatStyle(new ChatStyle()
 												.setObfuscated(true)
 												.setColor(
@@ -216,7 +216,7 @@ public class TickListner {
 				} else {
 					event.player
 							.addChatComponentMessage(new ChatComponentText(
-									"<Gh>Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
+									"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
 									.setChatStyle(new ChatStyle()
 											.setObfuscated(true)
 											.setColor(
