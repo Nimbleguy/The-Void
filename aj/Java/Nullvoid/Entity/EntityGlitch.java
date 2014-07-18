@@ -30,28 +30,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
-public class EntityGlitch extends EntityMob implements IBossDisplayData,
-		IRangedAttackMob, IVoidWalker {
+public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWalker {
 	public EntityGlitch(World par1World) {
 		super(par1World);
-		this.getNavigator().setCanSwim(true);
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIArrowAttack(this, 1.0D, 40, 20.0F));
-		this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this,
-				EntityPlayer.class, 8.0F));
-		this.tasks.addTask(7, new EntityAILookIdle(this));
-		this.tasks.addTask(8, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1D, false));
-		this.tasks.addTask(8, new EntityAIAttackOnCollide(this, EntityBuilder.class, 1D, false));
-		this.tasks.addTask(9, new EntityAIMoveTowardsTarget(this, 1D, 30F));
-		
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this,
-				EntityPlayer.class, 0, false, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this,
-				EntityBuilder.class, 1, false, false));
-
-		this.setSize(0.6F, 1.8F);
+		getNavigator().setCanSwim(true);
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(1, new EntityAIWatchClosest(this, EntityPlayer.class, Float.MAX_VALUE));
+		isImmuneToFire = true;
+		experienceValue = 900;
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
 				.setBaseValue(4242.413F * 2);
 		this.setHealth(4242.413F * 2);
@@ -85,19 +71,9 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData,
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase var1, float var2) {
-		// worldObj.spawnEntityInWorld(new EntityGlitchists(this.worldObj));
-	}
-
-	@Override
 	public void onLivingUpdate() {
 		BossStatus.setBossStatus(this, true);
-		Random r = new Random();
-		if(r.nextInt(5000) == 42){
-			//TODO: Morph.
-			//if(this.re)
-			//switch(r.nextInt())
-		}
+		
 		super.onLivingUpdate();
 	}
 	
