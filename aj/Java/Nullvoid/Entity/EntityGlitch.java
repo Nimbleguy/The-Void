@@ -1,36 +1,32 @@
 package aj.Java.Nullvoid.Entity;
 
+import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import aj.Java.Nullvoid.VoidWorldData;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
 import aj.Java.Nullvoid.client.fx.EntityGlitchFX;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWalker {
+	private Entity target;
+	private String currentAttack;
 	public EntityGlitch(World par1World) {
 		super(par1World);
 		getNavigator().setCanSwim(true);
@@ -41,6 +37,14 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
 				.setBaseValue(4242.413F * 2);
 		this.setHealth(4242.413F * 2);
+		VoidWorldData v = VoidWorldData.get(worldObj);
+		if(v.hasGlitch){
+			this.setDead();
+		}
+		else{
+			v.hasGlitch = true;
+		}
+		currentAttack = "NONE";
 		/*
 		 * Hello. I am the Glitch. This is the only place we can safely talk.
 		 * Well. You know about the basic structure, right?
@@ -70,9 +74,21 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onLivingUpdate() {
 		BossStatus.setBossStatus(this, true);
+		EntityPlayer p = worldObj.getClosestPlayer(posX, posY, posZ, 0);
+		if(p != null){
+			target = p;
+		}
+		loop:
+		for(Entity e : (List<Entity>)worldObj.getLoadedEntityList()){
+			if(e instanceof EntityBuilder){
+				target = e;
+				break loop;
+			}
+		}
 		
 		super.onLivingUpdate();
 	}
@@ -158,5 +174,9 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 	@Override
 	protected String getLivingSound(){
 		return "nullvoid:mob.glitch.ambient";
+	}
+	@Override
+	public void onDeath(DamageSource d){
+		VoidWorldData.get(worldObj).hasGlitch = false;
 	}
 }

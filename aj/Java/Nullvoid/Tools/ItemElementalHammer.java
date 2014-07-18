@@ -91,54 +91,55 @@ public class ItemElementalHammer extends ItemTool {
 		values[6] = getElement(EnumElement.DARK, i);
 		values[7] = getElement(EnumElement.LIGHT, i);
 		boolean check = false;
+		int on = -1;
 		for(int bla = 0; bla < 8; bla++){
-			check = false;
 			for(int value = 0; value < 8; value++){
 				if(values[value] != values[bla]){
 					check = true;
+					on = bla;
 				}
 			}
-			if(check){
-				switch(bla){
+		}
+		if(check){
+			switch(on){
 				case 0:
 					p.setFire(10);
-					return;
-				case 1:
-					for(int x = (int)p.posX - 2; x < (int)p.posX + 1; x++){
-						for(int y = (int)p.posY; y < (int)p.posY + 2; y++){
-							for(int z = (int)p.posZ - 2; z < (int)p.posZ + 1; z++){
-								w.setBlock(x, y, z, Blocks.ice);
-							}
+				return;
+			case 1:
+				for(int x = (int)p.posX - 2; x < (int)p.posX + 1; x++){
+					for(int y = (int)p.posY; y < (int)p.posY + 2; y++){
+						for(int z = (int)p.posZ - 2; z < (int)p.posZ + 1; z++){
+							w.setBlock(x, y, z, Blocks.ice);
 						}
 					}
-					return;
-				case 2:
-					for(int x = (int)p.posX - 1; x < (int)p.posX + 2; x++){
-						for(int y = (int)p.posY + 2; y < (int)p.posY + 4; y++){
-							for(int z = (int)p.posZ - 1; z < (int)p.posZ + 2; z++){
-								w.setBlock(x, y, z, Blocks.gravel);
-							}
-						}
-					}
-					return;
-				case 3:
-					PacketHandler.INSTANCE.sendToServer(new PacketGearBelt(999F));
-					p.motionY = 999D;
-					return;
-				case 4:
-					//TODO: ORDER EFFECT
-					return;
-				case 5:
-					p.addPotionEffect(new PotionEffect(VoidMod.PotIDDiss, 100000, 100000, true));
-					p.worldObj.createExplosion(p, p.posX, p.posY, p.posZ, 9999F, false);
-					return;
-				case 6:
-					p.addPotionEffect(new PotionEffect(Potion.blindness.id, 100000, 100000, true));
-					return;
-				case 7:
-					//TODO: LIGHT EFFECT
-					return;
 				}
+				return;
+			case 2:
+				for(int x = (int)p.posX - 1; x < (int)p.posX + 2; x++){
+					for(int y = (int)p.posY + 2; y < (int)p.posY + 4; y++){
+						for(int z = (int)p.posZ - 1; z < (int)p.posZ + 2; z++){
+							w.setBlock(x, y, z, Blocks.gravel);
+						}
+					}
+				}
+				return;
+			case 3:
+				PacketHandler.INSTANCE.sendToServer(new PacketGearBelt(999F));
+				p.motionY = 999D;
+				return;
+			case 4:
+				//TODO: ORDER EFFECT
+				return;
+			case 5:
+				p.addPotionEffect(new PotionEffect(VoidMod.PotIDDiss, 100000, 100000, true));
+				p.worldObj.createExplosion(p, p.posX, p.posY, p.posZ, 9999F, false);
+				return;
+			case 6:
+				p.addPotionEffect(new PotionEffect(Potion.blindness.id, 100000, 100000, true));
+				return;
+			case 7:
+				//TODO: LIGHT EFFECT
+				return;
 			}
 		}
 	}
