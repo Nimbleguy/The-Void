@@ -1,7 +1,10 @@
 package aj.Java.Nullvoid.Entity.Attack;
 
 import java.lang.reflect.Constructor;
+import java.util.Random;
+
 import aj.Java.Nullvoid.Entity.EntityGlitch;
+import aj.Java.Nullvoid.Entity.EntityVoidCloud;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
@@ -9,10 +12,15 @@ public class SpawnEntity implements IGlitchAttack {
 	
 	EntityGlitch glitch;
 	Class<? extends Entity> spawn;
+	boolean isDone = false;
 	
 	public SpawnEntity(EntityGlitch master, Class<? extends Entity> toSpawn){
 		glitch = master;
 		spawn = toSpawn;
+	}
+	public SpawnEntity(EntityGlitch master){
+		this(master, new Random().nextInt(2) == 1 ? EntityVoidCloud.class : EntityVoidCloud.class);
+		//TODO: Finish Glitchist
 	}
 	
 	@Override
@@ -58,6 +66,7 @@ public class SpawnEntity implements IGlitchAttack {
 				e.setLocationAndAngles(coords[0], coords[1], coords[2], 0F, 0F);
 				glitch.worldObj.spawnEntityInWorld(e);
 			}
+			isDone = true;
 		} catch (Exception e) {
 			System.err.println("There has been a fatal error with the Void Mod. Please report this to Nimbleguy.");
 			e.printStackTrace(System.err);
@@ -67,6 +76,10 @@ public class SpawnEntity implements IGlitchAttack {
 	@Override
 	public int getTier() {
 		return 1;
+	}
+	@Override
+	public boolean isDone() {
+		return false;
 	}
 
 }

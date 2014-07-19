@@ -28,10 +28,12 @@ import net.minecraft.world.World;
 
 public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWalker {
 	private Entity target;
-	private String currentAttack;
-	private HashMap<Integer, HashMap<String, IGlitchAttack>> attacks = new HashMap<Integer, HashMap<String, IGlitchAttack>>();
+	private IGlitchAttack currentAttack;
+	private float scale = 1F;
+	public HashMap<Integer, HashMap<String, Class<? extends IGlitchAttack>>> attacks = new HashMap<Integer, HashMap<String, Class<? extends IGlitchAttack>>>();
 	public EntityGlitch(World par1World) {
 		super(par1World);
+		setSize(0.6F, 1.8F);
 		getNavigator().setCanSwim(true);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new EntityAIWatchClosest(this, EntityPlayer.class, Float.MAX_VALUE));
@@ -47,13 +49,13 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		else{
 			v.hasGlitch = true;
 		}
-		currentAttack = "NONE";
-		attacks.put(1, new HashMap<String, IGlitchAttack>());
-		attacks.put(2, new HashMap<String, IGlitchAttack>());
-		attacks.put(3, new HashMap<String, IGlitchAttack>());
-		attacks.put(4, new HashMap<String, IGlitchAttack>());
-		attacks.put(5, new HashMap<String, IGlitchAttack>());
-		attacks.put(6, new HashMap<String, IGlitchAttack>());
+		currentAttack =  null;
+		attacks.put(1, new HashMap<String, Class<? extends IGlitchAttack>>());
+		attacks.put(2, new HashMap<String, Class<? extends IGlitchAttack>>());
+		attacks.put(3, new HashMap<String, Class<? extends IGlitchAttack>>());
+		attacks.put(4, new HashMap<String, Class<? extends IGlitchAttack>>());
+		attacks.put(5, new HashMap<String, Class<? extends IGlitchAttack>>());
+		attacks.put(6, new HashMap<String, Class<? extends IGlitchAttack>>());
 		/*
 		 * Hello. I am the Glitch. This is the only place we can safely talk.
 		 * Well. You know about the basic structure, right?
@@ -87,6 +89,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 	@Override
 	public void onLivingUpdate() {
 		BossStatus.setBossStatus(this, true);
+		//Getting the Target
 		EntityPlayer p = worldObj.getClosestPlayer(posX, posY, posZ, 0);
 		if(p != null){
 			target = p;
@@ -99,6 +102,46 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 			}
 		}
 		
+		int tier = 1;
+		scale = 1F;
+		if(this.getHealth() < ((4242.413F * 2) * (5 / 6))){
+			tier = 2;
+			scale = 1.5F;
+		}
+		else if(this.getHealth() < ((4242.413F * 2) * (4 / 6))){
+			tier = 3;
+			scale = 2F;
+		}
+		else if(this.getHealth() < ((4242.413F * 2) * (3 / 6))){
+			tier = 4;
+			scale = 2.75F;
+		}
+		else if(this.getHealth() < ((4242.413F * 2) * (2 / 6))){
+			tier = 5;
+			scale = 3.5F;
+		}
+		else if(this.getHealth() < ((4242.413F * 2) * (1 / 6))){
+			tier = 6;
+			scale = 5;
+		}
+		setSize(0.6F * scale, 1.8F * scale);
+		
+		if(currentAttack != null && currentAttack.isDone()){
+			currentAttack = null;
+		}
+		else if(currentAttack != null){
+			currentAttack.use(target);
+		}
+		if(currentAttack == null){
+			try {
+				currentAttack = attacks.get(tier).get(currentAttack).getConstructor(EntityGlitch.class).newInstance(this);
+				currentAttack.use(target);
+			}
+			catch (Exception e) {
+				System.err.println("There has been an error with the Void Mod. Please report this to Nimbleguy.");
+				e.printStackTrace(System.err);
+			}
+		}
 		super.onLivingUpdate();
 	}
 	
@@ -107,9 +150,9 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			Random r = new Random();
 			for (int i = 0; i < 20; i++) {
-				EntityFX glitch = new EntityGlitchFX(worldObj, (posX - 0.5D)
-						+ r.nextDouble(), posY, (posZ - 0.5D) + r.nextDouble(),
-						r.nextDouble() - 0.5D, 2D + r.nextDouble(), r.nextDouble() - 0.5D);
+				EntityFX glitch = new EntityGlitchFX(worldObj, (posX - (0.5D * scale))
+						+ r.nextDouble(), posY, (posZ - (0.5D * scale)) + r.nextDouble(),
+						r.nextDouble() - (0.5D * scale), (2D * scale) + r.nextDouble(), r.nextDouble() - (0.5D * scale));
 				Minecraft.getMinecraft().effectRenderer.addEffect(glitch);
 			}
 		}

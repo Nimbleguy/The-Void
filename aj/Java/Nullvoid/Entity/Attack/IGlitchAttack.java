@@ -7,4 +7,6 @@ public interface IGlitchAttack {
 	void use(Entity target);
 	
 	int getTier();
+	
+	boolean isDone();
 }
