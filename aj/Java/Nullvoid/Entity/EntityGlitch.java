@@ -1,10 +1,12 @@
 package aj.Java.Nullvoid.Entity;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import aj.Java.Nullvoid.VoidWorldData;
+import aj.Java.Nullvoid.Entity.Attack.IGlitchAttack;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
 import aj.Java.Nullvoid.client.fx.EntityGlitchFX;
@@ -27,6 +29,7 @@ import net.minecraft.world.World;
 public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWalker {
 	private Entity target;
 	private String currentAttack;
+	private HashMap<Integer, HashMap<String, IGlitchAttack>> attacks = new HashMap<Integer, HashMap<String, IGlitchAttack>>();
 	public EntityGlitch(World par1World) {
 		super(par1World);
 		getNavigator().setCanSwim(true);
@@ -45,6 +48,12 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 			v.hasGlitch = true;
 		}
 		currentAttack = "NONE";
+		attacks.put(1, new HashMap<String, IGlitchAttack>());
+		attacks.put(2, new HashMap<String, IGlitchAttack>());
+		attacks.put(3, new HashMap<String, IGlitchAttack>());
+		attacks.put(4, new HashMap<String, IGlitchAttack>());
+		attacks.put(5, new HashMap<String, IGlitchAttack>());
+		attacks.put(6, new HashMap<String, IGlitchAttack>());
 		/*
 		 * Hello. I am the Glitch. This is the only place we can safely talk.
 		 * Well. You know about the basic structure, right?
