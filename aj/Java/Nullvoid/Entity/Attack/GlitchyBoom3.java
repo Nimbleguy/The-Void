@@ -10,9 +10,12 @@ public class GlitchyBoom3 extends GlitchyBoom2 {
 	}
 	@Override
 	public void use(Entity target) {
-		glitch.teleportTo(glitch.posX, glitch.posY, glitch.posZ);
-		glitch.worldObj.createExplosion(glitch, glitch.posX, glitch.posY, glitch.posZ, 6F, true);
-		isDone = true;
+		warmuptime++;
+		glitch.teleportTo(glitch.posX, glitch.posY, glitch.posZ, warmuptime);
+		if(warmuptime >= 100){
+			glitch.worldObj.createExplosion(glitch, glitch.posX, glitch.posY, glitch.posZ, 6F, true);
+			isDone = true;
+		}
 	}
 
 	@Override

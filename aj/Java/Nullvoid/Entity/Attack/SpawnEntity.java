@@ -9,7 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
 public class SpawnEntity implements IGlitchAttack {
-	public static int amountSpawned = 0;
 	EntityGlitch glitch;
 	Class<? extends Entity> spawn;
 	boolean isDone = false;
@@ -17,10 +16,6 @@ public class SpawnEntity implements IGlitchAttack {
 	public SpawnEntity(EntityGlitch master, Class<? extends Entity> toSpawn){
 		glitch = master;
 		spawn = toSpawn;
-		if(amountSpawned > 50){
-			amountSpawned--;
-		}
-		System.out.println("hai there");
 	}
 	public SpawnEntity(EntityGlitch master){
 		this(master, new Random().nextInt(2) == 1 ? EntityVoidCloud.class : EntityVoidCloud.class);
@@ -29,54 +24,53 @@ public class SpawnEntity implements IGlitchAttack {
 
 	@Override
 	public void use(Entity target) {
-		if(amountSpawned < 200){
-			try {
-				Constructor<? extends Entity> c = spawn.getDeclaredConstructor(World.class);
-				int[] coords = new int[3];
-				for(int i = 0; i < 8; i++){
-					coords[0] = (int) glitch.posX;
-					coords[1] = (int) glitch.posY;
-					coords[2] = (int) glitch.posZ;
-					switch(i){
-					case(0):
-						coords[0] -= 3;
-					break;
-					case(1):
-						coords[0] -= 2;
-					coords[2] -= 2;
-					break;
-					case(2):
-						coords[2] -= 3;
-					break;
-					case(3):
-						coords[0] += 2;
-					coords[2] -= 2;
-					break;
-					case(4):
-						coords[2] += 3;
-					break;
-					case(5):
-						coords[0] += 2;
-					coords[2] += 2;
-					break;
-					case(6):
-						coords[0] += 3;
-					break;
-					case(7):
-						coords[0] -= 2;
-					coords[2] += 2;
-					break;
-					}
-					Entity e = c.newInstance(glitch.worldObj);
-					e.setLocationAndAngles(coords[0], coords[1], coords[2], 0F, 0F);
-					glitch.worldObj.spawnEntityInWorld(e);
-					amountSpawned++;
+		System.out.println("SPAWN");
+		try {
+			Constructor<? extends Entity> c = spawn.getDeclaredConstructor(World.class);
+			int[] coords = new int[3];
+			for(int i = 0; i < 8; i++){
+				coords[0] = (int) glitch.posX;
+				coords[1] = (int) glitch.posY;
+				coords[2] = (int) glitch.posZ;
+				switch(i){
+				case(0):
+					coords[0] -= 3;
+				break;
+				case(1):
+					coords[0] -= 2;
+				coords[2] -= 2;
+				break;
+				case(2):
+					coords[2] -= 3;
+				break;
+				case(3):
+					coords[0] += 2;
+				coords[2] -= 2;
+				break;
+				case(4):
+					coords[2] += 3;
+				break;
+				case(5):
+					coords[0] += 2;
+				coords[2] += 2;
+				break;
+				case(6):
+					coords[0] += 3;
+				break;
+				case(7):
+					coords[0] -= 2;
+				coords[2] += 2;
+				break;
 				}
-				isDone = true;
-			} catch (Exception e) {
-				System.err.println("There has been a fatal error with the Void Mod. Please report this to Nimbleguy.");
-				e.printStackTrace(System.err);
+				Entity e = c.newInstance(glitch.worldObj);
+				e.setLocationAndAngles(coords[0], coords[1], coords[2], 0F, 0F);
+				glitch.worldObj.spawnEntityInWorld(e);
+				//amountSpawned++;
 			}
+			isDone = true;
+		} catch (Exception e) {
+			System.err.println("There has been a fatal error with the Void Mod. Please report this to Nimbleguy.");
+			e.printStackTrace(System.err);
 		}
 	}
 
@@ -86,7 +80,7 @@ public class SpawnEntity implements IGlitchAttack {
 	}
 	@Override
 	public boolean isDone() {
-		return false;
+		return isDone;
 	}
 
 }

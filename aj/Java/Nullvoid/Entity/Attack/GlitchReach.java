@@ -23,12 +23,13 @@ public class GlitchReach implements IGlitchAttack {
 	
 	@Override
 	public void use(Entity target) {
+		System.out.println("REACH");
 		int[] tc = {(int) target.posX, (int) target.posY, (int) target.posZ};
 		
 		Random r = new Random();
 		PacketHandler.INSTANCE.sendToDimension(new PacketParticle(
 				cc[0], cc[1], cc[2],
-				r.nextDouble() - (0.5D), (2D) + r.nextDouble(), r.nextDouble() - (0.5D),
+				r.nextDouble() - (0.5D), (1D) + r.nextDouble(), r.nextDouble() - (0.5D),
 				200
 				), glitch.dimension);
 		boolean check = false;
