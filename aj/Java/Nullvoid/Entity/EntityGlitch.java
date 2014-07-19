@@ -6,12 +6,18 @@ import java.util.List;
 import java.util.Random;
 
 import aj.Java.Nullvoid.VoidWorldData;
+import aj.Java.Nullvoid.Entity.Attack.GlitchReach;
+import aj.Java.Nullvoid.Entity.Attack.GlitchTeleport;
+import aj.Java.Nullvoid.Entity.Attack.GlitchyBoom;
+import aj.Java.Nullvoid.Entity.Attack.GlitchyBoom2;
+import aj.Java.Nullvoid.Entity.Attack.GlitchyBoom3;
 import aj.Java.Nullvoid.Entity.Attack.IGlitchAttack;
 import aj.Java.Nullvoid.Entity.Attack.SpawnEntity;
 import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketParticle;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -24,12 +30,16 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWalker {
 	private Entity target;
 	private IGlitchAttack currentAttack;
 	private float scale = 1F;
+	private int tier = 1;
 	public HashMap<Integer, List<Class<? extends IGlitchAttack>>> attacks = new HashMap<Integer, List<Class<? extends IGlitchAttack>>>();
 	public EntityGlitch(World par1World) {
 		super(par1World);
@@ -37,6 +47,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		getNavigator().setCanSwim(true);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(1, new EntityAIWatchClosest(this, EntityPlayer.class, Float.MAX_VALUE));
+		tasks.addTask(2, new EntityAIWatchClosest(this, EntityBuilder.class, Float.MAX_VALUE));
 		isImmuneToFire = true;
 		experienceValue = 900;
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
@@ -103,7 +114,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 				}
 			}
 
-		int tier = 1;
+		tier = 1;
 		scale = 1F;
 		if(this.getHealth() < ((4242.413F * 2) * (5 / 6))){
 			tier = 2;
@@ -133,7 +144,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		else if(currentAttack != null){
 			currentAttack.use(target);
 		}
-		if(currentAttack == null && rand.nextInt(10000 - (tier * 100)) == 42){
+		if(currentAttack == null && rand.nextInt(5000 - (tier * 100)) == 42){
 			try {
 				currentAttack = attacks.get(tier).get(rand.nextInt(attacks.get(tier).size())).getConstructor(EntityGlitch.class).newInstance(this);
 				currentAttack.use(target);
@@ -152,6 +163,26 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 
 	@Override
 	public boolean hitByEntity(Entity e) {
+		target = e;
+		if(currentAttack != null && currentAttack.isDone()){
+			currentAttack = null;
+		}
+		else if(currentAttack != null){
+			currentAttack.use(target);
+		}
+		if(currentAttack == null){
+			try {
+				currentAttack = attacks.get(tier)
+						.get(rand.nextInt(attacks.get(tier).size()))
+						.getConstructor(EntityGlitch.class)
+						.newInstance(this);
+				currentAttack.use(target);
+			}
+			catch (Exception err) {
+				System.err.println("There has been an error with the Void Mod. Please report this to Nimbleguy.");
+				err.printStackTrace(System.err);
+			}
+		}
 		if (this.getHealth() > 4242.413) {
 			if (e instanceof EntityPlayer) {
 				if (((EntityPlayer) e).inventory.getCurrentItem() != null && ((EntityPlayer) e).inventory.getCurrentItem().getItem() instanceof ItemElementalHammer) {
@@ -221,8 +252,145 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 	@Override
 	public void onDeath(DamageSource d){
 		VoidWorldData.get(worldObj).hasGlitch = false;
+		super.onDeath(d);
 	}
 	private void addAttacks(){
+		//Tier 1
 		attacks.get(1).add(SpawnEntity.class);
+		
+		attacks.get(1).add(GlitchReach.class);
+		attacks.get(1).add(GlitchReach.class);
+		attacks.get(1).add(GlitchReach.class);
+		//Tier 2
+		attacks.get(2).add(GlitchTeleport.class);
+		attacks.get(2).add(GlitchTeleport.class);
+		attacks.get(2).add(GlitchTeleport.class);
+		
+		attacks.get(2).add(SpawnEntity.class);
+		
+		attacks.get(1).add(GlitchReach.class);
+		attacks.get(2).add(GlitchReach.class);
+		attacks.get(2).add(GlitchReach.class);
+		attacks.get(2).add(GlitchReach.class);
+		
+		attacks.get(2).add(GlitchyBoom.class);
+		attacks.get(2).add(GlitchyBoom.class);
+		//Tier 3
+		attacks.get(3).add(GlitchTeleport.class);
+		attacks.get(3).add(GlitchTeleport.class);
+		attacks.get(3).add(GlitchTeleport.class);
+		attacks.get(3).add(GlitchTeleport.class);
+		
+		attacks.get(3).add(SpawnEntity.class);
+		attacks.get(3).add(SpawnEntity.class);
+		
+		attacks.get(3).add(GlitchReach.class);
+		attacks.get(3).add(GlitchReach.class);
+		attacks.get(3).add(GlitchReach.class);
+		attacks.get(3).add(GlitchReach.class);
+		
+		attacks.get(2).add(GlitchyBoom2.class);
+		attacks.get(2).add(GlitchyBoom2.class);
+		attacks.get(2).add(GlitchyBoom2.class);
+		//Tier 4
+		attacks.get(3).add(GlitchTeleport.class);
+		attacks.get(3).add(GlitchTeleport.class);
+		attacks.get(3).add(GlitchTeleport.class);
+		attacks.get(3).add(GlitchTeleport.class);
+		
+		attacks.get(3).add(GlitchReach.class);
+		attacks.get(3).add(GlitchReach.class);
+		attacks.get(3).add(GlitchReach.class);
+		attacks.get(3).add(GlitchReach.class);
+		
+		attacks.get(2).add(GlitchyBoom3.class);
+		attacks.get(2).add(GlitchyBoom3.class);
+		attacks.get(2).add(GlitchyBoom3.class);
+		
+		attacks.get(2).add(GlitchyBoom2.class);
+		attacks.get(2).add(GlitchyBoom2.class);
+		
+		attacks.get(2).add(GlitchyBoom.class);
 	}
+	public boolean teleportRandomly()
+    {
+        double d0 = this.posX + (this.rand.nextDouble() - 0.5D) * 64.0D;
+        double d1 = this.posY + (double)(this.rand.nextInt(64) - 32);
+        double d2 = this.posZ + (this.rand.nextDouble() - 0.5D) * 64.0D;
+        return this.teleportTo(d0, d1, d2);
+    }
+	public boolean teleportTo(double p_70825_1_, double p_70825_3_, double p_70825_5_)
+    {
+        EnderTeleportEvent event = new EnderTeleportEvent(this, p_70825_1_, p_70825_3_, p_70825_5_, 0);
+        if (MinecraftForge.EVENT_BUS.post(event)){
+            return false;
+        }
+        double d3 = this.posX;
+        double d4 = this.posY;
+        double d5 = this.posZ;
+        this.posX = event.targetX;
+        this.posY = event.targetY;
+        this.posZ = event.targetZ;
+        boolean flag = false;
+        int i = MathHelper.floor_double(this.posX);
+        int j = MathHelper.floor_double(this.posY);
+        int k = MathHelper.floor_double(this.posZ);
+
+        if (this.worldObj.blockExists(i, j, k))
+        {
+            boolean flag1 = false;
+
+            while (!flag1 && j > 0)
+            {
+                Block block = this.worldObj.getBlock(i, j - 1, k);
+
+                if (block.getMaterial().blocksMovement())
+                {
+                    flag1 = true;
+                }
+                else
+                {
+                    --this.posY;
+                    --j;
+                }
+            }
+
+            if (flag1)
+            {
+                this.setPosition(this.posX, this.posY, this.posZ);
+
+                if (this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox))
+                {
+                    flag = true;
+                }
+            }
+        }
+
+        if (!flag)
+        {
+            this.setPosition(d3, d4, d5);
+            return false;
+        }
+        else
+        {
+            short short1 = 128;
+
+            for (int l = 0; l < short1; ++l)
+            {
+                double d6 = (double)l / ((double)short1 - 1.0D);
+                float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
+                float f1 = (this.rand.nextFloat() - 0.5F) * 0.2F;
+                float f2 = (this.rand.nextFloat() - 0.5F) * 0.2F;
+                double d7 = d3 + (this.posX - d3) * d6 + (this.rand.nextDouble() - 0.5D) * (double)this.width * 2.0D;
+                double d8 = d4 + (this.posY - d4) * d6 + this.rand.nextDouble() * (double)this.height;
+                double d9 = d5 + (this.posZ - d5) * d6 + (this.rand.nextDouble() - 0.5D) * (double)this.width * 2.0D;
+                PacketHandler.INSTANCE.sendToDimension(new PacketParticle(d7, d8, d9, (double)f, (double)f1, (double)f2, 1), this.dimension);
+            }
+
+            this.worldObj.playSoundEffect(d3, d4, d5, "mob.endermen.portal", 1.0F, 1.0F);
+            this.worldObj.playSoundEffect(d3, d4, d5, "mob.endermen.scream", 1.0F, 1.0F);
+            this.playSound("mob.endermen.portal", 1.0F, 1.0F);
+            return true;
+        }
+    }
 }

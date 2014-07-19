@@ -11,7 +11,7 @@ import net.minecraft.util.DamageSource;
 public class GlitchReach implements IGlitchAttack {
 	EntityGlitch glitch;
 	boolean isDone = false;
-	int[] cc;
+	int[] cc = new int[3];
 	
 	public GlitchReach(EntityGlitch glitch){
 		this.glitch = glitch;
@@ -61,6 +61,7 @@ public class GlitchReach implements IGlitchAttack {
 		}
 		if(!check){
 			target.attackEntityFrom(new DamageSource("mob.glitch.damage.hand"), 5F);
+			isDone = true;
 		}
 	}
 
