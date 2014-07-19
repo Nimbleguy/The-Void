@@ -7,6 +7,8 @@ import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class PacketParticle implements IMessage, IMessageHandler<PacketParticle, IMessage> {
 	
@@ -29,6 +31,7 @@ public class PacketParticle implements IMessage, IMessageHandler<PacketParticle,
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketParticle message, MessageContext ctx) {
 		for(int i = 0; i < message.amount; i++){
 			EntityFX glitch = new EntityGlitchFX(Minecraft.getMinecraft().theWorld, message.coords[0], message.coords[1], message.coords[2], message.accel[0], message.accel[1], message.accel[2]);

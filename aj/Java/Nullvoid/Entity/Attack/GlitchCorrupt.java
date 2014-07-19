@@ -16,9 +16,11 @@ public class GlitchCorrupt implements IGlitchAttack {
 	
 	@Override
 	public void use(Entity target) {
+		System.out.println(warmuptime);
 		warmuptime++;
 		glitch.teleportTo(target.posX, target.posY, target.posZ, warmuptime);
 		if(warmuptime >= 100){
+			System.out.println("CORRUPT");
 			target.attackEntityFrom(new DamageSource("mob.glitch.damage.corrupt"), 3.5F);
 			isDone = true;
 		}

@@ -41,7 +41,9 @@ public class GlitchReach implements IGlitchAttack {
 				cc[0]--;
 			}
 			check = true;
+			System.out.println("!");
 		}
+		System.out.println(".1");
 		if(cc[1] - tc[1] != 0){
 			if(cc[1] < tc[1]){
 				cc[1]++;
@@ -50,7 +52,9 @@ public class GlitchReach implements IGlitchAttack {
 				cc[1]--;
 			}
 			check = true;
+			System.out.println("!2");
 		}
+		System.out.println(".2");
 		if(cc[2] - tc[2] != 0){
 			if(cc[2] < tc[2]){
 				cc[2]++;
@@ -59,10 +63,15 @@ public class GlitchReach implements IGlitchAttack {
 				cc[2]--;
 			}
 			check = true;
+			System.out.println("!3");
 		}
+		System.out.println(".3");
 		if(!check){
+			System.out.println("CHERK");
 			target.attackEntityFrom(new DamageSource("mob.glitch.damage.hand"), 5F);
+			System.out.println("ATTACK");
 			isDone = true;
+			System.out.println("done");
 		}
 	}
 

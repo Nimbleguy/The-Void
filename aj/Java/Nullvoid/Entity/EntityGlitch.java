@@ -28,6 +28,7 @@ import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
@@ -102,21 +103,27 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onLivingUpdate() {
-		BossStatus.setBossStatus(this, true);
-		if(FMLCommonHandler.instance().getEffectiveSide().isServer()){
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
+			BossStatus.setBossStatus(this, true);
+		}
+		else{
 			//Getting the Target
 			EntityPlayer p = worldObj.getClosestPlayer(posX, posY, posZ, 0);
 			if(p != null){
 				target = p;
+				System.out.println("player");
 			}
+			System.out.println("loop1");
 			loop:
-				for(Entity e : (List<Entity>)worldObj.getLoadedEntityList()){
-					if(e instanceof EntityBuilder){
-						target = e;
-						break loop;
-					}
+			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(EntityBuilder.class, AxisAlignedBB.getBoundingBox(posX - 10, posY - 50,
+							posZ - 10, posX + 10, posY + 50, posZ + 10))){
+				if(e != null){
+					target = e;
+					System.out.println("builder");
+					break loop;
 				}
-
+			}
+			System.out.println("loop2");
 			tier = 1;
 			scale = 1F;
 			if(this.getHealth() < ((4242.413F * 2) * (5 / 6))){
@@ -139,16 +146,20 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 				tier = 6;
 				scale = 10F;
 			}
+			System.out.println(tier);
 			setSize(0.6F * scale, 1.8F * scale);
 
 			if(currentAttack != null && currentAttack.isDone()){
 				currentAttack = null;
+				System.out.println("closeattack");
 			}
 			else if(currentAttack != null){
 				currentAttack.use(target);
+				System.out.println("useattack");
 			}
 			if(currentAttack == null && rand.nextInt(5000 - (tier * 100)) == 42){
 				try {
+					System.out.println("newattack");
 					currentAttack = attacks.get(tier).get(rand.nextInt(attacks.get(tier).size())).getConstructor(EntityGlitch.class).newInstance(this);
 					currentAttack.use(target);
 				}
@@ -157,6 +168,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 					e.printStackTrace(System.err);
 				}
 			}
+			System.out.println("done");
 			Random r = new Random();
 			PacketHandler.INSTANCE.sendToDimension(new PacketParticle((posX - (0.5D * scale))
 					+ r.nextDouble(), posY, (posZ - (0.5D * scale)) + r.nextDouble(),
