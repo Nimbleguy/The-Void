@@ -6,6 +6,7 @@ import aj.Java.Nullvoid.Entity.EntityGlitch;
 import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketParticle;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.DamageSource;
 
 public class GlitchReach implements IGlitchAttack {
 	EntityGlitch glitch;
@@ -30,7 +31,7 @@ public class GlitchReach implements IGlitchAttack {
 				r.nextDouble() - (0.5D), (2D) + r.nextDouble(), r.nextDouble() - (0.5D),
 				200
 				), glitch.dimension);
-		
+		boolean check = false;
 		if(cc[0] - tc[0] != 0){
 			if(cc[0] < tc[0]){
 				cc[0]++;
@@ -38,6 +39,7 @@ public class GlitchReach implements IGlitchAttack {
 			else{
 				cc[0]--;
 			}
+			check = true;
 		}
 		if(cc[1] - tc[1] != 0){
 			if(cc[1] < tc[1]){
@@ -46,6 +48,7 @@ public class GlitchReach implements IGlitchAttack {
 			else{
 				cc[1]--;
 			}
+			check = true;
 		}
 		if(cc[2] - tc[2] != 0){
 			if(cc[2] < tc[2]){
@@ -54,12 +57,15 @@ public class GlitchReach implements IGlitchAttack {
 			else{
 				cc[2]--;
 			}
+			check = true;
+		}
+		if(!check){
+			target.attackEntityFrom(new DamageSource("mob.glitch.damage.hand"), 5F);
 		}
 	}
 
 	@Override
 	public int getTier() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 
