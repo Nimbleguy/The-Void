@@ -5,15 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import aj.Java.Nullvoid.VoidWorldData;
 import aj.Java.Nullvoid.Entity.Attack.IGlitchAttack;
 import aj.Java.Nullvoid.Entity.Attack.SpawnEntity;
+import aj.Java.Nullvoid.Packet.PacketHandler;
+import aj.Java.Nullvoid.Packet.PacketParticle;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
-import aj.Java.Nullvoid.client.fx.EntityGlitchFX;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -42,7 +40,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		isImmuneToFire = true;
 		experienceValue = 900;
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-				.setBaseValue(4242.413F * 2);
+		.setBaseValue(4242.413F * 2);
 		this.setHealth(4242.413F * 2);
 		VoidWorldData v = VoidWorldData.get(worldObj);
 		if(v.hasGlitch){
@@ -98,13 +96,13 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 			target = p;
 		}
 		loop:
-		for(Entity e : (List<Entity>)worldObj.getLoadedEntityList()){
-			if(e instanceof EntityBuilder){
-				target = e;
-				break loop;
+			for(Entity e : (List<Entity>)worldObj.getLoadedEntityList()){
+				if(e instanceof EntityBuilder){
+					target = e;
+					break loop;
+				}
 			}
-		}
-		
+
 		int tier = 1;
 		scale = 1F;
 		if(this.getHealth() < ((4242.413F * 2) * (5 / 6))){
@@ -128,7 +126,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 			scale = 10F;
 		}
 		setSize(0.6F * scale, 1.8F * scale);
-		
+
 		if(currentAttack != null && currentAttack.isDone()){
 			currentAttack = null;
 		}
@@ -145,21 +143,11 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 				e.printStackTrace(System.err);
 			}
 		}
+		Random r = new Random();
+		PacketHandler.INSTANCE.sendToDimension(new PacketParticle((posX - (0.5D * scale))
+				+ r.nextDouble(), posY, (posZ - (0.5D * scale)) + r.nextDouble(),
+				r.nextDouble() - (0.5D * scale), (2D * scale) + r.nextDouble(), r.nextDouble() - (0.5D * scale), 200), this.dimension);
 		super.onLivingUpdate();
-	}
-	
-	@Override
-	public void onUpdate() {
-		if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-			Random r = new Random();
-			for (int i = 0; i < 20; i++) {
-				EntityFX glitch = new EntityGlitchFX(worldObj, (posX - (0.5D * scale))
-						+ r.nextDouble(), posY, (posZ - (0.5D * scale)) + r.nextDouble(),
-						r.nextDouble() - (0.5D * scale), (2D * scale) + r.nextDouble(), r.nextDouble() - (0.5D * scale));
-				Minecraft.getMinecraft().effectRenderer.addEffect(glitch);
-			}
-		}
-		super.onUpdate();
 	}
 
 	@Override
@@ -170,36 +158,36 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 					int[] values = new int[8];
 					values[0] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
-							EnumElement.FIRE,
-							((EntityPlayer) e).inventory.getCurrentItem());
+									EnumElement.FIRE,
+									((EntityPlayer) e).inventory.getCurrentItem());
 					values[1] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
-							EnumElement.ICE,
-							((EntityPlayer) e).inventory.getCurrentItem());
+									EnumElement.ICE,
+									((EntityPlayer) e).inventory.getCurrentItem());
 					values[2] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
-							EnumElement.EARTH,
-							((EntityPlayer) e).inventory.getCurrentItem());
+									EnumElement.EARTH,
+									((EntityPlayer) e).inventory.getCurrentItem());
 					values[3] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
-							EnumElement.AIR,
-							((EntityPlayer) e).inventory.getCurrentItem());
+									EnumElement.AIR,
+									((EntityPlayer) e).inventory.getCurrentItem());
 					values[4] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
-							EnumElement.ORDER,
-							((EntityPlayer) e).inventory.getCurrentItem());
+									EnumElement.ORDER,
+									((EntityPlayer) e).inventory.getCurrentItem());
 					values[5] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
-							EnumElement.ENTROPY,
-							((EntityPlayer) e).inventory.getCurrentItem());
+									EnumElement.ENTROPY,
+									((EntityPlayer) e).inventory.getCurrentItem());
 					values[6] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
-							EnumElement.DARK,
-							((EntityPlayer) e).inventory.getCurrentItem());
+									EnumElement.DARK,
+									((EntityPlayer) e).inventory.getCurrentItem());
 					values[7] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
 							.getCurrentItem().getItem()).getElement(
-							EnumElement.LIGHT,
-							((EntityPlayer) e).inventory.getCurrentItem());
+									EnumElement.LIGHT,
+									((EntityPlayer) e).inventory.getCurrentItem());
 					boolean check = false;
 					for (int bla = 0; bla < 8; bla++) {
 						for (int value = 0; value < 8; value++) {
@@ -221,11 +209,11 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		return true;
 	}
 	@Override
-    public IChatComponent func_145748_c_(){
-    	return new ChatComponentText(EnumChatFormatting.OBFUSCATED.toString() + "OOO" + 
-    			EnumChatFormatting.RESET.toString() + EnumChatFormatting.DARK_PURPLE.toString() + "The Glitch"
-    			+ EnumChatFormatting.WHITE.toString() + EnumChatFormatting.OBFUSCATED.toString() + "OOO");
-    }
+	public IChatComponent func_145748_c_(){
+		return new ChatComponentText(EnumChatFormatting.OBFUSCATED.toString() + "OOO" + 
+				EnumChatFormatting.RESET.toString() + EnumChatFormatting.DARK_PURPLE.toString() + "The Glitch"
+				+ EnumChatFormatting.WHITE.toString() + EnumChatFormatting.OBFUSCATED.toString() + "OOO");
+	}
 	@Override
 	protected String getLivingSound(){
 		return "nullvoid:mob.glitch.ambient";

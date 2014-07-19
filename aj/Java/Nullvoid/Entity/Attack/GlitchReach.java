@@ -1,6 +1,10 @@
 package aj.Java.Nullvoid.Entity.Attack;
 
+import java.util.Random;
+
 import aj.Java.Nullvoid.Entity.EntityGlitch;
+import aj.Java.Nullvoid.Packet.PacketHandler;
+import aj.Java.Nullvoid.Packet.PacketParticle;
 import net.minecraft.entity.Entity;
 
 public class GlitchReach implements IGlitchAttack {
@@ -20,7 +24,12 @@ public class GlitchReach implements IGlitchAttack {
 	public void use(Entity target) {
 		int[] tc = {(int) target.posX, (int) target.posY, (int) target.posZ};
 		
-		
+		Random r = new Random();
+		PacketHandler.INSTANCE.sendToDimension(new PacketParticle(
+				cc[0], cc[1], cc[2],
+				r.nextDouble() - (0.5D), (2D) + r.nextDouble(), r.nextDouble() - (0.5D),
+				200
+				), glitch.dimension);
 		
 		if(cc[0] - tc[0] != 0){
 			if(cc[0] < tc[0]){
