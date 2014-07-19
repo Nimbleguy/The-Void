@@ -1,5 +1,6 @@
 package aj.Java.Nullvoid.Entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -7,6 +8,7 @@ import java.util.Random;
 import cpw.mods.fml.common.FMLCommonHandler;
 import aj.Java.Nullvoid.VoidWorldData;
 import aj.Java.Nullvoid.Entity.Attack.IGlitchAttack;
+import aj.Java.Nullvoid.Entity.Attack.SpawnEntity;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
 import aj.Java.Nullvoid.client.fx.EntityGlitchFX;
@@ -30,7 +32,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 	private Entity target;
 	private IGlitchAttack currentAttack;
 	private float scale = 1F;
-	public HashMap<Integer, HashMap<String, Class<? extends IGlitchAttack>>> attacks = new HashMap<Integer, HashMap<String, Class<? extends IGlitchAttack>>>();
+	public HashMap<Integer, List<Class<? extends IGlitchAttack>>> attacks = new HashMap<Integer, List<Class<? extends IGlitchAttack>>>();
 	public EntityGlitch(World par1World) {
 		super(par1World);
 		setSize(0.6F, 1.8F);
@@ -50,12 +52,13 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 			v.hasGlitch = true;
 		}
 		currentAttack =  null;
-		attacks.put(1, new HashMap<String, Class<? extends IGlitchAttack>>());
-		attacks.put(2, new HashMap<String, Class<? extends IGlitchAttack>>());
-		attacks.put(3, new HashMap<String, Class<? extends IGlitchAttack>>());
-		attacks.put(4, new HashMap<String, Class<? extends IGlitchAttack>>());
-		attacks.put(5, new HashMap<String, Class<? extends IGlitchAttack>>());
-		attacks.put(6, new HashMap<String, Class<? extends IGlitchAttack>>());
+		attacks.put(1, new ArrayList<Class<? extends IGlitchAttack>>());
+		attacks.put(2, new ArrayList<Class<? extends IGlitchAttack>>());
+		attacks.put(3, new ArrayList<Class<? extends IGlitchAttack>>());
+		attacks.put(4, new ArrayList<Class<? extends IGlitchAttack>>());
+		attacks.put(5, new ArrayList<Class<? extends IGlitchAttack>>());
+		attacks.put(6, new ArrayList<Class<? extends IGlitchAttack>>());
+		addAttacks();
 		/*
 		 * Hello. I am the Glitch. This is the only place we can safely talk.
 		 * Well. You know about the basic structure, right?
@@ -106,23 +109,23 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		scale = 1F;
 		if(this.getHealth() < ((4242.413F * 2) * (5 / 6))){
 			tier = 2;
-			scale = 1.5F;
-		}
-		else if(this.getHealth() < ((4242.413F * 2) * (4 / 6))){
-			tier = 3;
 			scale = 2F;
 		}
-		else if(this.getHealth() < ((4242.413F * 2) * (3 / 6))){
+		if(this.getHealth() < ((4242.413F * 2) * (4 / 6))){
+			tier = 3;
+			scale = 4F;
+		}
+		if(this.getHealth() < ((4242.413F * 2) * (3 / 6))){
 			tier = 4;
-			scale = 2.75F;
+			scale = 5.50F;
 		}
-		else if(this.getHealth() < ((4242.413F * 2) * (2 / 6))){
+		if(this.getHealth() < ((4242.413F * 2) * (2 / 6))){
 			tier = 5;
-			scale = 3.5F;
+			scale = 7F;
 		}
-		else if(this.getHealth() < ((4242.413F * 2) * (1 / 6))){
+		if(this.getHealth() < ((4242.413F * 2) * (1 / 6))){
 			tier = 6;
-			scale = 5;
+			scale = 10F;
 		}
 		setSize(0.6F * scale, 1.8F * scale);
 		
@@ -132,9 +135,9 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		else if(currentAttack != null){
 			currentAttack.use(target);
 		}
-		if(currentAttack == null){
+		if(currentAttack == null && rand.nextInt(10000 - (tier * 100)) == 42){
 			try {
-				currentAttack = attacks.get(tier).get(currentAttack).getConstructor(EntityGlitch.class).newInstance(this);
+				currentAttack = attacks.get(tier).get(rand.nextInt(attacks.get(tier).size())).getConstructor(EntityGlitch.class).newInstance(this);
 				currentAttack.use(target);
 			}
 			catch (Exception e) {
@@ -230,5 +233,8 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 	@Override
 	public void onDeath(DamageSource d){
 		VoidWorldData.get(worldObj).hasGlitch = false;
+	}
+	private void addAttacks(){
+		attacks.get(1).add(SpawnEntity.class);
 	}
 }
