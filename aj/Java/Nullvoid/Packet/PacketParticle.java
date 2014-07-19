@@ -24,6 +24,10 @@ public class PacketParticle implements IMessage, IMessageHandler<PacketParticle,
 		this.amount = amount;
 	}
 	
+	public PacketParticle(){
+		
+	}
+	
 	@Override
 	public IMessage onMessage(PacketParticle message, MessageContext ctx) {
 		for(int i = 0; i < message.amount; i++){
