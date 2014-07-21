@@ -150,10 +150,10 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 			if(currentAttack != null && currentAttack.isDone()){
 				currentAttack = null;
 			}
-			else if(currentAttack != null){
+			else if(currentAttack != null && target != null){
 				currentAttack.use(target);
 			}
-			if(currentAttack == null && rand.nextInt(5000 - (tier * 100)) == 42){
+			if(currentAttack == null && rand.nextInt(5000 - (tier * 100)) == 42 && target != null){
 				try {
 					currentAttack = attacks.get(tier).get(rand.nextInt(attacks.get(tier).size())).getConstructor(EntityGlitch.class).newInstance(this);
 					currentAttack.use(target);

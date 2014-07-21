@@ -27,7 +27,7 @@ public class ItemTablet extends Item {
 	@Override
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-	    for (int x = 0; x < 7; x++)
+	    for (int x = 0; x < 8; x++)
 	    {
 	        par3List.add(new ItemStack(this, 1, x));
 	    }
@@ -86,6 +86,17 @@ public class ItemTablet extends Item {
 			l.add("Jord och luft. Beställ och entropi.");
 			l.add("Denna magi kan rädda oss.");
 			l.add("Nu hör mig ringa.");
+			break;
+		case 7:
+			l.add("▤▤■■■▤▤");
+			l.add("▤■▤▤▤■▤");
+			l.add("■▤◉◉◉▤■");
+			l.add("■▤◉□◉▤■");
+			l.add("■▤◉◉◉▤■");
+			l.add("▤■▤▤▤■▤");
+			l.add("▤▤■■■▤▤");
+			l.add("+ (4x □ = ▤ ◉ = ▤)");
+			l.add("◉ = 地風火㓉亮㝜");
 			break;
 		}
 	}
