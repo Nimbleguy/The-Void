@@ -108,22 +108,25 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		}
 		else{
 			//Getting the Target
-			EntityPlayer p = worldObj.getClosestPlayer(posX, posY, posZ, 0);
-			if(p != null){
-				target = p;
-				System.out.println("player");
-			}
-			System.out.println("loop1");
-			loop:
-			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(EntityBuilder.class, AxisAlignedBB.getBoundingBox(posX - 10, posY - 50,
-							posZ - 10, posX + 10, posY + 50, posZ + 10))){
-				if(e != null){
-					target = e;
-					System.out.println("builder");
-					break loop;
+			if(target == null){
+				EntityPlayer p = worldObj.getClosestPlayer(posX, posY, posZ, 0);
+				System.out.println(worldObj.getClosestPlayer(posX, posY, posZ, 0));
+				if(p != null){
+					target = p;
 				}
 			}
-			System.out.println("loop2");
+			if(target == null || !(target instanceof EntityBuilder)){
+				System.out.println(worldObj.getEntitiesWithinAABB(EntityBuilder.class, AxisAlignedBB.getBoundingBox(posX - 10, posY - 50,
+							posZ - 10, posX + 10, posY + 50, posZ + 10)));
+				loop:
+				for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(EntityBuilder.class, AxisAlignedBB.getBoundingBox(posX - 10, posY - 50,
+							posZ - 10, posX + 10, posY + 50, posZ + 10))){
+					if(e != null){
+						target = e;
+						break loop;
+					}
+				}
+			}
 			tier = 1;
 			scale = 1F;
 			if(this.getHealth() < ((4242.413F * 2) * (5 / 6))){
@@ -146,20 +149,16 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 				tier = 6;
 				scale = 10F;
 			}
-			System.out.println(tier);
 			setSize(0.6F * scale, 1.8F * scale);
 
 			if(currentAttack != null && currentAttack.isDone()){
 				currentAttack = null;
-				System.out.println("closeattack");
 			}
 			else if(currentAttack != null){
 				currentAttack.use(target);
-				System.out.println("useattack");
 			}
 			if(currentAttack == null && rand.nextInt(5000 - (tier * 100)) == 42){
 				try {
-					System.out.println("newattack");
 					currentAttack = attacks.get(tier).get(rand.nextInt(attacks.get(tier).size())).getConstructor(EntityGlitch.class).newInstance(this);
 					currentAttack.use(target);
 				}
@@ -168,7 +167,6 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 					e.printStackTrace(System.err);
 				}
 			}
-			System.out.println("done");
 			Random r = new Random();
 			PacketHandler.INSTANCE.sendToDimension(new PacketParticle((posX - (0.5D * scale))
 					+ r.nextDouble(), posY, (posZ - (0.5D * scale)) + r.nextDouble(),
