@@ -23,7 +23,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
@@ -49,8 +48,6 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		setSize(0.6F, 1.8F);
 		getNavigator().setCanSwim(true);
 		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(1, new EntityAIWatchClosest(this, EntityPlayer.class, Float.MAX_VALUE));
-		tasks.addTask(2, new EntityAIWatchClosest(this, EntityBuilder.class, Float.MAX_VALUE));
 		isImmuneToFire = true;
 		experienceValue = 900;
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
