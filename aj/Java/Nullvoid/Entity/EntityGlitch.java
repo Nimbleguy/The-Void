@@ -8,6 +8,8 @@ import java.util.Random;
 import cpw.mods.fml.common.FMLCommonHandler;
 import aj.Java.Nullvoid.VoidWorldData;
 import aj.Java.Nullvoid.Entity.Attack.GlitchCorrupt;
+import aj.Java.Nullvoid.Entity.Attack.GlitchCorrupt2;
+import aj.Java.Nullvoid.Entity.Attack.GlitchCorrupt3;
 import aj.Java.Nullvoid.Entity.Attack.GlitchReach;
 import aj.Java.Nullvoid.Entity.Attack.GlitchTeleport;
 import aj.Java.Nullvoid.Entity.Attack.GlitchyBoom;
@@ -107,14 +109,11 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 			//Getting the Target
 			if(target == null){
 				EntityPlayer p = worldObj.getClosestPlayer(posX, posY, posZ, 0);
-				System.out.println(worldObj.getClosestPlayer(posX, posY, posZ, 0));
 				if(p != null){
 					target = p;
 				}
 			}
 			if(target == null || !(target instanceof EntityBuilder)){
-				System.out.println(worldObj.getEntitiesWithinAABB(EntityBuilder.class, AxisAlignedBB.getBoundingBox(posX - 10, posY - 50,
-							posZ - 10, posX + 10, posY + 50, posZ + 10)));
 				loop:
 				for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(EntityBuilder.class, AxisAlignedBB.getBoundingBox(posX - 10, posY - 50,
 							posZ - 10, posX + 10, posY + 50, posZ + 10))){
@@ -275,17 +274,37 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		attacks.get(2).add(SpawnEntity.class);
 		attacks.get(2).add(GlitchReach.class);
 		attacks.get(2).add(GlitchyBoom.class);
+		attacks.get(1).add(GlitchCorrupt2.class);
 		//Tier 3
 		attacks.get(3).add(GlitchTeleport.class);
 		attacks.get(3).add(SpawnEntity.class);
 		attacks.get(3).add(GlitchReach.class);
 		attacks.get(3).add(GlitchyBoom2.class);
+		attacks.get(1).add(GlitchCorrupt3.class);
 		//Tier 4
 		attacks.get(4).add(GlitchTeleport.class);
 		attacks.get(4).add(GlitchReach.class);
 		attacks.get(4).add(GlitchyBoom3.class);
 		attacks.get(4).add(GlitchyBoom2.class);
 		attacks.get(4).add(GlitchyBoom.class);
+		attacks.get(4).add(GlitchCorrupt.class);
+		//Tier 5
+		attacks.get(5).add(GlitchTeleport.class);
+		attacks.get(5).add(GlitchReach.class);
+		attacks.get(5).add(GlitchyBoom3.class);
+		attacks.get(5).add(GlitchyBoom2.class);
+		attacks.get(5).add(GlitchyBoom.class);
+		attacks.get(5).add(GlitchCorrupt.class);
+		attacks.get(5).add(GlitchCorrupt2.class);
+		//Tier 6
+		attacks.get(6).add(GlitchTeleport.class);
+		attacks.get(6).add(GlitchReach.class);
+		attacks.get(6).add(GlitchyBoom3.class);
+		attacks.get(6).add(GlitchyBoom2.class);
+		attacks.get(6).add(GlitchyBoom.class);
+		attacks.get(6).add(GlitchCorrupt.class);
+		attacks.get(6).add(GlitchCorrupt2.class);
+		attacks.get(6).add(GlitchCorrupt3.class);
 	}
 	public boolean teleportRandomly(int warmuptime)
 	{
