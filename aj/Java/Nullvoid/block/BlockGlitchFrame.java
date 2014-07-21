@@ -161,6 +161,24 @@ public class BlockGlitchFrame extends Block {
 				} else if (p.inventory.getCurrentItem().getItemDamage() == 6) {
 					int[] values = new int[8];
 					boolean b = true;
+					if(!genericCircle(x, y - 1, z, w)){
+						b = false;
+					}
+					if(!genericCircle(x, y, z, w)){
+						b = false;
+					}
+					if(!genericCircle(x, y + 1, z, w)){
+						b = false;
+					}
+					if(!genericCircle(x, y + 2, z, w)){
+						b = false;
+					}
+					if(!genericCircle(x, y + 3, z, w)){
+						b = false;
+					}
+					if(!genericCircle(x, y + 4, z, w)){
+						b = false;
+					}
 					for (int xx = x - 1; xx < x + 2; xx++) {
 						for (int zz = z - 1; zz < z + 2; zz++) {
 							if (xx != x || zz != z) {
@@ -229,5 +247,54 @@ public class BlockGlitchFrame extends Block {
 
 	public IIcon getIcon(int side, int meta) {
 		return meta == 0 ? icons[0] : icons[1];
+	}
+	private boolean genericCircle(int x, int y, int z, World w){
+		// Center-Center
+		if (w.getBlock(x - 3, y, z) instanceof BlockGeneric) {
+			if (w.getBlock(x, y, z - 3) instanceof BlockGeneric) {
+				if (w.getBlock(x + 3, y, z) instanceof BlockGeneric) {
+					if (w.getBlock(x, y, z + 3) instanceof BlockGeneric) {
+						// Sides-Center
+						if (w.getBlock(x - 3, y, z - 1) instanceof BlockGeneric) {
+							if (w.getBlock(x - 3, y, z + 1) instanceof BlockGeneric) {
+								if (w.getBlock(x + 3, y, z - 1) instanceof BlockGeneric) {
+									if (w.getBlock(x + 3, y, z + 1) instanceof BlockGeneric) {
+										if (w.getBlock(x - 1, y, z - 3) instanceof BlockGeneric) {
+											if (w.getBlock(x + 1, y, z - 3) instanceof BlockGeneric) {
+												if (w.getBlock(x - 1, y, z + 3) instanceof BlockGeneric) {
+													if (w.getBlock(x + 1, y,
+															z + 3) instanceof BlockGeneric) {
+														// Connections
+														if (w.getBlock(x - 2,
+																y, z - 2) instanceof BlockGeneric) {
+															if (w.getBlock(
+																	x + 2, y,
+																	z + 2) instanceof BlockGeneric) {
+																if (w.getBlock(
+																		x - 2,
+																		y,
+																		z + 2) instanceof BlockGeneric) {
+																	if (w.getBlock(
+																			x + 2,
+																			y,
+																			z - 2) instanceof BlockGeneric) {
+																		return true;
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 }
