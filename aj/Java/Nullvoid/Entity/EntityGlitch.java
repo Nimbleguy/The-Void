@@ -262,6 +262,10 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		return "nullvoid:mob.glitch.ambient";
 	}
 	@Override
+	protected String getHurtSound(){
+		return "mob.endermen.scream";
+	}
+	@Override
 	public void onDeath(DamageSource d){
 		VoidWorldData.get(worldObj).hasGlitch = false;
 		super.onDeath(d);
