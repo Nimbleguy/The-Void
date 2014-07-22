@@ -96,7 +96,7 @@ public class ItemTablet extends Item {
 			l.add("▤■▤▤▤■▤");
 			l.add("▤▤■■■▤▤");
 			l.add("+ (4x □ = ▤ ◉ = ▤)");
-			l.add("◉ = 地風火㓉亮㝜");
+			l.add("◉ = 地風▣㓉亮㝜");
 			break;
 		}
 	}

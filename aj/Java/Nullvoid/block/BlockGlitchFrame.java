@@ -161,9 +161,6 @@ public class BlockGlitchFrame extends Block {
 				} else if (p.inventory.getCurrentItem().getItemDamage() == 6) {
 					int[] values = new int[8];
 					boolean b = true;
-					if(!genericCircle(x, y - 1, z, w)){
-						b = false;
-					}
 					if(!genericCircle(x, y, z, w)){
 						b = false;
 					}

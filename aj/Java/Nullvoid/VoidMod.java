@@ -442,6 +442,9 @@ public class VoidMod implements LoadingCallback {
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY,
 				new WeightedRandomChestContent(new ItemStack(tablet, 1, 0), 50,
 						60, 51));
+		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CROSSING,
+				new WeightedRandomChestContent(new ItemStack(tablet, 1, 7), 50,
+						60, 51));
 		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_DESERT_CHEST,
 				new WeightedRandomChestContent(new ItemStack(tablet, 1, 2), 1,
 						40, 2));
@@ -451,7 +454,7 @@ public class VoidMod implements LoadingCallback {
 		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_DISPENSER,
 				new WeightedRandomChestContent(new ItemStack(tablet, 1, 5), 1,
 						40, 2));
-		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CROSSING,
+		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_CHEST,
 				new WeightedRandomChestContent(new ItemStack(glitchCore, 8), 1,
 						20, 19));
 		ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH,
