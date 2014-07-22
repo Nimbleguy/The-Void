@@ -628,7 +628,6 @@ public class VoidMod implements LoadingCallback {
 						}
 					}
 					b.append(" " + firstPlus + "+6");
-					System.out.println(b.toString());
 					((HashMap<Integer, String>) f.get(null)).put(PotIDDiss,
 							b.toString());
 				}

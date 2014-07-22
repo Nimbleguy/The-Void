@@ -31,7 +31,6 @@ public class EntityBuilder extends EntityCreature implements IVoidWalker {
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityGlitch.class, 0, true));
 		
         this.setSize(1.5F, 3F);
-        //TODO: Fix spazzing.
 	}
 	public EntityBuilder(World worldObj, double x, double y, double z) {
 		this(worldObj);
@@ -72,5 +71,6 @@ public class EntityBuilder extends EntityCreature implements IVoidWalker {
 				}
 			}
 		}
+		super.onLivingUpdate();
 	}
 }
