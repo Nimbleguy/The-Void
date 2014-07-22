@@ -182,7 +182,7 @@ public class VoidMod implements LoadingCallback {
 	public static ArmorMaterial NullArmor = EnumHelper.addArmorMaterial(
 			"NullArmor", 8, new int[] {2, 4, 3, 1}, 15);
 	public static ToolMaterial SpecialTool = EnumHelper.addToolMaterial(
-			"NullVoidSpecial", 100, 10000, 100F, 14F, 100);
+			"NullVoidSpecial", 100, 10000, 100F, 10F, 100);
 	public static int NullArmorRender;
 	@Instance(value = MODID)
 	public static VoidMod me;
@@ -291,11 +291,11 @@ public class VoidMod implements LoadingCallback {
 		// EntityRegistry.addSpawn(EntityVoidMaster.class, 5, 1, 1,
 		// EnumCreatureType.creature, biomeNullVoid);
 		// Entities: Eggs
-		EntityList.addMapping(EntityNullFloater.class, "Null Floater",
+		EntityList.addMapping(EntityNullFloater.class, "Null_Floater",
 				EntIDFloat, 0x8000FF, 0x0B0B61);
 		EntityList.addMapping(EntityBuilder.class, "Builder", EntIDBuild,
 				0x2EFE2E, 0x8000FF);
-		EntityList.addMapping(EntityVoidCloud.class, "Void Cloud", EntIDCloud,
+		EntityList.addMapping(EntityVoidCloud.class, "Void_Cloud", EntIDCloud,
 				0x9966FF, 0x352B47);
 		// EntityList.addMapping(EntityVoidMaster.class, "Void Master", 6,
 		// 0x000000, 0x6600FF);
@@ -624,6 +624,7 @@ public class VoidMod implements LoadingCallback {
 						}
 					}
 					b.append(" " + firstPlus + "+6");
+					System.out.println(b.toString());
 					((HashMap<Integer, String>) f.get(null)).put(PotIDDiss,
 							b.toString());
 				}

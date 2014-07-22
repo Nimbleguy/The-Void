@@ -39,7 +39,7 @@ public class ItemElementalHammer extends ItemTool {
 			VoidMod.voidReactor, VoidMod.walker, VoidMod.swordWall, VoidMod.generic});
 
 	public ItemElementalHammer(ToolMaterial p_i45333_2_) {
-		super(6F, p_i45333_2_, blocks);
+		super(10F, p_i45333_2_, blocks);
 		this.setCreativeTab(VoidMod.ctab);
 	}
 	private IIcon[] icons = new IIcon[9];
@@ -150,9 +150,9 @@ public class ItemElementalHammer extends ItemTool {
 		}
 	}
 	@Override
-	public ItemStack onItemRightClick(ItemStack i, World w, EntityPlayer p){
-		onClick(p, w, i);
-		return i;
+	public ItemStack onItemRightClick(ItemStack it, World w, EntityPlayer p){
+		onClick(p, w, it);
+		return it;
 	}
 	public void setElements(int fire, int ice, int earth, int air, int order,
 			int entropy, int dark, int light, ItemStack i) {
@@ -232,18 +232,18 @@ public class ItemElementalHammer extends ItemTool {
 				.setChatStyle(new ChatStyle()
 						.setColor(EnumChatFormatting.WHITE)).getFormattedText());
 	}
-	
+
 	@Override
-	public boolean onEntityItemUpdate(EntityItem item) {
+	public boolean onEntityItemUpdate(EntityItem item){
 		World w = item.worldObj;
-		int x = (int) item.posX;
-		int y = (int) item.posY;
-		int z = (int) item.posZ;
-		if(w.getBlock(x, y - 1, z).equals(Blocks.lava)){
+		int x = (int) Math.floor(item.posX);
+		int y = (int) Math.floor(item.posY - 1);
+		int z = (int) Math.floor(item.posZ);
+		if(w.getBlock(x, y, z).equals(Blocks.lava)){
 			boolean b = true;
-			for(int i = x - 1; i < x + 2; x++){
-				for(int ii = z - 1; ii < z + 2; z++){
-					if(i != x && ii != z){
+			for(int i = x - 1; i < x + 2; i++){
+				for(int ii = z - 1; ii < z + 2; ii++){
+					if(i != x || ii != z){
 						if(!w.getBlock(i, y, ii).equals(Blocks.iron_block)){
 							b = false;
 						}
@@ -251,9 +251,9 @@ public class ItemElementalHammer extends ItemTool {
 				}
 			}
 			if(b){
-				for(int i = x - 1; i < x + 2; x++){
-					for(int ii = z - 1; ii < z + 2; z++){
-						if(i != x && ii != z){
+				for(int i = x - 1; i < x + 2; i++){
+					for(int ii = z - 1; ii < z + 2; ii++){
+						if(i != x || ii != z){
 							if(!w.getBlock(i, y + 1, ii).equals(Blocks.iron_bars)){
 								b = false;
 							}
@@ -261,8 +261,8 @@ public class ItemElementalHammer extends ItemTool {
 					}
 				}
 				if(b){
-					for(int i = x - 1; i < x + 2; x++){
-						for(int ii = z - 1; ii < z + 2; z++){
+					for(int i = x - 1; i < x + 2; i++){
+						for(int ii = z - 1; ii < z + 2; ii++){
 							if(!w.getBlock(i, y - 1, ii).equals(Blocks.iron_block)){
 								b = false;
 							}
@@ -274,37 +274,34 @@ public class ItemElementalHammer extends ItemTool {
 							if(w.getBlock(x - 3, y - 1, z) instanceof BlockGeneric){
 								if(w.getBlock(x - 3, y, z) instanceof BlockGeneric){
 									if(w.getBlock(x - 3, y + 1, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 0){
-										if(w.getBlock(x - 3, y + 2, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 1){
+										if(w.getBlock(x - 3, y + 2, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 2, z) == 1){
 											if(w.getBlock(x - 2, y + 2, z) instanceof BlockGeneric){
 												//Thing 2
 												if(w.getBlock(x + 2, y - 1, z) instanceof BlockGeneric){
 													if(w.getBlock(x + 3, y - 1, z) instanceof BlockGeneric){
 														if(w.getBlock(x + 3, y, z) instanceof BlockGeneric){
-															if(w.getBlock(x + 3, y + 1, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 0){
-																if(w.getBlock(x + 3, y + 2, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 1){
+															if(w.getBlock(x + 3, y + 1, z) instanceof BlockStorage && w.getBlockMetadata(x + 3, y + 1, z) == 0){
+																if(w.getBlock(x + 3, y + 2, z) instanceof BlockStorage && w.getBlockMetadata(x + 3, y + 2, z) == 1){
 																	if(w.getBlock(x + 2, y + 2, z) instanceof BlockGeneric){
 																		//Thing 3
 																		if(w.getBlock(x, y - 1, z - 2) instanceof BlockGeneric){
 																			if(w.getBlock(x, y - 1, z - 3) instanceof BlockGeneric){
 																				if(w.getBlock(x, y, z - 3) instanceof BlockGeneric){
-																					if(w.getBlock(x, y + 1, z - 3) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 0){
-																						if(w.getBlock(x, y + 2, z - 3) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 1){
+																					if(w.getBlock(x, y + 1, z - 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 1, z - 3) == 0){
+																						if(w.getBlock(x, y + 2, z - 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 2, z - 3) == 1){
 																							if(w.getBlock(x, y + 2, z - 2) instanceof BlockGeneric){
 																								//Thing 4
 																								if(w.getBlock(x, y - 1, z + 2) instanceof BlockGeneric){
 																									if(w.getBlock(x, y - 1, z + 3) instanceof BlockGeneric){
 																										if(w.getBlock(x, y, z + 3) instanceof BlockGeneric){
-																											if(w.getBlock(x, y + 1, z + 3) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 0){
-																												if(w.getBlock(x, y + 2, z + 3) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 1){
+																											if(w.getBlock(x, y + 1, z + 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 1, z + 3) == 0){
+																												if(w.getBlock(x, y + 2, z + 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 2, z + 3) == 1){
 																													if(w.getBlock(x, y + 2, z + 2) instanceof BlockGeneric){
-																														item.worldObj
-																															.spawnEntityInWorld(new EntityLightningBolt(
-																																item.worldObj, item.posX, item.posY,
-																																item.posZ));
-																														item.worldObj.createExplosion((Entity) null, item.posX,
-																																item.posY, item.posZ, 10F, true);
-																														item.worldObj.spawnEntityInWorld(new EntityBuilder(
-																																item.worldObj, item.posX, 200D, item.posZ));
+																														w.spawnEntityInWorld(new EntityLightningBolt(
+																																w, x, y, z));
+																														w.createExplosion((Entity) null, x, y, z, 6F, true);
+																														w.spawnEntityInWorld(new EntityBuilder(
+																																w, x, y + 100D, z));
 																														item.setDead();
 																													}
 																												}
@@ -336,7 +333,7 @@ public class ItemElementalHammer extends ItemTool {
 		}
 		return false;
 	}
-
+	
 	public static enum EnumElement {
 		FIRE(), ICE(), EARTH(), AIR(), ORDER(), ENTROPY(), DARK(), LIGHT();
 	}

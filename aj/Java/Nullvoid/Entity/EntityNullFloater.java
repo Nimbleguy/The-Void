@@ -38,7 +38,7 @@ public class EntityNullFloater extends EntitySquid implements IVoidWalker {
 
         for (int k = 0; k < j; ++k)
         {
-            this.entityDropItem(new ItemStack(VoidMod.bucket, 1, 0), 0.0F);
+            this.entityDropItem(new ItemStack(VoidMod.nullInk, 1, 0), 0.0F);
         }
     }
 	@Override
