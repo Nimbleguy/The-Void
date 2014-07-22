@@ -88,66 +88,68 @@ public class ItemElementalHammer extends ItemTool {
 		return false;
 	}
 	private void onClick(EntityLivingBase p, World w, ItemStack i){
-		int[] values = new int[8];
-		values[0] = getElement(EnumElement.FIRE, i);
-		values[1] = getElement(EnumElement.ICE, i);
-		values[2] = getElement(EnumElement.EARTH, i);
-		values[3] = getElement(EnumElement.AIR, i);
-		values[4] = getElement(EnumElement.ORDER, i);
-		values[5] = getElement(EnumElement.ENTROPY, i);
-		values[6] = getElement(EnumElement.DARK, i);
-		values[7] = getElement(EnumElement.LIGHT, i);
-		boolean check = false;
-		int on = -1;
-		for(int bla = 0; bla < 8; bla++){
-			for(int value = 0; value < 8; value++){
-				if(values[value] != values[bla]){
-					check = true;
-					on = bla;
+		if(FMLCommonHandler.instance().getEffectiveSide().isServer()){
+			int[] values = new int[8];
+			values[0] = getElement(EnumElement.FIRE, i);
+			values[1] = getElement(EnumElement.ICE, i);
+			values[2] = getElement(EnumElement.EARTH, i);
+			values[3] = getElement(EnumElement.AIR, i);
+			values[4] = getElement(EnumElement.ORDER, i);
+			values[5] = getElement(EnumElement.ENTROPY, i);
+			values[6] = getElement(EnumElement.DARK, i);
+			values[7] = getElement(EnumElement.LIGHT, i);
+			boolean check = false;
+			int on = -1;
+			for(int bla = 0; bla < 8; bla++){
+				for(int value = 0; value < 8; value++){
+					if(values[value] != values[bla]){
+						check = true;
+						on = bla;
+					}
 				}
 			}
-		}
-		if(check){
-			switch(on){
-			case 0:
-				p.setFire(10);
-				return;
-			case 1:
-				for(int x = (int)p.posX - 2; x < (int)p.posX + 1; x++){
-					for(int y = (int)p.posY; y < (int)p.posY + 2; y++){
-						for(int z = (int)p.posZ - 2; z < (int)p.posZ + 1; z++){
-							w.setBlock(x, y, z, Blocks.ice);
+			if(check){
+				switch(on){
+				case 0:
+					p.setFire(10);
+					return;
+				case 1:
+					for(int x = (int)p.posX - 2; x < (int)p.posX + 1; x++){
+						for(int y = (int)p.posY; y < (int)p.posY + 2; y++){
+							for(int z = (int)p.posZ - 2; z < (int)p.posZ + 1; z++){
+								w.setBlock(x, y, z, Blocks.ice);
+							}
 						}
 					}
-				}
-				return;
-			case 2:
-				for(int x = (int)p.posX - 1; x < (int)p.posX + 2; x++){
-					for(int y = (int)p.posY + 2; y < (int)p.posY + 4; y++){
-						for(int z = (int)p.posZ - 1; z < (int)p.posZ + 2; z++){
-							w.setBlock(x, y, z, Blocks.gravel);
+					return;
+				case 2:
+					for(int x = (int)p.posX - 1; x < (int)p.posX + 2; x++){
+						for(int y = (int)p.posY + 2; y < (int)p.posY + 4; y++){
+							for(int z = (int)p.posZ - 1; z < (int)p.posZ + 2; z++){
+								w.setBlock(x, y, z, Blocks.gravel);
+							}
 						}
 					}
+					return;
+				case 3:
+					PacketHandler.INSTANCE.sendToServer(new PacketGearBelt(999F));
+					p.motionY = 999D;
+					return;
+				case 4:
+					p.width = new Random().nextInt(10);
+					p.height = new Random().nextInt(10);
+					return;
+				case 5:
+					p.addPotionEffect(new PotionEffect(VoidMod.PotIDDiss, 100000, 100000, true));
+					p.worldObj.createExplosion(p, p.posX, p.posY, p.posZ, 9999F, false);
+					return;
+				case 6:
+					p.addPotionEffect(new PotionEffect(Potion.blindness.id, 100000, 100000, true));
+					return;
+				case 7:
+					p.worldObj.spawnEntityInWorld(new EntityLightningBolt(p.worldObj, p.posX, p.posY, p.posZ));
+					return;
 				}
-				return;
-			case 3:
-				PacketHandler.INSTANCE.sendToServer(new PacketGearBelt(999F));
-				p.motionY = 999D;
-				return;
-			case 4:
-				p.width = new Random().nextInt(10);
-				p.height = new Random().nextInt(10);
-				return;
-			case 5:
-				p.addPotionEffect(new PotionEffect(VoidMod.PotIDDiss, 100000, 100000, true));
-				p.worldObj.createExplosion(p, p.posX, p.posY, p.posZ, 9999F, false);
-				return;
-			case 6:
-				p.addPotionEffect(new PotionEffect(Potion.blindness.id, 100000, 100000, true));
-				return;
-			case 7:
-				p.worldObj.spawnEntityInWorld(new EntityLightningBolt(p.worldObj, p.posX, p.posY, p.posZ));
-				return;
 			}
 		}
 	}
