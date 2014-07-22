@@ -32,6 +32,13 @@ public class EntityBuilder extends EntityCreature implements IVoidWalker {
 		
 		this.setSize(6F, 12F);
 	}
+	public EntityBuilder(World worldObj, double x, double y, double z) {
+		this(worldObj);
+		this.posX = x;
+		this.posY = y;
+		this.posZ = z;
+		this.setLocationAndAngles(x, y, z, 0F, 0F);
+	}
 	@Override
 	public boolean isAIEnabled()
 	{
