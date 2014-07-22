@@ -125,31 +125,48 @@ public class TickListner {
 				if (hasCircle(coords[0], coords[1], coords[2],
 						event.player.worldObj)) {
 					if(hasShell(coords[0], coords[1], coords[2], event.player.worldObj)){
-						event.component = new ChatComponentTranslation(
-								"<"
-										+ event.username
-										+ "> .won uoy evas nac cigam oN .gnimoc si hctilG ehT");
-						event.component.setChatStyle(new ChatStyle()
+						if(event.player.dimension == VoidMod.NullVoidDimID && coords[0] == 0 && coords[2] == 0){
+							event.component = new ChatComponentTranslation(
+									"<"
+											+ event.username
+											+ "> .won uoy evas nac cigam oN .gnimoc si hctilG ehT");
+							event.component.setChatStyle(new ChatStyle()
 							.setColor(EnumChatFormatting.DARK_PURPLE));
-						for (int i = 0; i < 10; i++) {
-							event.player.worldObj
+							for (int i = 0; i < 10; i++) {
+								event.player.worldObj
 								.spawnEntityInWorld(new EntityLightningBolt(
 										event.player.worldObj,
 										(double) coords[0], (double) coords[1],
 										(double) coords[2]));
+							}
+							event.player.worldObj.createExplosion((Entity) null,
+									(double) coords[0], (double) coords[1],
+									(double) coords[2], 4F, false);
+							event.player.worldObj.setBlock(coords[0], coords[1],
+									coords[2], Blocks.air);
+							event.player.addStat(VoidMod.summonGlitch, 1);
+							EntityGlitch ent = new EntityGlitch(
+									event.player.worldObj, (double) coords[0],
+									(double) coords[1], (double) coords[2]);
+							ent.setHealth(ent.getMaxHealth());
+							event.player.worldObj.spawnEntityInWorld(ent);
 						}
-						event.player.worldObj.createExplosion((Entity) null,
-								(double) coords[0], (double) coords[1],
-								(double) coords[2], 4F, false);
-						event.player.worldObj.setBlock(coords[0], coords[1],
-								coords[2], Blocks.air);
-						event.player.addStat(VoidMod.summonGlitch, 1);
-						EntityGlitch ent = new EntityGlitch(
-								event.player.worldObj, (double) coords[0],
-								(double) coords[1], (double) coords[2]);
-						ent.setHealth(ent.getMaxHealth());
-						event.player.worldObj.spawnEntityInWorld(ent);
-						// TODO: Add Void Check
+						else{
+							if(BaublesApi.getBaubles(event.player).getStackInSlot(0) != null && BaublesApi.getBaubles(event.player)
+									.getStackInSlot(0).getItem()
+									.equals(VoidMod.glitchAmulet)){
+								event.player
+								.addChatComponentMessage(new ChatComponentText(
+										"<G-----> Glitchiest spot").setChatStyle(new ChatStyle()
+										.setColor(EnumChatFormatting.DARK_PURPLE)));
+							}
+							else{
+								event.player
+								.addChatComponentMessage(new ChatComponentText(
+										"<------> Glitchiest spot").setChatStyle(new ChatStyle()
+										.setColor(EnumChatFormatting.DARK_PURPLE).setObfuscated(true)));
+							}
+						}
 					}
 					else{
 						if(BaublesApi.getBaubles(event.player).getStackInSlot(0) != null && BaublesApi.getBaubles(event.player)
@@ -167,33 +184,33 @@ public class TickListner {
 									.setColor(EnumChatFormatting.DARK_PURPLE).setObfuscated(true)));
 						}
 					}
-					
+
 				} else {
 					if (BaublesApi.getBaubles(event.player).getStackInSlot(0) != null) {
 						if (BaublesApi.getBaubles(event.player)
 								.getStackInSlot(0).getItem()
 								.equals(VoidMod.glitchAmulet)) {
 							event.player
-									.addChatComponentMessage(new ChatComponentText(
-											"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.").setChatStyle(new ChatStyle()
-											.setColor(EnumChatFormatting.DARK_PURPLE)));
+							.addChatComponentMessage(new ChatComponentText(
+									"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.").setChatStyle(new ChatStyle()
+									.setColor(EnumChatFormatting.DARK_PURPLE)));
 						} else {
 							event.player
-									.addChatComponentMessage(new ChatComponentText(
-											"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
-											.setChatStyle(new ChatStyle()
-													.setObfuscated(true)
-													.setColor(
-															EnumChatFormatting.DARK_PURPLE)));
+							.addChatComponentMessage(new ChatComponentText(
+									"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
+							.setChatStyle(new ChatStyle()
+							.setObfuscated(true)
+							.setColor(
+									EnumChatFormatting.DARK_PURPLE)));
 						}
 					} else {
 						event.player
-								.addChatComponentMessage(new ChatComponentText(
-										"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
-										.setChatStyle(new ChatStyle()
-												.setObfuscated(true)
-												.setColor(
-														EnumChatFormatting.DARK_PURPLE)));
+						.addChatComponentMessage(new ChatComponentText(
+								"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
+						.setChatStyle(new ChatStyle()
+						.setObfuscated(true)
+						.setColor(
+								EnumChatFormatting.DARK_PURPLE)));
 					}
 				}
 			} else {
@@ -201,26 +218,26 @@ public class TickListner {
 					if (BaublesApi.getBaubles(event.player).getStackInSlot(0)
 							.getItem().equals(VoidMod.glitchAmulet)) {
 						event.player
-								.addChatComponentMessage(new ChatComponentText(
-										"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.").setChatStyle(new ChatStyle()
-										.setColor(EnumChatFormatting.DARK_PURPLE)));
+						.addChatComponentMessage(new ChatComponentText(
+								"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.").setChatStyle(new ChatStyle()
+								.setColor(EnumChatFormatting.DARK_PURPLE)));
 					} else {
 						event.player
-								.addChatComponentMessage(new ChatComponentText(
-										"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
-										.setChatStyle(new ChatStyle()
-												.setObfuscated(true)
-												.setColor(
-														EnumChatFormatting.DARK_PURPLE)));
+						.addChatComponentMessage(new ChatComponentText(
+								"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
+						.setChatStyle(new ChatStyle()
+						.setObfuscated(true)
+						.setColor(
+								EnumChatFormatting.DARK_PURPLE)));
 					}
 				} else {
 					event.player
-							.addChatComponentMessage(new ChatComponentText(
-									"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
-									.setChatStyle(new ChatStyle()
-											.setObfuscated(true)
-											.setColor(
-													EnumChatFormatting.DARK_PURPLE)));
+					.addChatComponentMessage(new ChatComponentText(
+							"<Gh> Circ--___3_Bl----_G------_A---y_In_Ce-ter_F--me.")
+					.setChatStyle(new ChatStyle()
+					.setObfuscated(true)
+					.setColor(
+							EnumChatFormatting.DARK_PURPLE)));
 				}
 			}
 		}
@@ -460,8 +477,8 @@ public class TickListner {
 						System.out.println("In the void!");
 						if (p.dimension == VoidMod.NullVoidDimID) {
 							((EntityPlayerMP) p).playerNetServerHandler
-									.setPlayerLocation(p.posX, 512D, p.posZ,
-											p.rotationYaw, p.rotationPitch);
+							.setPlayerLocation(p.posX, 512D, p.posZ,
+									p.rotationYaw, p.rotationPitch);
 						}
 						p.addStat(VoidMod.fallVoid, 1);
 					}
@@ -476,16 +493,16 @@ public class TickListner {
 						}
 						if (!Utils.getInVoid(p)) {
 							MinecraftServer
-									.getServer()
-									.getConfigurationManager()
-									.transferPlayerToDimension(
-											(EntityPlayerMP) p,
-											0,
-											new TeleporterNullVoid(
-													MinecraftServer
-															.getServer()
-															.worldServerForDimension(
-																	0)));
+							.getServer()
+							.getConfigurationManager()
+							.transferPlayerToDimension(
+									(EntityPlayerMP) p,
+									0,
+									new TeleporterNullVoid(
+											MinecraftServer
+											.getServer()
+											.worldServerForDimension(
+													0)));
 							p.addChatComponentMessage(new ChatComponentText(
 									"The Void Does Not Like Your Cheats. GET. OUT. NOW."));
 						}
@@ -574,23 +591,23 @@ public class TickListner {
 					dissolvetimer--;
 				}
 				loop:
-				for(int i = 0; i < 10; i++){
-					if(dissolve[i] == null){
-						if(dissolvetimer == 0){
-							dissolvetimer = 4000;
-							Random r = new Random();
-							int w = r.nextInt(m.displayWidth - m.displayWidth/4);
-							int h = r.nextInt(m.displayHeight - m.displayHeight/4);
-							int wa = r.nextInt(m.displayWidth/4);
-							int ha = r.nextInt(m.displayHeight/4);
-							dissolve[i] = new DissolvingRender(w, h, wa, ha);
-							break loop;
+					for(int i = 0; i < 10; i++){
+						if(dissolve[i] == null){
+							if(dissolvetimer == 0){
+								dissolvetimer = 4000;
+								Random r = new Random();
+								int w = r.nextInt(m.displayWidth - m.displayWidth/4);
+								int h = r.nextInt(m.displayHeight - m.displayHeight/4);
+								int wa = r.nextInt(m.displayWidth/4);
+								int ha = r.nextInt(m.displayHeight/4);
+								dissolve[i] = new DissolvingRender(w, h, wa, ha);
+								break loop;
+							}
+						}
+						else{
+							dissolve[i].render(dissolving);
 						}
 					}
-					else{
-						dissolve[i].render(dissolving);
-					}
-				}
 			}
 			else{
 				dissolving = null;

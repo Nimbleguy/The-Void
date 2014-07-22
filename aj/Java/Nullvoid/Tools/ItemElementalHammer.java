@@ -13,6 +13,7 @@ import aj.Java.Nullvoid.block.BlockStorage;
 
 import com.google.common.collect.Sets;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -108,8 +109,8 @@ public class ItemElementalHammer extends ItemTool {
 		}
 		if(check){
 			switch(on){
-				case 0:
-					p.setFire(10);
+			case 0:
+				p.setFire(10);
 				return;
 			case 1:
 				for(int x = (int)p.posX - 2; x < (int)p.posX + 1; x++){
@@ -213,48 +214,39 @@ public class ItemElementalHammer extends ItemTool {
 				.setColor(EnumChatFormatting.AQUA)).getFormattedText());
 		l.add(new ChatComponentText("EARTH LEVEL: "
 				+ getElement(EnumElement.EARTH, i))
-				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)).getFormattedText());
+		.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)).getFormattedText());
 		l.add(new ChatComponentText("AIR LEVEL: "
 				+ getElement(EnumElement.AIR, i)).setChatStyle(new ChatStyle()
 				.setColor(EnumChatFormatting.YELLOW)).getFormattedText());
 		l.add(new ChatComponentText("ORDER LEVEL: "
 				+ getElement(EnumElement.ORDER, i))
-				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)).getFormattedText());
+		.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)).getFormattedText());
 		l.add(new ChatComponentText("ENTROPY LEVEL: "
 				+ getElement(EnumElement.ENTROPY, i))
-				.setChatStyle(new ChatStyle()
-						.setColor(EnumChatFormatting.DARK_GRAY)).getFormattedText());
+		.setChatStyle(new ChatStyle()
+		.setColor(EnumChatFormatting.DARK_GRAY)).getFormattedText());
 		l.add(new ChatComponentText("DARKNESS LEVEL: "
 				+ getElement(EnumElement.DARK, i)).setChatStyle(new ChatStyle()
 				.setBold(true)).getFormattedText());
 		l.add(new ChatComponentText("BRIGHTNESS LEVEL: "
 				+ getElement(EnumElement.LIGHT, i))
-				.setChatStyle(new ChatStyle()
-						.setColor(EnumChatFormatting.WHITE)).getFormattedText());
+		.setChatStyle(new ChatStyle()
+		.setColor(EnumChatFormatting.WHITE)).getFormattedText());
 	}
 
 	@Override
 	public boolean onEntityItemUpdate(EntityItem item){
-		World w = item.worldObj;
-		int x = (int) Math.floor(item.posX);
-		int y = (int) Math.floor(item.posY - 1);
-		int z = (int) Math.floor(item.posZ);
-		if(w.getBlock(x, y, z).equals(Blocks.lava)){
-			boolean b = true;
-			for(int i = x - 1; i < x + 2; i++){
-				for(int ii = z - 1; ii < z + 2; ii++){
-					if(i != x || ii != z){
-						if(!w.getBlock(i, y, ii).equals(Blocks.iron_block)){
-							b = false;
-						}
-					}
-				}
-			}
-			if(b){
+		if(FMLCommonHandler.instance().getEffectiveSide().isServer()){
+			World w = item.worldObj;
+			int x = (int) Math.floor(item.posX);
+			int y = (int) Math.floor(item.posY - 1);
+			int z = (int) Math.floor(item.posZ);
+			if(w.getBlock(x, y, z).equals(Blocks.lava)){
+				boolean b = true;
 				for(int i = x - 1; i < x + 2; i++){
 					for(int ii = z - 1; ii < z + 2; ii++){
 						if(i != x || ii != z){
-							if(!w.getBlock(i, y + 1, ii).equals(Blocks.iron_bars)){
+							if(!w.getBlock(i, y, ii).equals(Blocks.iron_block)){
 								b = false;
 							}
 						}
@@ -263,46 +255,57 @@ public class ItemElementalHammer extends ItemTool {
 				if(b){
 					for(int i = x - 1; i < x + 2; i++){
 						for(int ii = z - 1; ii < z + 2; ii++){
-							if(!w.getBlock(i, y - 1, ii).equals(Blocks.iron_block)){
-								b = false;
+							if(i != x || ii != z){
+								if(!w.getBlock(i, y + 1, ii).equals(Blocks.iron_bars)){
+									b = false;
+								}
 							}
 						}
 					}
 					if(b){
-						//Thing 1
-						if(w.getBlock(x - 2, y - 1, z) instanceof BlockGeneric){
-							if(w.getBlock(x - 3, y - 1, z) instanceof BlockGeneric){
-								if(w.getBlock(x - 3, y, z) instanceof BlockGeneric){
-									if(w.getBlock(x - 3, y + 1, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 0){
-										if(w.getBlock(x - 3, y + 2, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 2, z) == 1){
-											if(w.getBlock(x - 2, y + 2, z) instanceof BlockGeneric){
-												//Thing 2
-												if(w.getBlock(x + 2, y - 1, z) instanceof BlockGeneric){
-													if(w.getBlock(x + 3, y - 1, z) instanceof BlockGeneric){
-														if(w.getBlock(x + 3, y, z) instanceof BlockGeneric){
-															if(w.getBlock(x + 3, y + 1, z) instanceof BlockStorage && w.getBlockMetadata(x + 3, y + 1, z) == 0){
-																if(w.getBlock(x + 3, y + 2, z) instanceof BlockStorage && w.getBlockMetadata(x + 3, y + 2, z) == 1){
-																	if(w.getBlock(x + 2, y + 2, z) instanceof BlockGeneric){
-																		//Thing 3
-																		if(w.getBlock(x, y - 1, z - 2) instanceof BlockGeneric){
-																			if(w.getBlock(x, y - 1, z - 3) instanceof BlockGeneric){
-																				if(w.getBlock(x, y, z - 3) instanceof BlockGeneric){
-																					if(w.getBlock(x, y + 1, z - 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 1, z - 3) == 0){
-																						if(w.getBlock(x, y + 2, z - 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 2, z - 3) == 1){
-																							if(w.getBlock(x, y + 2, z - 2) instanceof BlockGeneric){
-																								//Thing 4
-																								if(w.getBlock(x, y - 1, z + 2) instanceof BlockGeneric){
-																									if(w.getBlock(x, y - 1, z + 3) instanceof BlockGeneric){
-																										if(w.getBlock(x, y, z + 3) instanceof BlockGeneric){
-																											if(w.getBlock(x, y + 1, z + 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 1, z + 3) == 0){
-																												if(w.getBlock(x, y + 2, z + 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 2, z + 3) == 1){
-																													if(w.getBlock(x, y + 2, z + 2) instanceof BlockGeneric){
-																														w.spawnEntityInWorld(new EntityLightningBolt(
-																																w, x, y, z));
-																														w.createExplosion((Entity) null, x, y, z, 6F, true);
-																														w.spawnEntityInWorld(new EntityBuilder(
-																																w, x, y + 100D, z));
-																														item.setDead();
+						for(int i = x - 1; i < x + 2; i++){
+							for(int ii = z - 1; ii < z + 2; ii++){
+								if(!w.getBlock(i, y - 1, ii).equals(Blocks.iron_block)){
+									b = false;
+								}
+							}
+						}
+						if(b){
+							//Thing 1
+							if(w.getBlock(x - 2, y - 1, z) instanceof BlockGeneric){
+								if(w.getBlock(x - 3, y - 1, z) instanceof BlockGeneric){
+									if(w.getBlock(x - 3, y, z) instanceof BlockGeneric){
+										if(w.getBlock(x - 3, y + 1, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 1, z) == 0){
+											if(w.getBlock(x - 3, y + 2, z) instanceof BlockStorage && w.getBlockMetadata(x - 3, y + 2, z) == 1){
+												if(w.getBlock(x - 2, y + 2, z) instanceof BlockGeneric){
+													//Thing 2
+													if(w.getBlock(x + 2, y - 1, z) instanceof BlockGeneric){
+														if(w.getBlock(x + 3, y - 1, z) instanceof BlockGeneric){
+															if(w.getBlock(x + 3, y, z) instanceof BlockGeneric){
+																if(w.getBlock(x + 3, y + 1, z) instanceof BlockStorage && w.getBlockMetadata(x + 3, y + 1, z) == 0){
+																	if(w.getBlock(x + 3, y + 2, z) instanceof BlockStorage && w.getBlockMetadata(x + 3, y + 2, z) == 1){
+																		if(w.getBlock(x + 2, y + 2, z) instanceof BlockGeneric){
+																			//Thing 3
+																			if(w.getBlock(x, y - 1, z - 2) instanceof BlockGeneric){
+																				if(w.getBlock(x, y - 1, z - 3) instanceof BlockGeneric){
+																					if(w.getBlock(x, y, z - 3) instanceof BlockGeneric){
+																						if(w.getBlock(x, y + 1, z - 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 1, z - 3) == 0){
+																							if(w.getBlock(x, y + 2, z - 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 2, z - 3) == 1){
+																								if(w.getBlock(x, y + 2, z - 2) instanceof BlockGeneric){
+																									//Thing 4
+																									if(w.getBlock(x, y - 1, z + 2) instanceof BlockGeneric){
+																										if(w.getBlock(x, y - 1, z + 3) instanceof BlockGeneric){
+																											if(w.getBlock(x, y, z + 3) instanceof BlockGeneric){
+																												if(w.getBlock(x, y + 1, z + 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 1, z + 3) == 0){
+																													if(w.getBlock(x, y + 2, z + 3) instanceof BlockStorage && w.getBlockMetadata(x, y + 2, z + 3) == 1){
+																														if(w.getBlock(x, y + 2, z + 2) instanceof BlockGeneric){
+																															w.spawnEntityInWorld(new EntityLightningBolt(
+																																	w, x, y, z));
+																															w.createExplosion((Entity) null, x, y, z, 6F, true);
+																															w.spawnEntityInWorld(new EntityBuilder(
+																																	w, x, y + 100D, z));
+																															item.setDead();
+																														}
 																													}
 																												}
 																											}
@@ -333,7 +336,7 @@ public class ItemElementalHammer extends ItemTool {
 		}
 		return false;
 	}
-	
+
 	public static enum EnumElement {
 		FIRE(), ICE(), EARTH(), AIR(), ORDER(), ENTROPY(), DARK(), LIGHT();
 	}

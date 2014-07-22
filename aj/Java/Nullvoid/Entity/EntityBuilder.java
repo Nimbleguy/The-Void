@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
@@ -26,9 +27,10 @@ public class EntityBuilder extends EntityCreature implements IVoidWalker {
         this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityGlitch.class, 1.0D, false));
         this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityGlitch.class, 8.0F));
-        this.tasks.addTask(5, new EntityAILookIdle(this));
+        this.tasks.addTask(6, new EntityAILookIdle(this));
         
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityGlitch.class, 0, true));
+        this.targetTasks.addTask(3, new EntityAIMoveTowardsTarget(this, 1D, Float.MAX_VALUE));
 		
         this.setSize(1.5F, 3F);
 	}
