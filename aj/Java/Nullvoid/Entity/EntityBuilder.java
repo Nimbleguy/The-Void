@@ -9,7 +9,8 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.item.ItemStack;
@@ -20,11 +21,14 @@ public class EntityBuilder extends EntityCreature implements IVoidWalker {
 
 	public EntityBuilder(World par1World) {
 		super(par1World);
-		this.tasks.addTask(0, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(1, new EntityAIWatchClosest(this, EntityGlitch.class, 8.0F));
-		this.tasks.addTask(2, new EntityAILookIdle(this));
-		this.tasks.addTask(3, new EntityAIMoveTowardsTarget(this, 5D, 20F));
-		this.targetTasks.addTask(0, new EntityAIAttackOnCollide(this, EntityGlitch.class, 5D, true));
+		this.getNavigator().setCanSwim(true);
+		this.tasks.addTask(1, new EntityAISwimming(this));
+		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityGlitch.class, 1.2D, false));
+		this.tasks.addTask(3, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityGlitch.class, 8.0F));
+		this.tasks.addTask(5, new EntityAILookIdle(this));
+		
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityGlitch.class, 0, true));
 		
 		this.setSize(6F, 12F);
 	}
