@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.VoidWorldData;
 import aj.Java.Nullvoid.Entity.Attack.GlitchCorrupt;
 import aj.Java.Nullvoid.Entity.Attack.GlitchCorrupt2;
@@ -29,6 +30,7 @@ import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
@@ -393,4 +395,9 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 			return true;
 		}
 	}
+	@Override
+	protected void dropFewItems(boolean par1, int par2)
+    {
+        this.entityDropItem(new ItemStack(VoidMod.pureGlitch, 1, 0), 0.0F);
+    }
 }

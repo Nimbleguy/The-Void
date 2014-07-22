@@ -54,6 +54,7 @@ import aj.Java.Nullvoid.item.ItemIngotNull;
 import aj.Java.Nullvoid.item.ItemIngotVoid;
 import aj.Java.Nullvoid.item.ItemNullInk;
 import aj.Java.Nullvoid.item.ItemNullVoidAlloy;
+import aj.Java.Nullvoid.item.ItemPureGlitch;
 import aj.Java.Nullvoid.item.ItemTablet;
 import aj.Java.Nullvoid.item.ItemVoidBook;
 import aj.Java.Nullvoid.item.ItemVoidRecord;
@@ -141,6 +142,7 @@ public class VoidMod implements LoadingCallback {
 	public static Item scatman = null;
 	public static Item pier = null;
 	public static Item nullInk = null;
+	public static Item pureGlitch = null;
 	public static Potion dissolving = null;
 	public static Block NullOre = null;
 	public static Block VoidFabric = null;
@@ -243,6 +245,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerItem(scatman, "scatman");
 		GameRegistry.registerItem(pier, "piertonowhere");
 		GameRegistry.registerItem(nullInk, "nullInk");
+		GameRegistry.registerItem(pureGlitch, "pureGlitch");
 
 		// Tile entities
 		GameRegistry.registerTileEntity(TileEntityVoidWalker.class,
@@ -543,6 +546,7 @@ public class VoidMod implements LoadingCallback {
 		scatman = new ItemVoidRecord("scatman").setUnlocalizedName("record");
 		pier = new ItemVoidRecord("piertonowhere").setUnlocalizedName("record");
 		nullInk = new ItemNullInk().setUnlocalizedName("nullInk");
+		pureGlitch = new ItemPureGlitch().setUnlocalizedName("pureGlitch");
 	}
 
 	private void blocks() {

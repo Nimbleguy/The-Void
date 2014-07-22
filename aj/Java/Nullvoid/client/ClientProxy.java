@@ -28,7 +28,7 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderers() {
 		//Entities
 		RenderingRegistry.registerEntityRenderingHandler(EntityNullFloater.class, new RenderNullFloater(new ModelSquid(), 1F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBuilder.class, new RenderBuilder(new ModelBiped(), 5F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityBuilder.class, new RenderBuilder(new ModelBiped(), 1F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGlitch.class, new RenderGlitch(new ModelNull(), 0F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityVoidCloud.class, new RenderVoidCloud(new ModelVoidCloud(), 1F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityVoidMaster.class, new RenderVoidMaster(new ModelVoidMaster(), 1F));

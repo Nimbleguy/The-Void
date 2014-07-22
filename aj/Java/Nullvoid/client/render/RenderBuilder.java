@@ -19,6 +19,6 @@ public class RenderBuilder extends RenderBiped {
 	}
 	@Override
 	protected void preRenderCallback(EntityLivingBase entity, float f){
-    	GL11.glScalef(10F, 10F, 10F);
+    	GL11.glScalef(2.5F, 2.5F, 2.5F);
     }
 }

@@ -22,15 +22,16 @@ public class EntityBuilder extends EntityCreature implements IVoidWalker {
 	public EntityBuilder(World par1World) {
 		super(par1World);
 		this.getNavigator().setCanSwim(true);
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityGlitch.class, 1.2D, false));
-		this.tasks.addTask(3, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityGlitch.class, 8.0F));
-		this.tasks.addTask(5, new EntityAILookIdle(this));
+		this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityGlitch.class, 1.0D, false));
+        this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityGlitch.class, 8.0F));
+        this.tasks.addTask(5, new EntityAILookIdle(this));
+        
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityGlitch.class, 0, true));
 		
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityGlitch.class, 0, true));
-		
-		this.setSize(6F, 12F);
+        this.setSize(1.5F, 3F);
+        //TODO: Fix spazzing.
 	}
 	public EntityBuilder(World worldObj, double x, double y, double z) {
 		this(worldObj);
