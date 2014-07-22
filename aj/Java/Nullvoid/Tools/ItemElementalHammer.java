@@ -135,7 +135,8 @@ public class ItemElementalHammer extends ItemTool {
 				p.motionY = 999D;
 				return;
 			case 4:
-				//TODO: ORDER EFFECT
+				p.width = new Random().nextInt(10);
+				p.height = new Random().nextInt(10);
 				return;
 			case 5:
 				p.addPotionEffect(new PotionEffect(VoidMod.PotIDDiss, 100000, 100000, true));
@@ -145,7 +146,7 @@ public class ItemElementalHammer extends ItemTool {
 				p.addPotionEffect(new PotionEffect(Potion.blindness.id, 100000, 100000, true));
 				return;
 			case 7:
-				//TODO: LIGHT EFFECT
+				p.worldObj.spawnEntityInWorld(new EntityLightningBolt(p.worldObj, p.posX, p.posY, p.posZ));
 				return;
 			}
 		}
