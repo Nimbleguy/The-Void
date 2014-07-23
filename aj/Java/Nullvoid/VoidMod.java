@@ -596,7 +596,7 @@ public class VoidMod implements LoadingCallback {
 		}
 		for (Field f : PotionHelper.class.getDeclaredFields()) {
 			try {
-				if (f.getName().equals("potionRequirements")) {
+				if (f.getName().equals("potionRequirements") || f.getName().equals("field_77927_l")) {
 					Field modfield = Field.class.getDeclaredField("modifiers");
 					f.setAccessible(true);
 					modfield.setAccessible(true);
