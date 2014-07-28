@@ -166,7 +166,8 @@ public class VoidMod implements LoadingCallback {
 	public static int PotIDDiss;
 	public static String PotBitDiss;
 	public static final String MODID = "nullvoid";
-	public static final String VERSION = "1.7.10-3.0.0-BETA";
+	public static final String VERSION = "1.7.10-3.0.2-BETA";
+	public static boolean shouldRetro = false;
 	public static Fluid liquidFlux = null;
 	public static Block blockLiquidFlux = null;
 	public static Item nullGoggles = null;
@@ -498,6 +499,8 @@ public class VoidMod implements LoadingCallback {
 				.getInt();
 		NullVoidBioID = config.get("generation", "Null Void Biome ID", 34)
 				.getInt();
+		shouldRetro = config.get("generation", "Should Retrogen", false)
+				.getBoolean();
 		
 		EntIDBuild = config.get("entity", "The Builder Entity ID", 1337)
 				.getInt();
@@ -508,6 +511,7 @@ public class VoidMod implements LoadingCallback {
 		EntIDFloat = config.get("entity", "Null Floater Entity ID", 1340)
 				.getInt();
 		EntIDGlitch = config.get("entity", "Glitch Entity ID", 1341).getInt();
+		
 		PotIDDiss = config.get("potion", "Dissolving Potion ID", 42).getInt();
 		PotBitDiss = config.get("potion", "Dissolving Potion Bit", "+0+1-2+3")
 				.getString();

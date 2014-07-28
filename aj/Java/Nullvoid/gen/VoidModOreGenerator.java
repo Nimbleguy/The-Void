@@ -2,8 +2,11 @@ package aj.Java.Nullvoid.gen;
 
 import java.util.Random;
 
+import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
+import aj.Java.Nullvoid.Biome.BiomeGenNull;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -32,14 +35,41 @@ public class VoidModOreGenerator implements IWorldGenerator {
 
 	}
 
-	private void genSurface(World world, Random random, int i, int j) {
+	private void genSurface(World w, Random r, int xx, int zz) {
 		for(int k = 0; k < 2; k++) {
-			int voidOreXCoord = i + random.nextInt(16);
-			int voidOreYCoord = random.nextInt(5);
-			int voidOreZCoord = j + random.nextInt(16);
+			int voidOreXCoord = xx + r.nextInt(16);
+			int voidOreYCoord = r.nextInt(5);
+			int voidOreZCoord = zz + r.nextInt(16);
 			//System.out.println(voidOreXCoord + " " + voidOreYCoord + " " + voidOreZCoord);
-			(new WorldGenMinable(VoidMod.NullOre, 2)).generate(world, random, voidOreXCoord, voidOreYCoord, voidOreZCoord);
+			(new WorldGenMinable(VoidMod.NullOre, 2)).generate(w, r, voidOreXCoord, voidOreYCoord, voidOreZCoord);
 		}
+		int[] xa = new int[16];
+		int[] za = new int[16];
+		for (int i = 0; i < 16; i++) {
+			xa[i] = (xx) + i;
+			za[i] = (zz) + i;
+		}
+		for (int x : xa) {
+			for (int z : za) {
+				if (w.getBiomeGenForCoords(x, z) instanceof BiomeGenNull) {
+					for (int y = 1; y < 256; y++) {
+						if (w.getBlock(x, y, z).equals(Blocks.stone)) {
+							if (r.nextInt(2) != 0) {
+								w.setBlock(x, y, z,
+										VoidMod.VoidFabric);
+							}
+						} else if (w.getBlock(x, y, z).equals(
+								Blocks.bedrock)) {
+							if (r.nextInt(5) == 2) {
+								w.setBlock(x, y, z,
+										VoidMod.VoidFabric);
+							}
+						}
+					}
+				}
+			}
+		}
+		Utils.hasGen.put(new ChunkCoordIntPair(xx, zz), true);
 		
 	}
 

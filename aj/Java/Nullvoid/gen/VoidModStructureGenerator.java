@@ -27,10 +27,10 @@ public class VoidModStructureGenerator implements IWorldGenerator {
 
 		(new WorldGenTARDIS()).generate(w, r, Xcoord1, Ycoord1, Zcoord1);
 	}
-	private void generateOver(World w, Random r, int x, int z){
-		int Xcoord1 = x + r.nextInt(16);
+	private void generateOver(World w, Random r, int xx, int zz){
+		int Xcoord1 = xx + r.nextInt(16);
 		int Ycoord1 = r.nextInt(200);
-		int Zcoord1 = z + r.nextInt(16);
+		int Zcoord1 = zz + r.nextInt(16);
 		if(r.nextInt(10000) == 413){
 			(new WorldGenReactor()).generate(w, r, Xcoord1, Ycoord1, Zcoord1);
 		}

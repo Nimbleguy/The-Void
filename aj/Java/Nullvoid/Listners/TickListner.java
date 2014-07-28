@@ -7,7 +7,6 @@ import java.util.Random;
 
 import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
-import aj.Java.Nullvoid.Biome.BiomeGenNull;
 import aj.Java.Nullvoid.Dimention.TeleporterNullVoid;
 import aj.Java.Nullvoid.Effects.Effects;
 import aj.Java.Nullvoid.Entity.EntityGlitch;
@@ -21,6 +20,7 @@ import aj.Java.Nullvoid.block.BlockGeneric;
 import aj.Java.Nullvoid.block.BlockGlitchFrame;
 import aj.Java.Nullvoid.block.BlockStorage;
 import aj.Java.Nullvoid.block.BlockVoidFabric;
+import aj.Java.Nullvoid.gen.VoidModOreGenerator;
 import baubles.api.BaublesApi;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.client.Minecraft;
@@ -42,7 +42,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.terraingen.OreGenEvent;
+import net.minecraftforge.event.world.ChunkWatchEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -99,7 +99,13 @@ public class TickListner {
 	}
 	*/
 	Integer i = null;
-
+	
+	public void chunkLoad(ChunkWatchEvent.Watch event){
+		if(!Utils.hasGen.get(event.chunk) && event.player.dimension == 0 && VoidMod.shouldRetro){
+			new VoidModOreGenerator().generate(new Random(), event.chunk.chunkXPos, event.chunk.chunkZPos, event.player.worldObj, null, null);
+		}
+	}
+	
 	@SubscribeEvent
 	public void playerChat(ServerChatEvent event) {
 		System.out.println(event.message);
