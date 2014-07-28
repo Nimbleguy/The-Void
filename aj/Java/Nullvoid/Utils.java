@@ -1,5 +1,6 @@
 package aj.Java.Nullvoid;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 
 public class Utils {
@@ -27,6 +29,7 @@ public class Utils {
 			specialKey = new KeyBinding("key.nullvoid_special.desc", Keyboard.KEY_BACKSLASH, "key.nullvoid.category");
 		}
 	}
+	public static HashMap<ChunkCoordIntPair, Boolean> hasGen = new HashMap<ChunkCoordIntPair, Boolean>(1000);
 	public static MovingObjectPosition rayTraceLiquid(World w, EntityPlayer p){
 		Vec3 vec3 = p.getPosition(5F);
         Vec3 vec31 = p.getLook(5F);
