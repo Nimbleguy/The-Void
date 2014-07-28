@@ -498,6 +498,7 @@ public class VoidMod implements LoadingCallback {
 				.getInt();
 		NullVoidBioID = config.get("generation", "Null Void Biome ID", 34)
 				.getInt();
+		
 		EntIDBuild = config.get("entity", "The Builder Entity ID", 1337)
 				.getInt();
 		EntIDWalk = config.get("entity", "Void Walker Entity ID", 1338)

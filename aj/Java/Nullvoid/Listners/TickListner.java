@@ -66,7 +66,7 @@ public class TickListner {
 	DissolvingRender[] dissolve;
 	GUIDissolving dissolving;
 	int dissolvetimer = 0;
-
+	/**
 	@SubscribeEvent
 	public void worldGen(OreGenEvent.Post event) {
 		int[] xa = new int[16];
@@ -97,7 +97,7 @@ public class TickListner {
 			}
 		}
 	}
-
+	*/
 	Integer i = null;
 
 	@SubscribeEvent
