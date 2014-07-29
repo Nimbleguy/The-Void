@@ -102,10 +102,10 @@ public class TickListner {
 	Integer i = null;
 	
 	public void chunkLoad(ChunkWatchEvent.Watch event){
-		if(!Utils.hasGen.get(event.chunk) && VoidMod.shouldRetro){
+		if(!Utils.hasGen.get(event.chunk) && VoidMod.shouldRetro && event.player.dimension == 0){
 			new VoidModOreGenerator().generate(new Random(), event.chunk.chunkXPos, event.chunk.chunkZPos, event.player.worldObj, null, null);
 		}
-		if(!Utils.hasStruct.get(event.chunk) && VoidMod.shouldRetro){
+		if(!Utils.hasStruct.get(event.chunk) && VoidMod.shouldRetro && event.player.dimension == 0){
 			new VoidModStructureGenerator().generate(new Random(), event.chunk.chunkXPos, event.chunk.chunkZPos, event.player.worldObj, null, null);
 		}
 	}

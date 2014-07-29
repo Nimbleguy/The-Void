@@ -2,7 +2,9 @@ package aj.Java.Nullvoid.gen;
 
 import java.util.Random;
 
+import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.common.IWorldGenerator;
@@ -34,5 +36,6 @@ public class VoidModStructureGenerator implements IWorldGenerator {
 		if(r.nextInt(10000) == 413){
 			(new WorldGenReactor()).generate(w, r, Xcoord1, Ycoord1, Zcoord1);
 		}
+		Utils.hasStruct.put(new ChunkCoordIntPair(xx, zz), true);
 	}
 }
