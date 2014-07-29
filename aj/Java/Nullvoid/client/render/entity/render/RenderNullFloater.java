@@ -1,4 +1,4 @@
-package aj.Java.Nullvoid.client.render;
+package aj.Java.Nullvoid.client.render.entity.render;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderSquid;

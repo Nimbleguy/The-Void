@@ -1,4 +1,4 @@
-package aj.Java.Nullvoid.client.render;
+package aj.Java.Nullvoid.client.render.entity.render;
 
 import org.lwjgl.opengl.GL11;
 

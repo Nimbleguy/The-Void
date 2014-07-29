@@ -3,6 +3,8 @@ package aj.Java.Nullvoid.client.render;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import aj.Java.Nullvoid.client.render.entity.model.ModelCube;
+import aj.Java.Nullvoid.client.render.entity.model.ModelVoidReactor;
 import aj.Java.Nullvoid.tileentity.TileEntityVoidReactor;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;

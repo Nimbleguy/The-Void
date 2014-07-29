@@ -1,21 +1,27 @@
-package aj.Java.Nullvoid.client.render;
+package aj.Java.Nullvoid.client.render.entity.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelVoidReactor extends ModelBase {
+public class ModelVoidCloud extends ModelBase {
 	public ModelRenderer base;
+	public ModelRenderer center;
 
-	public ModelVoidReactor() {
-		this.textureWidth = 192;
-		this.textureHeight = 96;
-
+	public ModelVoidCloud() {
+		this.textureWidth = 256;
+		this.textureHeight = 48;
 		this.setTextureOffset("base.base", 0, 0);
+		
+		this.setTextureOffset("center.center", 128, 24);
 
 		this.base = new ModelRenderer(this, "base");
-		this.base.setRotationPoint(0F, 0F, 0F);
-		this.base.addBox("base", -24F, 8F, -24F, 48, 48, 48);
+		this.base.setRotationPoint(8F, 6F, 8F);
+		this.base.addBox("base", -16F, 1F, -16F, 16, 14, 16);
+		
+		this.center = new ModelRenderer(this, "center");
+		this.center.setRotationPoint(6F, 8F, 6F);
+		this.center.addBox("center", -11F, -2F, -11F, 11, 16, 11);
 
 	}
 
@@ -24,6 +30,7 @@ public class ModelVoidReactor extends ModelBase {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		this.base.render(f5);
+		this.center.render(f5);
 
 	}
 
