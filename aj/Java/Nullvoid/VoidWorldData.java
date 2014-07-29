@@ -59,6 +59,7 @@ public class VoidWorldData extends WorldSavedData {
 		for(NBTTagCompound t : l){
 			coord = new ChunkCoordIntPair(t.getInteger("X"), t.getInteger("Z"));
 			Utils.hasGen.put(coord, t.getBoolean("hasGen"));
+			Utils.hasStruct.put(coord, t.getBoolean("hasStruct"));
 		}
 	}
 
@@ -73,6 +74,7 @@ public class VoidWorldData extends WorldSavedData {
 			t.setInteger("X", coord.chunkXPos);
 			t.setInteger("Z", coord.chunkZPos);
 			t.setBoolean("hasGen", Utils.hasGen.get(coord));
+			t.setBoolean("hasStruct", Utils.hasStruct.get(coord));
 			list.appendTag(t);
 		}
 		nbt.setTag("ChunkGen", list);

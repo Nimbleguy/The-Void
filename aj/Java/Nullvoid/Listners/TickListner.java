@@ -21,6 +21,7 @@ import aj.Java.Nullvoid.block.BlockGlitchFrame;
 import aj.Java.Nullvoid.block.BlockStorage;
 import aj.Java.Nullvoid.block.BlockVoidFabric;
 import aj.Java.Nullvoid.gen.VoidModOreGenerator;
+import aj.Java.Nullvoid.gen.VoidModStructureGenerator;
 import baubles.api.BaublesApi;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.client.Minecraft;
@@ -101,8 +102,11 @@ public class TickListner {
 	Integer i = null;
 	
 	public void chunkLoad(ChunkWatchEvent.Watch event){
-		if(!Utils.hasGen.get(event.chunk) && event.player.dimension == 0 && VoidMod.shouldRetro){
+		if(!Utils.hasGen.get(event.chunk) && VoidMod.shouldRetro){
 			new VoidModOreGenerator().generate(new Random(), event.chunk.chunkXPos, event.chunk.chunkZPos, event.player.worldObj, null, null);
+		}
+		if(!Utils.hasStruct.get(event.chunk) && VoidMod.shouldRetro){
+			new VoidModStructureGenerator().generate(new Random(), event.chunk.chunkXPos, event.chunk.chunkZPos, event.player.worldObj, null, null);
 		}
 	}
 	

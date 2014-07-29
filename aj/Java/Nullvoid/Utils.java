@@ -30,6 +30,7 @@ public class Utils {
 		}
 	}
 	public static HashMap<ChunkCoordIntPair, Boolean> hasGen = new HashMap<ChunkCoordIntPair, Boolean>(1000);
+	public static HashMap<ChunkCoordIntPair, Boolean> hasStruct = new HashMap<ChunkCoordIntPair, Boolean>(1000);
 	public static MovingObjectPosition rayTraceLiquid(World w, EntityPlayer p){
 		Vec3 vec3 = p.getPosition(5F);
         Vec3 vec31 = p.getLook(5F);
