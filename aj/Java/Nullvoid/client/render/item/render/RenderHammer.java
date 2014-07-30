@@ -2,8 +2,7 @@ package aj.Java.Nullvoid.client.render.item.render;
 
 import org.lwjgl.opengl.GL11;
 
-import aj.Java.Nullvoid.Tools.ItemElementalHammer;
-import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
+import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.client.render.item.model.ModelHammer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -45,36 +44,15 @@ public class RenderHammer implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack i, Object... data) 
 	{
 		ResourceLocation txt = null;
-		int[] values = new int[8];
-		values[0] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.FIRE, i);
-		values[1] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.ICE, i);
-		values[2] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.EARTH, i);
-		values[3] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.AIR, i);
-		values[4] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.ORDER, i);
-		values[5] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.ENTROPY, i);
-		values[6] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.DARK, i);
-		values[7] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.LIGHT, i);
-		boolean check = false;
-		txt = rl[8];
-		for(int bla = 0; bla < 8; bla++){
-			check = false;
-			for(int value = 0; value < 8; value++){
-				if(values[value] != values[bla]){
-					check = true;
-				}
-			}
-			if(check){
-				txt = rl[bla];
-			}
+		int typeh = Utils.hammerBalance(i);
+		txt = rl[0];
+		if(typeh != -1){
+			txt = rl[typeh];
 		}
 		GL11.glPushMatrix();
 		GL11.glScalef(2F, 2F, 2F);
-		GL11.glRotatef(67.5F, 0F, 1F, 0F);
 		if(type.compareTo(ItemRenderType.EQUIPPED_FIRST_PERSON) == 0){
-			GL11.glTranslatef(0.25F, 0F, 0F);
-		}
-		else{
-			GL11.glTranslatef(0F, 0F, -0.5F);
+			GL11.glRotatef(90F, 0F, 1F, 0F);
 		}
 		Minecraft.getMinecraft().renderEngine.bindTexture(txt);
 		if(data.length > 1){

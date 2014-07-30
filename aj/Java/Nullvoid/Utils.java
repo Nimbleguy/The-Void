@@ -11,9 +11,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import aj.Java.Nullvoid.Effects.Effect;
 import aj.Java.Nullvoid.Effects.Effects;
+import aj.Java.Nullvoid.Tools.ItemElementalHammer;
+import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
@@ -89,5 +92,25 @@ public class Utils {
 			}
 		}
 		return null;
+	}
+	public static int hammerBalance(ItemStack i){
+		int[] values = new int[8];
+		values[0] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.FIRE, i);
+		values[1] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.ICE, i);
+		values[2] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.EARTH, i);
+		values[3] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.AIR, i);
+		values[4] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.ORDER, i);
+		values[5] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.ENTROPY, i);
+		values[6] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.DARK, i);
+		values[7] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.LIGHT, i);
+		int greatest = values[0];
+		int index = -1;
+		for(int place = 0; place < 8; place++){
+			if(values[place] > greatest){
+				greatest = values[place];
+				index = place;
+			}
+		}
+		return index;
 	}
 }

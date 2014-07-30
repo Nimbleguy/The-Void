@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.VoidWorldData;
 import aj.Java.Nullvoid.Entity.Attack.GlitchCorrupt;
@@ -21,7 +22,6 @@ import aj.Java.Nullvoid.Entity.Attack.SpawnEntity;
 import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketParticle;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
-import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -198,49 +198,9 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		if (this.getHealth() > 4242.413) {
 			if (e instanceof EntityPlayer) {
 				if (((EntityPlayer) e).inventory.getCurrentItem() != null && ((EntityPlayer) e).inventory.getCurrentItem().getItem() instanceof ItemElementalHammer) {
-					int[] values = new int[8];
-					values[0] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
-							.getCurrentItem().getItem()).getElement(
-									EnumElement.FIRE,
-									((EntityPlayer) e).inventory.getCurrentItem());
-					values[1] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
-							.getCurrentItem().getItem()).getElement(
-									EnumElement.ICE,
-									((EntityPlayer) e).inventory.getCurrentItem());
-					values[2] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
-							.getCurrentItem().getItem()).getElement(
-									EnumElement.EARTH,
-									((EntityPlayer) e).inventory.getCurrentItem());
-					values[3] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
-							.getCurrentItem().getItem()).getElement(
-									EnumElement.AIR,
-									((EntityPlayer) e).inventory.getCurrentItem());
-					values[4] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
-							.getCurrentItem().getItem()).getElement(
-									EnumElement.ORDER,
-									((EntityPlayer) e).inventory.getCurrentItem());
-					values[5] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
-							.getCurrentItem().getItem()).getElement(
-									EnumElement.ENTROPY,
-									((EntityPlayer) e).inventory.getCurrentItem());
-					values[6] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
-							.getCurrentItem().getItem()).getElement(
-									EnumElement.DARK,
-									((EntityPlayer) e).inventory.getCurrentItem());
-					values[7] = ((ItemElementalHammer) ((EntityPlayer) e).inventory
-							.getCurrentItem().getItem()).getElement(
-									EnumElement.LIGHT,
-									((EntityPlayer) e).inventory.getCurrentItem());
-					boolean check = false;
-					for (int bla = 0; bla < 8; bla++) {
-						for (int value = 0; value < 8; value++) {
-							if (values[value] != values[bla]) {
-								check = true;
-							}
-						}
-					}
-					if (!check) {
-						return false;
+					int type = Utils.hammerBalance(((EntityPlayer) e).inventory.getCurrentItem());
+					if(type == -1){
+						return true;
 					}
 				}
 			}
