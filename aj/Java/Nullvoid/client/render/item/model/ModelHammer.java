@@ -12,8 +12,8 @@ public class ModelHammer extends ModelBase {
 		this.textureWidth = 48;
 		this.textureHeight = 21;
 
-		this.setTextureOffset("head.head", 0, 0);
-		this.setTextureOffset("handle.handle", 40, 8);
+		this.setTextureOffset("head.head", 0, 13);
+		this.setTextureOffset("handle.handle", 40, 0);
 
 		this.head = new ModelRenderer(this, "head");
 		this.head.setRotationPoint(0F, 0F, 0F);
