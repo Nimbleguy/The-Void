@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.VoidWorldData;
 import aj.Java.Nullvoid.Entity.Attack.GlitchCorrupt;
@@ -21,7 +20,6 @@ import aj.Java.Nullvoid.Entity.Attack.IGlitchAttack;
 import aj.Java.Nullvoid.Entity.Attack.SpawnEntity;
 import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketParticle;
-import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -42,10 +40,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWalker {
-	private Entity target;
-	private IGlitchAttack currentAttack;
+	public Entity target;
+	public IGlitchAttack currentAttack;
 	private float scale = 1F;
-	private int tier = 1;
+	public int tier = 1;
 	public HashMap<Integer, List<Class<? extends IGlitchAttack>>> attacks = new HashMap<Integer, List<Class<? extends IGlitchAttack>>>();
 	public EntityGlitch(World par1World) {
 		super(par1World);
@@ -172,7 +170,8 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		}
 		super.onLivingUpdate();
 	}
-
+	
+	/**
 	@Override
 	public boolean hitByEntity(Entity e) {
 		target = e;
@@ -211,6 +210,7 @@ public class EntityGlitch extends EntityMob implements IBossDisplayData, IVoidWa
 		}
 		return true;
 	}
+	*/
 	@Override
 	public IChatComponent func_145748_c_(){
 		return new ChatComponentText(EnumChatFormatting.OBFUSCATED.toString() + "OOO" + 

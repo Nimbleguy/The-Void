@@ -9,6 +9,7 @@ import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.Dimention.TeleporterNullVoid;
 import aj.Java.Nullvoid.Effects.Effects;
+import aj.Java.Nullvoid.Entity.EntityBuilder;
 import aj.Java.Nullvoid.Entity.EntityGlitch;
 import aj.Java.Nullvoid.Entity.IVoidWalker;
 import aj.Java.Nullvoid.GUI.GUIDissolving;
@@ -16,6 +17,7 @@ import aj.Java.Nullvoid.Packet.PacketHandler;
 import aj.Java.Nullvoid.Packet.PacketLighting;
 import aj.Java.Nullvoid.Potion.DissolvingRender;
 import aj.Java.Nullvoid.Tools.ItemBaneOfDarkness;
+import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.block.BlockGeneric;
 import aj.Java.Nullvoid.block.BlockGlitchFrame;
 import aj.Java.Nullvoid.block.BlockStorage;
@@ -27,6 +29,7 @@ import net.minecraft.block.BlockTorch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -43,6 +46,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -638,6 +642,52 @@ public class TickListner {
 			ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
 		if (eventArgs.modID.equals("nullvoid"))
 			VoidMod.config();
+	}
+	@SubscribeEvent
+	public void entityHurt(LivingAttackEvent event){
+		if(event.entityLiving instanceof EntityGlitch && event.entity != null){
+			EntityGlitch e = (EntityGlitch) event.entityLiving;
+			EntityLivingBase ent = (EntityLivingBase) event.entity;
+			e.target = e;
+			if(e.currentAttack != null && e.currentAttack.isDone()){
+				e.currentAttack = null;
+			}
+			else if(e.currentAttack != null){
+				e.currentAttack.use(e.target);
+			}
+			if(e.currentAttack == null){
+				try {
+					e.currentAttack = e.attacks.get(e.tier)
+							.get(new Random().nextInt(e.attacks.get(e.tier).size()))
+							.getConstructor(EntityGlitch.class)
+							.newInstance(e);
+					e.currentAttack.use(e.target);
+				}
+				catch (Exception err) {
+					System.err.println("There has been an error with the Void Mod. Please report this to Nimbleguy.");
+					err.printStackTrace(System.err);
+				}
+			}
+			boolean meow = true;
+			if (e.getHealth() > 4242.413) {
+				if (ent instanceof EntityPlayer) {
+					if (((EntityPlayer) ent).inventory.getCurrentItem() != null && ((EntityPlayer) ent).inventory.getCurrentItem().getItem() instanceof ItemElementalHammer) {
+						int type = Utils.hammerBalance(((EntityPlayer) ent).inventory.getCurrentItem());
+						if(type == -1){
+							meow = false;
+						}
+					}
+				}
+			} else {
+				if (ent instanceof EntityBuilder) {
+					meow = false;
+				}
+			}
+			event.setCanceled(meow);
+		}
+		else if(event.entityLiving instanceof EntityGlitch){
+			event.setCanceled(true);
+		}
 	}
 
 	/*
