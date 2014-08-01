@@ -1,5 +1,6 @@
 package aj.Java.Nullvoid.Packet;
 
+import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -16,7 +17,9 @@ public class PacketGearBelt implements IMessage, IMessageHandler<PacketGearBelt,
 	@Override
 	public IMessage onMessage(PacketGearBelt message, MessageContext ctx) {
 		if(ctx.side.isServer()){
-			ctx.getServerHandler().playerEntity.motionY += amount;
+			EntityPlayer p = ctx.getServerHandler().playerEntity;
+			p.motionY += amount;
+			p.setVelocity(p.motionX, p.motionY + amount, p.motionZ);
 		}
 		return null;
 	}

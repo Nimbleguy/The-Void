@@ -105,13 +105,13 @@ public class ItemElementalHammer extends ItemTool {
 					i.damageItem(100, p);
 					return;
 				case 4:
-					p.width = new Random().nextInt(10);
-					p.height = new Random().nextInt(10);
+					p.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 100000, 100000, true));
+					p.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, 100000, 100000, true));
 					i.damageItem(100, p);
 					return;
 				case 5:
 					p.addPotionEffect(new PotionEffect(VoidMod.PotIDDiss, 100000, 100000, true));
-					p.worldObj.createExplosion(p, p.posX, p.posY, p.posZ, 9999F, false);
+					p.worldObj.createExplosion(p, p.posX, p.posY, p.posZ, 99F, false);
 					i.damageItem(100, p);
 					return;
 				case 6:

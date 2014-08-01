@@ -19,7 +19,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 public class EntityBuilder extends EntityCreature implements IVoidWalker {
-
 	public EntityBuilder(World par1World) {
 		super(par1World);
 		this.getNavigator().setCanSwim(true);

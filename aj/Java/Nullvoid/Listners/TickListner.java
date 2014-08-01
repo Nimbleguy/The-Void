@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
@@ -68,7 +69,7 @@ public class TickListner {
 	}
 	private Random r = new Random();
 	public static float brightness = 0F;
-	DissolvingRender[] dissolve;
+	AtomicReferenceArray<DissolvingRender> dissolve;
 	GUIDissolving dissolving;
 	int dissolvetimer = 0;
 	/**
@@ -596,7 +597,7 @@ public class TickListner {
 		if(m.thePlayer != null){
 			if(m.thePlayer.getActivePotionEffect(VoidMod.dissolving) != null){
 				if(dissolve == null){
-					dissolve = new DissolvingRender[10];
+					dissolve = new AtomicReferenceArray<DissolvingRender>(10);
 				}
 				if(dissolving == null){
 					dissolving = new GUIDissolving();
@@ -606,7 +607,7 @@ public class TickListner {
 				}
 				loop:
 					for(int i = 0; i < 10; i++){
-						if(dissolve[i] == null){
+						if(dissolve.get(i) == null){
 							if(dissolvetimer == 0){
 								dissolvetimer = 4000;
 								Random r = new Random();
@@ -614,12 +615,12 @@ public class TickListner {
 								int h = r.nextInt(m.displayHeight - m.displayHeight/4);
 								int wa = r.nextInt(m.displayWidth/4);
 								int ha = r.nextInt(m.displayHeight/4);
-								dissolve[i] = new DissolvingRender(w, h, wa, ha);
+								dissolve.set(i, new DissolvingRender(w, h, wa, ha));
 								break loop;
 							}
 						}
 						else{
-							dissolve[i].render(dissolving);
+							dissolve.get(i).render(dissolving);
 						}
 					}
 			}

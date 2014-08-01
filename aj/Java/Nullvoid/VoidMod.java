@@ -9,6 +9,7 @@ import java.util.List;
 import aj.Java.Nullvoid.Armor.ArmorNull;
 import aj.Java.Nullvoid.Armor.GlitchAmulet;
 import aj.Java.Nullvoid.Armor.GravityBelt;
+import aj.Java.Nullvoid.Armor.PhantomRing;
 import aj.Java.Nullvoid.Biome.BiomeGenNull;
 import aj.Java.Nullvoid.Dimention.WorldProviderNullVoid;
 import aj.Java.Nullvoid.Entity.EntityBuilder;
@@ -143,6 +144,7 @@ public class VoidMod implements LoadingCallback {
 	public static Item pier = null;
 	public static Item nullInk = null;
 	public static Item pureGlitch = null;
+	public static Item phantom = null;
 	public static Potion dissolving = null;
 	public static Block NullOre = null;
 	public static Block VoidFabric = null;
@@ -247,6 +249,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerItem(pier, "piertonowhere");
 		GameRegistry.registerItem(nullInk, "nullInk");
 		GameRegistry.registerItem(pureGlitch, "pureGlitch");
+		GameRegistry.registerItem(phantom, "phantomRing");
 
 		// Tile entities
 		GameRegistry.registerTileEntity(TileEntityVoidWalker.class,
@@ -552,6 +555,7 @@ public class VoidMod implements LoadingCallback {
 		pier = new ItemVoidRecord("piertonowhere").setUnlocalizedName("record");
 		nullInk = new ItemNullInk().setUnlocalizedName("nullInk");
 		pureGlitch = new ItemPureGlitch().setUnlocalizedName("pureGlitch");
+		phantom = new PhantomRing().setUnlocalizedName("phantomRing");
 	}
 
 	private void blocks() {
