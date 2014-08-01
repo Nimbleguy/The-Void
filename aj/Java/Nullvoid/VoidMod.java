@@ -30,6 +30,7 @@ import aj.Java.Nullvoid.block.BlockGeneric;
 import aj.Java.Nullvoid.block.BlockGlitchFrame;
 import aj.Java.Nullvoid.block.BlockMoltenFlux;
 import aj.Java.Nullvoid.block.BlockNullOre;
+import aj.Java.Nullvoid.block.BlockPhantom;
 import aj.Java.Nullvoid.block.BlockStorage;
 import aj.Java.Nullvoid.block.BlockSwordWall;
 import aj.Java.Nullvoid.block.BlockTransparent;
@@ -60,6 +61,7 @@ import aj.Java.Nullvoid.item.ItemTablet;
 import aj.Java.Nullvoid.item.ItemVoidBook;
 import aj.Java.Nullvoid.item.ItemVoidRecord;
 import aj.Java.Nullvoid.item.ItemYingYang;
+import aj.Java.Nullvoid.tileentity.TileEntityPhantom;
 import aj.Java.Nullvoid.tileentity.TileEntitySwordWall;
 import aj.Java.Nullvoid.tileentity.TileEntityVoidReactor;
 import aj.Java.Nullvoid.tileentity.TileEntityVoidWalker;
@@ -158,6 +160,7 @@ public class VoidMod implements LoadingCallback {
 	public static Block glitchFrame = null;
 	public static Block transparent = null;
 	public static Block storage = null;
+	public static Block phantomB = null;
 	public static int NullVoidDimID;
 	public static int NullVoidBioID;
 	public static int EntIDBuild;
@@ -223,6 +226,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerBlock(glitchFrame, "glitchFrame");
 		GameRegistry.registerBlock(transparent, "transparent");
 		GameRegistry.registerBlock(storage, ItemBlockStorage.class, "storage");
+		GameRegistry.registerBlock(phantomB, "phantomBlock");
 
 		// Items
 		GameRegistry.registerItem(bucket, "bucketFlux");
@@ -258,6 +262,8 @@ public class VoidMod implements LoadingCallback {
 				"NullSwordWall");
 		GameRegistry.registerTileEntity(TileEntityVoidReactor.class,
 				"NullVoidReactor");
+		GameRegistry.registerTileEntity(TileEntityPhantom.class,
+				"NullVoidPhantom");
 
 		// Oredict
 		OreDictionary.registerOre("crystalNull", ingotNull);
@@ -577,6 +583,7 @@ public class VoidMod implements LoadingCallback {
 		voidReactor = new BlockVoidReactor(Material.iron)
 				.setBlockName("voidReactor");
 		biomeNullVoid = new BiomeGenNull(NullVoidBioID);
+		phantomB = new BlockPhantom().setBlockName("phantomBlock");
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,5 +1,6 @@
 package aj.Java.Nullvoid;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,9 @@ import aj.Java.Nullvoid.Effects.Effect;
 import aj.Java.Nullvoid.Effects.Effects;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
+import net.minecraft.block.Block;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -23,6 +26,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class Utils {
 	@SideOnly(Side.CLIENT)
@@ -40,8 +45,8 @@ public class Utils {
         Vec3 vec32 = vec3.addVector(vec31.xCoord * 5D, vec31.yCoord * 5D, vec31.zCoord * 5D);
         return w.rayTraceBlocks(vec3, vec32, true);
 	}
-	public static NBTTagCompound getEntityTag(EntityPlayer p){
-		NBTTagCompound entityData = p.getEntityData();
+	public static NBTTagCompound getEntityTag(EntityLivingBase arg1){
+		NBTTagCompound entityData = arg1.getEntityData();
 		NBTTagCompound persist;
 		if (!entityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
 		    entityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persist = new NBTTagCompound()));
@@ -112,5 +117,31 @@ public class Utils {
 			}
 		}
 		return index;
+	}
+	public static List<ItemStack> getBlockDrops(WorldServer world, int i, int j, int k, EntityPlayer p) {
+		Block block = world.getBlock(i, j, k);
+
+		if (block == null) {
+			return null;
+		}
+
+		if (block.isAir(world, i, j, k)) {
+			return null;
+		}
+
+		int meta = world.getBlockMetadata(i, j, k);
+
+		ArrayList<ItemStack> dropsList = block.getDrops(world, i, j, k, meta, 0);
+		float dropChance = ForgeEventFactory.fireBlockHarvesting(dropsList, world, block, i, j, k, meta, 0, 1.0F,
+				false, p);
+
+		ArrayList<ItemStack> returnList = new ArrayList<ItemStack>();
+		for (ItemStack s : dropsList) {
+			if (world.rand.nextFloat() <= dropChance) {
+				returnList.add(s);
+			}
+		}
+
+		return returnList;
 	}
 }

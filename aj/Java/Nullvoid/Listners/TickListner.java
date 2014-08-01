@@ -21,20 +21,24 @@ import aj.Java.Nullvoid.Tools.ItemBaneOfDarkness;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.block.BlockGeneric;
 import aj.Java.Nullvoid.block.BlockGlitchFrame;
+import aj.Java.Nullvoid.block.BlockPhantom;
 import aj.Java.Nullvoid.block.BlockStorage;
 import aj.Java.Nullvoid.block.BlockVoidFabric;
 import aj.Java.Nullvoid.gen.VoidModOreGenerator;
 import aj.Java.Nullvoid.gen.VoidModStructureGenerator;
 import baubles.api.BaublesApi;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -44,10 +48,14 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -688,6 +696,63 @@ public class TickListner {
 		}
 		else if(event.entityLiving instanceof EntityGlitch){
 			event.setCanceled(true);
+		}
+	}
+	@SubscribeEvent
+	public void blockBreak(BlockEvent.BreakEvent event){
+		if(Utils.getEntityTag(event.getPlayer()).getBoolean("HasPhantom")){
+			if(event.getPlayer().dimension == VoidMod.NullVoidDimID){
+				WorldServer w = DimensionManager.getWorld(0);
+				if(w.getBlock(event.x, event.y, event.z) != null && !w.getBlock(event.x, event.y, event.z).equals(Blocks.air)){
+					List<ItemStack> list = Utils.getBlockDrops(w, event.x, event.y, event.z, event.getPlayer());
+					for(ItemStack i : list){
+						if(i != null){
+							w.spawnEntityInWorld(new EntityItem(w, event.x, event.y, event.z, i));
+						}
+					}
+					w.setBlockToAir(event.x, event.y, event.z);
+				}
+			}
+		}
+	}
+	@SubscribeEvent
+	public void blockPlace(PlayerInteractEvent event){
+		if(event.action.compareTo(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) == 0){
+			if(Utils.getEntityTag(event.entityPlayer).getBoolean("HasPhantom")){
+				if(event.entityPlayer.dimension == VoidMod.NullVoidDimID){
+					WorldServer w = DimensionManager.getWorld(0);
+					if(w.getBlock(event.x, event.y, event.z) == null || w.getBlock(event.x, event.y, event.z).equals(Blocks.air)){
+						int x = event.x;
+						int y = event.y;
+						int z = event.z;
+						switch(event.face)
+						{
+						case 0:
+							y--;
+							break;
+						case 1:
+							y++;
+							break;
+						case 2:
+							z--;
+							break;
+						case 3:
+							z++;
+							break;
+						case 4:
+							x--;
+							break;
+						case 5:
+							x++;
+							break;
+						}
+						Block b = Block.getBlockById(Item.getIdFromItem(event.entityPlayer.inventory.getCurrentItem().getItem()));
+						if(BlockPhantom.isValid(b)){
+							BlockPhantom.setPhantom(w, x, y, z, b, event.entityPlayer.inventory.getCurrentItem().getItemDamage());
+						}
+					}
+				}
+			}
 		}
 	}
 
