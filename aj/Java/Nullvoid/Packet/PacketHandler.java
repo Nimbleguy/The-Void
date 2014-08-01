@@ -17,5 +17,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(PacketFallDamage.class, PacketFallDamage.class, 4, Side.SERVER);
         INSTANCE.registerMessage(PacketFireball.class, PacketFireball.class, 5, Side.SERVER);
         INSTANCE.registerMessage(PacketParticle.class, PacketParticle.class, 6, Side.CLIENT);
+        INSTANCE.registerMessage(PacketPhantom.class, PacketPhantom.class, 7, Side.SERVER);
+        INSTANCE.registerMessage(PacketPhantom.class, PacketPhantom.class, 8, Side.CLIENT);
     }
 }

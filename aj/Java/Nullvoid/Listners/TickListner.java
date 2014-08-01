@@ -746,7 +746,7 @@ public class TickListner {
 							x++;
 							break;
 						}
-						Block b = Block.getBlockById(Item.getIdFromItem(event.entityPlayer.inventory.getCurrentItem().getItem()));
+						Block b = Block.getBlockFromName(Item.itemRegistry.getNameForObject(event.entityPlayer.inventory.getCurrentItem().getItem()));
 						if(BlockPhantom.isValid(b)){
 							BlockPhantom.setPhantom(w, x, y, z, b, event.entityPlayer.inventory.getCurrentItem().getItemDamage());
 						}

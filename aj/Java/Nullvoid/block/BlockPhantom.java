@@ -1,6 +1,8 @@
 package aj.Java.Nullvoid.block;
 
 import aj.Java.Nullvoid.VoidMod;
+import aj.Java.Nullvoid.Packet.PacketHandler;
+import aj.Java.Nullvoid.Packet.PacketPhantom;
 import aj.Java.Nullvoid.tileentity.TileEntityPhantom;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -19,13 +21,15 @@ public class BlockPhantom extends BlockContainer {
 	
 	@Override
 	public IIcon getIcon(IBlockAccess w, int x, int y, int z, int side){
-		TileEntityPhantom t = (TileEntityPhantom) w.getTileEntity(x, y, z);
-		System.out.println("meowmix");
-		if(t.getPhantom() != null){
-			System.out.println("icon");
-			return t.getPhantom().getIcon(side, t.getMeta());
+		TileEntity t = w.getTileEntity(x, y, z);
+		if(t instanceof TileEntityPhantom){
+			TileEntityPhantom ph = (TileEntityPhantom) t;
+			PacketHandler.INSTANCE.sendToServer(new PacketPhantom(x, y, z, "", 0));
+			if(ph.phantom != null){
+				return ph.phantom.getIcon(side, ph.metad);
+			}
 		}
-		return null;
+		return VoidMod.VoidFabric.getIcon(side, 0);
 	}
 	
 	@Override
