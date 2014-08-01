@@ -27,17 +27,14 @@ public class PacketPhantom implements IMessage, IMessageHandler<PacketPhantom, I
 	}
 	@Override
 	public IMessage onMessage(PacketPhantom m, MessageContext ctx) {
-		System.out.println("BOO");
 		if(ctx.side.isServer()){
 			TileEntityPhantom t = (TileEntityPhantom)(DimensionManager.getWorld(0).getTileEntity(m.x, m.y, m.z));
-			System.out.println("return");
 			return new PacketPhantom(m.x, m.y, m.z, Block.blockRegistry.getNameForObject(t.phantom), t.metad);
 		}
 		else{
 			TileEntityPhantom t = (TileEntityPhantom)(Minecraft.getMinecraft().theWorld.getTileEntity(m.x, m.y, m.z));
 			t.phantom = Block.getBlockFromName(m.name);
 			t.metad = m.meta;
-			System.out.println("update");
 			Minecraft.getMinecraft().theWorld.markBlockRangeForRenderUpdate(m.x, m.y, m.z, m.x, m.y, m.z);
 		}
 		return null;
@@ -53,7 +50,6 @@ public class PacketPhantom implements IMessage, IMessageHandler<PacketPhantom, I
 		for(int i = 0; i < length; i++){
 			b.append(buf.readChar());
 		}
-		System.out.println(b.toString());
 		name = b.toString();
 		meta = buf.readInt();
 	}
@@ -67,7 +63,6 @@ public class PacketPhantom implements IMessage, IMessageHandler<PacketPhantom, I
 		for(char c : name.toCharArray()){
 			buf.writeChar(c);
 		}
-		System.out.println(name);
 		buf.writeInt(meta);
 	}
 }

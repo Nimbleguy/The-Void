@@ -24,9 +24,11 @@ public class BlockPhantom extends BlockContainer {
 		TileEntity t = w.getTileEntity(x, y, z);
 		if(t instanceof TileEntityPhantom){
 			TileEntityPhantom ph = (TileEntityPhantom) t;
-			PacketHandler.INSTANCE.sendToServer(new PacketPhantom(x, y, z, "", 0));
 			if(ph.phantom != null){
 				return ph.phantom.getIcon(side, ph.metad);
+			}
+			else{
+				PacketHandler.INSTANCE.sendToServer(new PacketPhantom(x, y, z, "", 0));
 			}
 		}
 		return VoidMod.VoidFabric.getIcon(side, 0);

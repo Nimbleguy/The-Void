@@ -1,5 +1,6 @@
 package aj.Java.Nullvoid.Armor;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,10 @@ public class PhantomRing extends Item implements IBauble {
 		this.setCreativeTab(VoidMod.ctab);
 		this.setMaxStackSize(1);
 	}
-	
+	@Override
+	public void registerIcons(IIconRegister i){
+		this.itemIcon = i.registerIcon("nullvoid:ringPhantom");
+	}
 	@Override
 	public boolean canEquip(ItemStack arg0, EntityLivingBase arg1) {
 		return true;

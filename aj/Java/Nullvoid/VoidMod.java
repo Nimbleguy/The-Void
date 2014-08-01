@@ -171,7 +171,7 @@ public class VoidMod implements LoadingCallback {
 	public static int PotIDDiss;
 	public static String PotBitDiss;
 	public static final String MODID = "nullvoid";
-	public static final String VERSION = "1.7.10-3.2.0-BETA";
+	public static final String VERSION = "1.7.10-3.3.0-BETA";
 	public static boolean shouldRetro = false;
 	public static Fluid liquidFlux = null;
 	public static Block blockLiquidFlux = null;
@@ -442,6 +442,12 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(glitchAmulet),
 				"SYS", "YCY", "YYY", 'S', Items.string, 'Y', yingYang, 'C',
 				glitchCore));
+		
+		//Tier 2 crafting
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(phantom),
+				"YYY", "YPY", "YYY", 'Y', yingYang, 'P',
+				pureGlitch));
+		
 		// Smelting
 		GameRegistry.addSmelting(NullOre, new ItemStack(ingotNull), 0.5f);
 		GameRegistry.addSmelting(voidOre, new ItemStack(ingotVoid), 1f);
