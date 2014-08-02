@@ -31,7 +31,7 @@ public class ItemVoidBook extends ItemEditableBook {
 		setHasSubtypes(true);
 		setMaxDamage(0);
 	}
-	public static final String[] names = new String[] {"myth", "craft"};
+	public static final String[] names = new String[] {"myth", "craft", "craft2", "myth2"};
 	public ItemStack getStack(int meta){
 		ItemStack tomeStack = new ItemStack(this, 1, meta);
 		if(meta == 0){
@@ -43,7 +43,7 @@ public class ItemVoidBook extends ItemEditableBook {
 			tomeStack.setTagInfo("author", new NBTTagString("Eglarbroad Vandelsnatch"));
 			tomeStack.setTagInfo("title", new NBTTagString("Void Mythology"));
 		}
-		else{
+		else if(meta == 1){
 			NBTTagList bookPages = new NBTTagList();
 			for(String s : getPagesCraft()){
 				bookPages.appendTag(new NBTTagString(s));
@@ -52,6 +52,24 @@ public class ItemVoidBook extends ItemEditableBook {
 			tomeStack.setTagInfo("author", new NBTTagString("Vandelgrot Shnelesky"));
 			tomeStack.setTagInfo("title", new NBTTagString("Forging Void Instruments"));
 		}
+		else if(meta == 2){
+			NBTTagList bookPages = new NBTTagList();
+			for(String s : getPagesCraft2()){
+				bookPages.appendTag(new NBTTagString(s));
+			}
+			tomeStack.setTagInfo("pages", bookPages);
+			tomeStack.setTagInfo("author", new NBTTagString("The Prince"));
+			tomeStack.setTagInfo("title", new NBTTagString("stnemurtsnI dioV gnigroF"));
+		}
+		else if(meta == 3){
+			NBTTagList bookPages = new NBTTagList();
+			for(String s : getPagesMyth2()){
+				bookPages.appendTag(new NBTTagString(s));
+			}
+			tomeStack.setTagInfo("pages", bookPages);
+			tomeStack.setTagInfo("author", new NBTTagString("The Prince"));
+			tomeStack.setTagInfo("title", new NBTTagString("ygolohtyM dioV"));
+		}
 		return tomeStack;
 	}
 	@SuppressWarnings("unchecked")
@@ -59,6 +77,8 @@ public class ItemVoidBook extends ItemEditableBook {
 	public void getSubItems(Item i, CreativeTabs t, @SuppressWarnings("rawtypes") List l){
 		l.add(getStack(0));
 		l.add(getStack(1));
+		l.add(getStack(2));
+		l.add(getStack(3));
 	}
 	private List<String> getPagesCraft(){
 		List<String> l = new ArrayList<String>();
@@ -274,6 +294,16 @@ public class ItemVoidBook extends ItemEditableBook {
 				+ " become moldable."
 				+ "Other materials will react when taken to 2^10Y or the inhabitable void."
 				);
+		l.add(setFormat("HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO ", EnumChatFormatting.OBFUSCATED));
 		return l;
 	}
 	private List<String> getPagesMyth(){
@@ -344,6 +374,62 @@ public class ItemVoidBook extends ItemEditableBook {
 				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
 				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
 				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO ", EnumChatFormatting.OBFUSCATED));
+		return l;
+	}
+	private List<String> getPagesCraft2(){
+		List<String> l = getPagesCraft();
+		l.add(setFormat("HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO ", EnumChatFormatting.RED));
+		l.add(setFormat("Why, hello there. I am The Prince. I shall be your guide today. "
+				+ "Don't worry, the original writer of this book is...\n"
+				+ "Lets say trapped. "
+				+ "Well, in the next few pages I will elaborate on various diffrent things. ", EnumChatFormatting.RED));
+		l.add(setFormat("Well, it seems like I will have to continue on the theme of the book. "
+				+ "So these recipies have been thaught to be Tier 2. "
+				+ "These can be done in a regular crafting table.", EnumChatFormatting.RED));
+		l.add(setFormat("RING OF THE PHANTOM\n"
+				+ "YYY\n"
+				+ "YPY\n"
+				+ "YYY\n"
+				+ "Y = Ying-Yang Ingot. P = Pure Glitch.", EnumChatFormatting.RED));
+		return l;
+	}
+	private List<String> getPagesMyth2(){
+		List<String> l = getPagesMyth();
+		l.add(setFormat("HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO "
+				+ "HA HA HA HE HE HE HO HO HO HA HA HA HE HE HE HO HO HO ", EnumChatFormatting.RED));
+		l.add(setFormat("Why, hello there. I am The Prince. I shall be your guide today. "
+				+ "Don't worry, the original writer of this book is...\n"
+				+ "Lets say trapped. "
+				+ "Well, in the next few pages I will elaborate on various diffrent things. ", EnumChatFormatting.RED));
+		l.add(setFormat("Well, first I should talk about The Destroyer."
+				+ "The Destroyer. A destroyer by name. A pure embodyment of something wrong.\n"
+				+ "My minion.", EnumChatFormatting.RED));
+		l.add(setFormat("Only a weapon forged by one of the Creation Trio can even hurt it."
+				+ " Then the defences build. It gets stronger as it gets weaker."
+				+ " It is a paradox in itself."
+				+ " Watch out.", EnumChatFormatting.RED));
+		l.add(setFormat("Before we delve into some more cloudy things, I need to say this. "
+				+ "I do not know everything. Some things are foggy to me. "
+				+ "Especially things about the nature of Pure Glitch.", EnumChatFormatting.RED));
+		l.add(setFormat("The Ring of the Phantom. It creates a phantom."
+				+ "It seems to work best in The Void. It works by weakening spacetime.", EnumChatFormatting.RED));
 		return l;
 	}
 	private String setFormat(String s, EnumChatFormatting e){

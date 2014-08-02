@@ -100,6 +100,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -447,6 +448,10 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(phantom),
 				"YYY", "YPY", "YYY", 'Y', yingYang, 'P',
 				pureGlitch));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(voidBook.getStack(2),
+				voidBook.getStack(1), new ItemStack(pureGlitch)));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(voidBook.getStack(3),
+				voidBook.getStack(0), new ItemStack(pureGlitch)));
 		
 		// Smelting
 		GameRegistry.addSmelting(NullOre, new ItemStack(ingotNull), 0.5f);
