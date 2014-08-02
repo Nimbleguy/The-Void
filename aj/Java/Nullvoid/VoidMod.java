@@ -1,6 +1,7 @@
 package aj.Java.Nullvoid;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,9 +68,14 @@ import aj.Java.Nullvoid.tileentity.TileEntityVoidReactor;
 import aj.Java.Nullvoid.tileentity.TileEntityVoidWalker;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.MusicTicker;
+import net.minecraft.client.audio.MusicTicker.MusicType;
+import net.minecraft.client.gui.GuiWinGame;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -79,9 +85,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionHelper;
 import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderEnd;
+import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.BiomeDictionary;
@@ -174,6 +183,7 @@ public class VoidMod implements LoadingCallback {
 	public static final String MODID = "nullvoid";
 	public static final String VERSION = "1.7.10-3.3.0-BETA";
 	public static boolean shouldRetro = false;
+	public static MusicType voidMusic = null;
 	public static Fluid liquidFlux = null;
 	public static Block blockLiquidFlux = null;
 	public static Item nullGoggles = null;
@@ -208,6 +218,7 @@ public class VoidMod implements LoadingCallback {
 		blocks();
 		items();
 		potions();
+		biomeNullVoid = new BiomeGenNull(NullVoidBioID);
 
 		// Fluids
 		FluidRegistry.registerFluid(liquidFlux);
@@ -593,7 +604,6 @@ public class VoidMod implements LoadingCallback {
 		liquidFlux.setBlock(blockLiquidFlux);
 		voidReactor = new BlockVoidReactor(Material.iron)
 				.setBlockName("voidReactor");
-		biomeNullVoid = new BiomeGenNull(NullVoidBioID);
 		phantomB = new BlockPhantom().setBlockName("phantomBlock");
 	}
 
@@ -667,5 +677,20 @@ public class VoidMod implements LoadingCallback {
 		dissolving = new PotionDissolving(PotIDDiss, true, 0x260060)
 				.setPotionName("potion.Dissolving");
 	}
-
+	@SideOnly(Side.CLIENT)
+	private void insertMusic(){
+		voidMusic = EnumHelper.addEnum(MusicType.class, "VOID", 
+				new ResourceLocation("nullvoid:sounds.ambient.piertonowhere"), 
+				Integer.MAX_VALUE, Integer.MAX_VALUE);
+		for(Method m : Minecraft.class.getDeclaredMethods()){
+			if(m.getName().equalsIgnoreCase("func_147109_")){
+				m.setAccessible(true);
+				
+			}
+		}
+	}
+	public MusicTicker.MusicType func_147109_W()
+    {
+        return Minecraft.getMinecraft().currentScreen instanceof GuiWinGame ? MusicTicker.MusicType.CREDITS : (Minecraft.getMinecraft().thePlayer != null ? (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderHell ? MusicTicker.MusicType.NETHER : (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderNullVoid ? VoidMod.voidMusic : (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderEnd ? (BossStatus.bossName != null && BossStatus.statusBarTime > 0 ? MusicTicker.MusicType.END_BOSS : MusicTicker.MusicType.END) : (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode && Minecraft.getMinecraft().thePlayer.capabilities.allowFlying ? MusicTicker.MusicType.CREATIVE : MusicTicker.MusicType.GAME)))) : MusicTicker.MusicType.MENU);
+    }
 }
