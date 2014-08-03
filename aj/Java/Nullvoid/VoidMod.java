@@ -1,7 +1,6 @@
 package aj.Java.Nullvoid;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +41,9 @@ import aj.Java.Nullvoid.block.BlockVoidReactor;
 import aj.Java.Nullvoid.block.BlockVoidWalker;
 import aj.Java.Nullvoid.block.item.ItemBlockChamberWall;
 import aj.Java.Nullvoid.block.item.ItemBlockStorage;
+import aj.Java.Nullvoid.client.ClientProxy;
 import aj.Java.Nullvoid.client.GUIHandler;
+import aj.Java.Nullvoid.client.MovingSoundPlayer;
 import aj.Java.Nullvoid.client.render.TextureNullOre;
 import aj.Java.Nullvoid.gen.VoidModOreGenerator;
 import aj.Java.Nullvoid.gen.VoidModStructureGenerator;
@@ -69,13 +70,10 @@ import aj.Java.Nullvoid.tileentity.TileEntityVoidWalker;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.MusicTicker.MusicType;
-import net.minecraft.client.gui.GuiWinGame;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -89,8 +87,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProviderEnd;
-import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.BiomeDictionary;
@@ -218,6 +214,9 @@ public class VoidMod implements LoadingCallback {
 		blocks();
 		items();
 		potions();
+		if(FMLCommonHandler.instance().getSide().isClient()){
+			insertMusic();
+		}
 		biomeNullVoid = new BiomeGenNull(NullVoidBioID);
 
 		// Fluids
@@ -505,6 +504,10 @@ public class VoidMod implements LoadingCallback {
 		// Upgrades
 		VoidReactorValidBlocks.add(walker);
 		VoidReactorValidBlocks.add(swordWall);
+		//Sound
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
+			((ClientProxy)proxy).voidSound = new MovingSoundPlayer(Minecraft.getMinecraft().thePlayer);
+		}
 		System.out.println("[NULLVOID]: Shall we traverse the void?");
 	}
 
@@ -682,15 +685,29 @@ public class VoidMod implements LoadingCallback {
 		voidMusic = EnumHelper.addEnum(MusicType.class, "VOID", 
 				new ResourceLocation("nullvoid:sounds.ambient.piertonowhere"), 
 				Integer.MAX_VALUE, Integer.MAX_VALUE);
-		for(Method m : Minecraft.class.getDeclaredMethods()){
-			if(m.getName().equalsIgnoreCase("func_147109_")){
-				m.setAccessible(true);
-				
+		/**
+		try{
+			for(Field f : MusicTicker.class.getDeclaredFields()){
+				if(f.getName().equalsIgnoreCase("field_147677_b")){
+					Field modfield = Field.class.getDeclaredField("modifiers");
+					f.setAccessible(true);
+					modfield.setAccessible(true);
+					modfield.setInt(f, f.getModifiers() & ~Modifier.PRIVATE);
+					f.set(null, this);
+				}
 			}
 		}
+		catch(Exception e){
+			System.err
+				.println("Severe error, please report this to the mod author:");
+			e.printStackTrace(System.err);
+		}
+		*/
 	}
+	/**
 	public MusicTicker.MusicType func_147109_W()
     {
         return Minecraft.getMinecraft().currentScreen instanceof GuiWinGame ? MusicTicker.MusicType.CREDITS : (Minecraft.getMinecraft().thePlayer != null ? (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderHell ? MusicTicker.MusicType.NETHER : (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderNullVoid ? VoidMod.voidMusic : (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderEnd ? (BossStatus.bossName != null && BossStatus.statusBarTime > 0 ? MusicTicker.MusicType.END_BOSS : MusicTicker.MusicType.END) : (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode && Minecraft.getMinecraft().thePlayer.capabilities.allowFlying ? MusicTicker.MusicType.CREATIVE : MusicTicker.MusicType.GAME)))) : MusicTicker.MusicType.MENU);
     }
+    */
 }

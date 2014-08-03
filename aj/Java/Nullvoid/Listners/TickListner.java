@@ -24,12 +24,15 @@ import aj.Java.Nullvoid.block.BlockGlitchFrame;
 import aj.Java.Nullvoid.block.BlockPhantom;
 import aj.Java.Nullvoid.block.BlockStorage;
 import aj.Java.Nullvoid.block.BlockVoidFabric;
+import aj.Java.Nullvoid.client.ClientProxy;
 import aj.Java.Nullvoid.gen.VoidModOreGenerator;
 import aj.Java.Nullvoid.gen.VoidModStructureGenerator;
 import baubles.api.BaublesApi;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -51,6 +54,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -754,6 +758,19 @@ public class TickListner {
 				}
 			}
 		}
+	}
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public ISound soundPlay(PlaySoundEvent17 event){
+		if(event.category.compareTo(SoundCategory.AMBIENT) == 0){
+			if(Minecraft.getMinecraft().thePlayer.dimension == VoidMod.NullVoidDimID){
+				if(!event.manager.isSoundPlaying(((ClientProxy)VoidMod.proxy).voidSound)){
+					event.result = ((ClientProxy)VoidMod.proxy).voidSound;
+					return ((ClientProxy)VoidMod.proxy).voidSound;
+				}
+			}
+		}
+		return event.sound;
 	}
 
 	/*

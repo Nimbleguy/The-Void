@@ -44,28 +44,6 @@ public class ItemElementalHammer extends ItemTool {
 		super(10F, p_i45333_2_, blocks);
 		this.setCreativeTab(VoidMod.ctab);
 	}
-	private IIcon[] icons = new IIcon[9];
-	@Override
-	public void registerIcons(IIconRegister i){
-		icons[0] = i.registerIcon("nullvoid:elementHammerB");
-		icons[1] = i.registerIcon("nullvoid:elementHammerF");
-		icons[2] = i.registerIcon("nullvoid:elementHammerI");
-		icons[3] = i.registerIcon("nullvoid:elementHammerEarth");
-		icons[4] = i.registerIcon("nullvoid:elementHammerA");
-		icons[5] = i.registerIcon("nullvoid:elementHammerO");
-		icons[6] = i.registerIcon("nullvoid:elementHammerE");
-		icons[7] = i.registerIcon("nullvoid:elementHammerD");
-		icons[8] = i.registerIcon("nullvoid:elementHammerL");
-		this.itemIcon = icons[0];
-	}
-	@Override
-	public IIcon getIcon(ItemStack i, int renderpass){
-		int type = Utils.hammerBalance(i);
-		if(type != -1){
-			return icons[type];
-		}
-		return icons[0];
-	}
 	@Override
 	public boolean onEntitySwing(EntityLivingBase e, ItemStack i){
 		onClick(e, e.worldObj, i);

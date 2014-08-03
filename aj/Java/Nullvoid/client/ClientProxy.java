@@ -1,5 +1,6 @@
 package aj.Java.Nullvoid.client;
 
+import net.minecraft.client.audio.ISound;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelSquid;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -26,6 +27,7 @@ import aj.Java.Nullvoid.client.render.item.render.RenderHammer;
 import aj.Java.Nullvoid.tileentity.TileEntityVoidReactor;
 
 public class ClientProxy extends CommonProxy {
+	public ISound voidSound;
 	@Override
     public void registerRenderers() {
 		//Entities
