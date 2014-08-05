@@ -227,7 +227,6 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 										Utils.setEffects(p, new Effects());
 										PacketHandler.INSTANCE.sendTo(new PacketLighting(Utils.getBright(p), true), p);
 										uuid = "";
-										System.out.println("Exited");
 									}
 								}
 							}
@@ -333,7 +332,6 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 			}
 		}
 		if ((timer >= 500 || itimer >= 250)) {
-			System.out.println("Timed");
 			doITimer = false;
 			doTimer = true;
 			timer = 0;
@@ -387,7 +385,6 @@ public class TileEntityVoidWalker extends TileEntity implements IInventory,
 							doTimer = true;
 							timer = 0;
 							itimer = 0;
-							System.out.println("Decremented");
 						} else if (!check) {
 							if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 								Minecraft.getMinecraft().gameSettings.gammaSetting = p
