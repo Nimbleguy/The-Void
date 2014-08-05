@@ -179,6 +179,7 @@ public class VoidMod implements LoadingCallback {
 	public static final String MODID = "nullvoid";
 	public static final String VERSION = "1.7.10-3.3.0-BETA";
 	public static boolean shouldRetro = false;
+	public static boolean phantomRingE = true;
 	public static MusicType voidMusic = null;
 	public static Fluid liquidFlux = null;
 	public static Block blockLiquidFlux = null;
@@ -549,6 +550,8 @@ public class VoidMod implements LoadingCallback {
 		PotIDDiss = config.get("potion", "Dissolving Potion ID", 42).getInt();
 		PotBitDiss = config.get("potion", "Dissolving Potion Bit", "+0+1-2+3")
 				.getString();
+		
+		phantomRingE = config.get(Configuration.CATEGORY_GENERAL, "Ring of the Phantom Enabled?", true).getBoolean();
 		config.save();
 	}
 

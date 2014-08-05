@@ -115,9 +115,9 @@ public class TickListner {
 			}
 		}
 	}
-	*/
+	 */
 	Integer i = null;
-	
+
 	public void chunkLoad(ChunkWatchEvent.Watch event){
 		if(!Utils.hasGen.get(event.chunk) && VoidMod.shouldRetro && event.player.dimension == 0){
 			new VoidModOreGenerator().generate(new Random(), event.chunk.chunkXPos, event.chunk.chunkZPos, event.player.worldObj, null, null);
@@ -126,7 +126,7 @@ public class TickListner {
 			new VoidModStructureGenerator().generate(new Random(), event.chunk.chunkXPos, event.chunk.chunkZPos, event.player.worldObj, null, null);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void playerChat(ServerChatEvent event) {
 		System.out.println(event.message);
@@ -704,55 +704,59 @@ public class TickListner {
 	}
 	@SubscribeEvent
 	public void blockBreak(BlockEvent.BreakEvent event){
-		if(Utils.getEntityTag(event.getPlayer()).getBoolean("HasPhantom")){
-			if(event.getPlayer().dimension == VoidMod.NullVoidDimID){
-				WorldServer w = DimensionManager.getWorld(0);
-				if(w.getBlock(event.x, event.y, event.z) != null && !w.getBlock(event.x, event.y, event.z).equals(Blocks.air)){
-					List<ItemStack> list = Utils.getBlockDrops(w, event.x, event.y, event.z, event.getPlayer());
-					for(ItemStack i : list){
-						if(i != null){
-							w.spawnEntityInWorld(new EntityItem(w, event.x, event.y, event.z, i));
+		if(VoidMod.phantomRingE){
+			if(Utils.getEntityTag(event.getPlayer()).getBoolean("HasPhantom")){
+				if(event.getPlayer().dimension == VoidMod.NullVoidDimID){
+					WorldServer w = DimensionManager.getWorld(0);
+					if(w.getBlock(event.x, event.y, event.z) != null && !w.getBlock(event.x, event.y, event.z).equals(Blocks.air)){
+						List<ItemStack> list = Utils.getBlockDrops(w, event.x, event.y, event.z, event.getPlayer());
+						for(ItemStack i : list){
+							if(i != null){
+								w.spawnEntityInWorld(new EntityItem(w, event.x, event.y, event.z, i));
+							}
 						}
+						w.setBlockToAir(event.x, event.y, event.z);
 					}
-					w.setBlockToAir(event.x, event.y, event.z);
 				}
 			}
 		}
 	}
 	@SubscribeEvent
 	public void blockPlace(PlayerInteractEvent event){
-		if(event.action.compareTo(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) == 0){
-			if(Utils.getEntityTag(event.entityPlayer).getBoolean("HasPhantom")){
-				if(event.entityPlayer.dimension == VoidMod.NullVoidDimID){
-					WorldServer w = DimensionManager.getWorld(0);
-					if(w.getBlock(event.x, event.y, event.z) == null || w.getBlock(event.x, event.y, event.z).equals(Blocks.air)){
-						int x = event.x;
-						int y = event.y;
-						int z = event.z;
-						switch(event.face)
-						{
-						case 0:
-							y--;
-							break;
-						case 1:
-							y++;
-							break;
-						case 2:
-							z--;
-							break;
-						case 3:
-							z++;
-							break;
-						case 4:
-							x--;
-							break;
-						case 5:
-							x++;
-							break;
-						}
-						Block b = Block.getBlockFromName(Item.itemRegistry.getNameForObject(event.entityPlayer.inventory.getCurrentItem().getItem()));
-						if(BlockPhantom.isValid(b)){
-							BlockPhantom.setPhantom(w, x, y, z, b, event.entityPlayer.inventory.getCurrentItem().getItemDamage());
+		if(VoidMod.phantomRingE){
+			if(event.action.compareTo(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) == 0){
+				if(Utils.getEntityTag(event.entityPlayer).getBoolean("HasPhantom")){
+					if(event.entityPlayer.dimension == VoidMod.NullVoidDimID){
+						WorldServer w = DimensionManager.getWorld(0);
+						if(w.getBlock(event.x, event.y, event.z) == null || w.getBlock(event.x, event.y, event.z).equals(Blocks.air)){
+							int x = event.x;
+							int y = event.y;
+							int z = event.z;
+							switch(event.face)
+							{
+							case 0:
+								y--;
+								break;
+							case 1:
+								y++;
+								break;
+							case 2:
+								z--;
+								break;
+							case 3:
+								z++;
+								break;
+							case 4:
+								x--;
+								break;
+							case 5:
+								x++;
+								break;
+							}
+							Block b = Block.getBlockFromName(Item.itemRegistry.getNameForObject(event.entityPlayer.inventory.getCurrentItem().getItem()));
+							if(BlockPhantom.isValid(b)){
+								BlockPhantom.setPhantom(w, x, y, z, b, event.entityPlayer.inventory.getCurrentItem().getItemDamage());
+							}
 						}
 					}
 				}
