@@ -121,7 +121,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.util.EnumHelper;
 
-@Mod(modid = VoidMod.MODID, name = "The Void", version = VoidMod.VERSION, guiFactory = "aj.Java.Nullvoid.client.VoidModGUIFactory")
+@Mod(modid = VoidMod.MODID, name = "The Void", version = VoidMod.VERSION, guiFactory = "aj.Java.Nullvoid.client.VoidModGUIFactory", dependencies = "required-after:Forge@[10.13.0.1180,);"
+		+ "after:Forestry;"
+		+ "required-after:Baubles")
 public class VoidMod implements LoadingCallback {
 	public static List<Block> VoidReactorValidBlocks = new ArrayList<Block>(10);
 	public static Achievement mineNull = null;
