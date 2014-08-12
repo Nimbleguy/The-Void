@@ -59,9 +59,14 @@ public class PacketPhantom implements IMessage, IMessageHandler<PacketPhantom, I
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
-		buf.writeInt(name.length());
-		for(char c : name.toCharArray()){
-			buf.writeChar(c);
+		if(name != null){
+			buf.writeInt(name.length());
+			for(char c : name.toCharArray()){
+				buf.writeChar(c);
+			}
+		}
+		else{
+			buf.writeInt(0);
 		}
 		buf.writeInt(meta);
 	}

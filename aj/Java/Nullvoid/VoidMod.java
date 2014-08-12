@@ -108,6 +108,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -357,6 +358,14 @@ public class VoidMod implements LoadingCallback {
 		// Events
 		FMLCommonHandler.instance().bus().register(new TickListner());
 		MinecraftForge.EVENT_BUS.register(new TickListner());
+		
+		// BEES
+		if(Loader.isModLoaded("Forestry")){
+			try {
+				Class.forName("aj.Java.Nullvoid.Forestry.VoidForestry").newInstance();
+			} catch (Exception e) {
+			}
+		}
 	}
 
 	@EventHandler
