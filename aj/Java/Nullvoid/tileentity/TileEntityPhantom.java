@@ -21,7 +21,6 @@ public class TileEntityPhantom extends TileEntity {
 	public void writeToNBT(NBTTagCompound t){
 		super.writeToNBT(t);
 		if(phantom != null){
-			System.out.println("write");
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setString("Block", Block.blockRegistry.getNameForObject(phantom));
 			tag.setInteger("Meta", metad);
@@ -32,10 +31,8 @@ public class TileEntityPhantom extends TileEntity {
 	public void readFromNBT(NBTTagCompound t){
 		super.readFromNBT(t);
 		NBTTagCompound tag = (NBTTagCompound) t.getTag("Phantom");
-		System.out.println("read");
 		phantom = Block.getBlockFromName(tag.getString("Block"));
 		metad = tag.getInteger("Meta");
-		System.out.println(phantom);
 	}
 	@Override
 	public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {

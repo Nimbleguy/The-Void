@@ -62,6 +62,7 @@ import aj.Java.Nullvoid.item.ItemPureGlitch;
 import aj.Java.Nullvoid.item.ItemTablet;
 import aj.Java.Nullvoid.item.ItemVoidBook;
 import aj.Java.Nullvoid.item.ItemVoidRecord;
+import aj.Java.Nullvoid.item.ItemVoidTome;
 import aj.Java.Nullvoid.item.ItemYingYang;
 import aj.Java.Nullvoid.tileentity.TileEntityPhantom;
 import aj.Java.Nullvoid.tileentity.TileEntitySwordWall;
@@ -195,6 +196,7 @@ public class VoidMod implements LoadingCallback {
 	public static Item darkPick = null;
 	public static Item glitchCore = null;
 	public static Item elementalHammer = null;
+	public static Item voidTome = null;
 	public static BiomeGenBase biomeNullVoid = null;
 	@SideOnly(Side.CLIENT)
 	public static TextureNullOre texNullOre;
@@ -269,6 +271,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerItem(nullInk, "nullInk");
 		GameRegistry.registerItem(pureGlitch, "pureGlitch");
 		GameRegistry.registerItem(phantom, "phantomRing");
+		GameRegistry.registerItem(voidTome, "voidTome");
 
 		// Tile entities
 		GameRegistry.registerTileEntity(TileEntityVoidWalker.class,
@@ -474,6 +477,13 @@ public class VoidMod implements LoadingCallback {
 				voidBook.getStack(1), new ItemStack(pureGlitch)));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(voidBook.getStack(3),
 				voidBook.getStack(0), new ItemStack(pureGlitch)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(voidTome, 1, 1),
+				"EWE",
+				"WVW",
+				"EWE",
+				'V', voidBook.getStack(3),
+				'E', new ItemStack(Blocks.end_stone),
+				'W', new ItemStack(walker)));
 		
 		// Smelting
 		GameRegistry.addSmelting(NullOre, new ItemStack(ingotNull), 0.5f);
@@ -601,6 +611,7 @@ public class VoidMod implements LoadingCallback {
 		nullInk = new ItemNullInk().setUnlocalizedName("nullInk");
 		pureGlitch = new ItemPureGlitch().setUnlocalizedName("pureGlitch");
 		phantom = new PhantomRing().setUnlocalizedName("phantomRing");
+		voidTome = new ItemVoidTome().setUnlocalizedName("voidTome");
 	}
 
 	private void blocks() {

@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityVoidCloud extends EntityFlying {
+public class EntityVoidCloud extends EntityFlying implements IVoidWalker {
 	public double waypointX;
 	public double waypointY;
 	public double waypointZ;

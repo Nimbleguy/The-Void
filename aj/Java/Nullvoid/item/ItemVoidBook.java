@@ -326,7 +326,7 @@ public class ItemVoidBook extends ItemEditableBook {
 				);
 		l.add(setFormat("       VOID INFO       ", EnumChatFormatting.BOLD)
 				+ setFormat("\n", EnumChatFormatting.RESET)
-				+ "The Void is a mysterious place. None from my humble village of Elderdwarf have ever been in the void."
+				+ "The Void is a mysterious place. No one from my humble village of Elderdwarf have ever been in the void."
 				+ "It has actualy been rumored that only creatures that have evolved with the void are able to live there."
 				+ " Though, other"
 				);
@@ -400,6 +400,11 @@ public class ItemVoidBook extends ItemEditableBook {
 				+ "YPY\n"
 				+ "YYY\n"
 				+ "Y = Ying-Yang Ingot. P = Pure Glitch.", EnumChatFormatting.RED));
+		l.add(setFormat("TOME OF VOIDWALKING\n"
+				+ "EWE\n"
+				+ "WVW\n"
+				+ "EWE\n"
+				+ "E = End Stone. W = Voidwalker. V = ygolohtyM dioV.", EnumChatFormatting.RED));
 		return l;
 	}
 	private List<String> getPagesMyth2(){
@@ -428,8 +433,11 @@ public class ItemVoidBook extends ItemEditableBook {
 		l.add(setFormat("Before we delve into some more cloudy things, I need to say this. "
 				+ "I do not know everything. Some things are foggy to me. "
 				+ "Especially things about the nature of Pure Glitch.", EnumChatFormatting.RED));
-		l.add(setFormat("The Ring of the Phantom. It creates a phantom."
-				+ "It seems to work best in The Void. It works by weakening spacetime.", EnumChatFormatting.RED));
+		l.add(setFormat("The Ring of the Phantom. It, basically, creates a phantom."
+				+ " It seems to work best in The Void. It works by weakening spacetime.", EnumChatFormatting.RED));
+		l.add(setFormat("Now for the Tome of Voidwalking. It is a portable voidwalker."
+				+ " When you read this tome, it activates. Afterward, you will need to recharge it."
+				+ " It is about half of efficiant as a Voidwalker and each charge acts like 256 Null Crystals.", EnumChatFormatting.RED));
 		return l;
 	}
 	private String setFormat(String s, EnumChatFormatting e){

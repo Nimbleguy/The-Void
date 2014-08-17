@@ -501,7 +501,6 @@ public class TickListner {
 					// System.out.println("Got a ticked player");
 					// System.out.println(p.posY);
 					if (p.posY < 0.01D) {
-						System.out.println("In the void!");
 						if (p.dimension == VoidMod.NullVoidDimID) {
 							((EntityPlayerMP) p).playerNetServerHandler
 							.setPlayerLocation(p.posX, 512D, p.posZ,
@@ -531,7 +530,7 @@ public class TickListner {
 											.worldServerForDimension(
 													0)));
 							p.addChatComponentMessage(new ChatComponentText(
-									"The Void Does Not Like Your Cheats. GET. OUT. NOW."));
+									"You start to suffocate as you slowly wither away due to The Void... a mysterious force teleports you out.").setChatStyle(new ChatStyle().setItalic(true)));
 						}
 					} else {
 						if (Utils.getInVoid(event.player)) {
@@ -540,6 +539,12 @@ public class TickListner {
 									(EntityPlayerMP) event.player);
 							brightness = Utils.getBright(event.player);
 							Utils.setEffects(event.player, new Effects());
+						}
+						else{
+							Utils.getBright(event.player);
+							PacketHandler.INSTANCE.sendTo(new PacketLighting(
+									100000F),
+									(EntityPlayerMP) event.player);
 						}
 					}
 				}
@@ -557,9 +562,15 @@ public class TickListner {
 				try {
 					for (Entity e : l) {
 						if (e.dimension == VoidMod.NullVoidDimID) {
-							if (!(e instanceof IVoidWalker)
+							if(Utils.getVoidwalking(e) == 0 && !(e instanceof IVoidWalker)
 									&& (e instanceof EntityLiving && !(e instanceof EntityPlayer))) {
 								e.setDead();
+							}
+							else if(Utils.getVoidwalking(e) > 0 && !(e instanceof IVoidWalker) && (e instanceof EntityLiving && !(e instanceof EntityPlayer))){
+								Utils.setVoidwalking(e, Utils.getVoidwalking(e) - 1);
+								if(Utils.getVoidwalking(e) == 0){
+									
+								}
 							}
 						}
 					}

@@ -98,6 +98,12 @@ public class ItemTablet extends Item {
 			l.add("+ (4x □ = ▤ ◉ = ▤)");
 			l.add("◉ = 地風▣㓉亮㝜");
 			break;
+		case 8:
+			l.add("■■■");
+			l.add("■□■");
+			l.add("■■■");
+			l.add("x2 □ = ▤");
+			break;
 		}
 	}
 }

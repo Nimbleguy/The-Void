@@ -12,7 +12,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class EntityGlitchists extends EntityMob {
+public class EntityGlitchists extends EntityMob implements IVoidWalker {
 
 	public EntityGlitchists(World par1World) {
 		super(par1World);

@@ -16,7 +16,7 @@ import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer.EnumElement;
 import net.minecraft.block.Block;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -45,8 +45,8 @@ public class Utils {
         Vec3 vec32 = vec3.addVector(vec31.xCoord * 5D, vec31.yCoord * 5D, vec31.zCoord * 5D);
         return w.rayTraceBlocks(vec3, vec32, true);
 	}
-	public static NBTTagCompound getEntityTag(EntityLivingBase arg1){
-		NBTTagCompound entityData = arg1.getEntityData();
+	public static NBTTagCompound getEntityTag(Entity e){
+		NBTTagCompound entityData = e.getEntityData();
 		NBTTagCompound persist;
 		if (!entityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
 		    entityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persist = new NBTTagCompound()));
@@ -84,6 +84,12 @@ public class Utils {
 			e.addEffect(Effect.valueOf(s[i]));
 		}
 		return e;
+	}
+	public static void setVoidwalking(Entity e, int i){
+		getEntityTag(e).setInteger("NullVoidwalking", i);
+	}
+	public static int getVoidwalking(Entity e){
+		return getEntityTag(e).getInteger("NullVoidwalking");
 	}
 	@SuppressWarnings("unchecked")
 	public static EntityPlayerMP getPlayerFromUUID(String s){
