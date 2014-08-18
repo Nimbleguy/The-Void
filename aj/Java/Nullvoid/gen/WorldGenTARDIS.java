@@ -61,12 +61,15 @@ public class WorldGenTARDIS extends WorldGenerator {
 					WeightedRandomChestContent[] cont = ChestGenHooks.getItems(ChestGenHooks.MINESHAFT_CORRIDOR, random);
 					int hi = 0;
 					for(int bla = 0; bla < cont.length; bla++){
-						if(bla < 21){
+						if(bla < random.nextInt(19)){
 							chest.setInventorySlotContents(bla, cont[bla].theItemId);
-							hi = bla;
+							hi = bla + 1;
 						}
 					}
-					chest.setInventorySlotContents(hi, new ItemStack(VoidMod.ingotNull, 255, 0));
+					chest.setInventorySlotContents(hi, new ItemStack(VoidMod.ingotNull, 64, 0));
+					if(random.nextInt(3) == 1){
+						chest.setInventorySlotContents(hi + 1, new ItemStack(VoidMod.tablet, 1, 8));
+					}
 				}
 			}
 		}

@@ -1,8 +1,11 @@
 package aj.Java.Nullvoid.block;
 
+import java.util.List;
+
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.item.ItemTablet;
+import aj.Java.Nullvoid.item.ItemVoidTome;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -16,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -228,6 +232,56 @@ public class BlockGlitchFrame extends Block {
 						;
 						w.spawnEntityInWorld(new EntityItem(w, (double) x,
 								200D, (double) z, i));
+					}
+				} else if (p.inventory.getCurrentItem().getItemDamage() == 8) {
+					boolean b = true;
+					for (int xx = x - 1; xx < x + 2; xx++) {
+						for (int zz = z - 1; zz < z + 2; zz++) {
+							if (xx != x || zz != z) {
+								if (!(w.getBlock(xx, y, zz) instanceof BlockGeneric)) {
+									b = false;
+								} else {
+									w.setBlock(xx, y, zz, Blocks.air);
+								}
+							}
+						}
+					}
+					for (int xx = x - 1; xx < x + 2; xx++) {
+						for (int zz = z - 1; zz < z + 2; zz++) {
+							if (xx != x || zz != z) {
+								if (!(w.getBlock(xx, y + 1, zz) instanceof BlockGeneric)) {
+									b = false;
+								} else {
+									w.setBlock(xx, y + 1, zz, Blocks.air);
+								}
+							}
+						}
+					}
+					@SuppressWarnings("unchecked")
+					List<EntityItem> items = w.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x - 1D, y - 1D, z - 1D, x + 1D, y + 1D, z + 1D));
+					loop:
+					for(EntityItem i : items){
+						if(i.getEntityItem().getItemDamage() != 1){
+							b = false;
+						}
+						else if(!(i.getEntityItem().getItem() instanceof ItemVoidTome)){
+							b = false;
+						}
+						else{
+							i.setDead();
+							break loop;
+						}
+					}
+					if (b) {
+						for (int i = 0; i < 100; i++) {
+							w.spawnEntityInWorld(new EntityLightningBolt(w,
+									(double) x, (double) y, (double) z));
+							w.createExplosion((Entity) null, x, y, z, 5F, true);
+						}
+						w.spawnEntityInWorld(new EntityItem(w, (double) x,
+								200D, (double) z, new ItemStack(VoidMod.voidTome,
+										1, 0)));
+						w.setBlock(x, y, z, this);
 					}
 				}
 			}

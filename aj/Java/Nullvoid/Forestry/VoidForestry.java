@@ -1,11 +1,15 @@
 package aj.Java.Nullvoid.Forestry;
 
+import aj.Java.Nullvoid.VoidMod;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.util.EnumHelper;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
+import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleRegistry;
+import forestry.api.genetics.IClassification;
 import forestry.api.genetics.IClassification.EnumClassLevel;
 import forestry.api.genetics.IMutation;
 import forestry.apiculture.genetics.AlleleBeeSpecies;
@@ -26,8 +30,6 @@ public class VoidForestry {
 	public static AllelePlantType fluxFlower;
 	public static EnumPlantType fluxPlant;
 	
-	public static Classification voidClass;
-	
 	public VoidForestry(){
 		registerBees();
 	}
@@ -39,19 +41,19 @@ public class VoidForestry {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		IAlleleRegistry reg = AlleleManager.alleleRegistry;
 		
-		voidClass = new Classification(EnumClassLevel.GENUS, "nullvoid", "Nihil Solutionibus");
-		voidClass.addMemberGroup(new Classification(EnumClassLevel.TRIBE, "basenullvoid", "Fundatur Ciphra"));
+		reg.getClassification("class.insecta").addMemberGroup(reg.createAndRegisterClassification(EnumClassLevel.GENUS, "nullvoid", "Fundatur Ciphra"));
 		
-		allNullB = new AlleleBeeSpecies("null", false, "Nulled", voidClass, "Nullus", 0x6600FF, 0xFFFFFF);
-		allNullB.setHasEffect();
+		allNullB = new AlleleBeeSpecies("null", false, "Nulled", reg.getClassification("genus.nullvoid"), "Nihil Solutionibus", 0x6600FF, 0xFFFFFF);
+		//allNullB.setHasEffect();
 		allNullB.setHumidity(EnumHumidity.ARID);
 		allNullB.setTemperature(EnumTemperature.ICY);
 		
 		
-		allVoidB = new AlleleBeeSpecies("void", true, "Voided", voidClass, "Vacuos", 0xFFFFFF, 0x6600FF);
+		allVoidB = new AlleleBeeSpecies("void", true, "Voided", reg.getClassification("genus.nullvoid"), "Vacuos Malum", 0xFFFFFF, 0x6600FF);
 		
-		nullBMut = new BeeMutation(Allele.speciesEdenic, Allele.speciesEnded, getNullTemplate(), 1);
+		nullBMut = new BeeMutationBiome(Allele.speciesEdenic, Allele.speciesEnded, getNullTemplate(), 1, VoidMod.NullVoidBioID);
 	}
 	
 	public static IAllele[] getNullTemplate() {
@@ -63,7 +65,7 @@ public class VoidForestry {
 		alleles[EnumBeeChromosome.HUMIDITY_TOLERANCE.ordinal()] = Allele.toleranceNone;
 		alleles[EnumBeeChromosome.TEMPERATURE_TOLERANCE.ordinal()] = Allele.toleranceNone;
 		alleles[EnumBeeChromosome.CAVE_DWELLING.ordinal()] = Allele.boolTrue;
-		alleles[EnumBeeChromosome.FLOWER_PROVIDER.ordinal()] = fluxFlower;
+		alleles[EnumBeeChromosome.FLOWER_PROVIDER.ordinal()] = Allele.flowersEnd;
 		alleles[EnumBeeChromosome.EFFECT.ordinal()] = Allele.effectAggressive;
 		alleles[EnumBeeChromosome.SPECIES.ordinal()] = allNullB;
 		return alleles;

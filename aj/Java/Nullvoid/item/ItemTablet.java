@@ -27,7 +27,7 @@ public class ItemTablet extends Item {
 	@Override
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-	    for (int x = 0; x < 8; x++)
+	    for (int x = 0; x < 9; x++)
 	    {
 	        par3List.add(new ItemStack(this, 1, x));
 	    }
