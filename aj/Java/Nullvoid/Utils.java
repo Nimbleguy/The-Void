@@ -91,6 +91,12 @@ public class Utils {
 	public static int getVoidwalking(Entity e){
 		return getEntityTag(e).getInteger("NullVoidwalking");
 	}
+	public static void setGlitchstone(EntityPlayer p, boolean b){
+		getEntityTag(p).setBoolean("NullGlitchstone", b);
+	}
+	public static boolean getGlitchstone(EntityPlayer p){
+		return getEntityTag(p).getBoolean("NullGlitchstone");
+	}
 	@SuppressWarnings("unchecked")
 	public static EntityPlayerMP getPlayerFromUUID(String s){
 		if(MinecraftServer.getServer().getConfigurationManager() != null && MinecraftServer.getServer().getConfigurationManager().playerEntityList != null){

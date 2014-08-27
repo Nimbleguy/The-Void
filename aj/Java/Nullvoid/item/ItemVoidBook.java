@@ -430,6 +430,10 @@ public class ItemVoidBook extends ItemEditableBook {
 				+ " Then the defences build. It gets stronger as it gets weaker."
 				+ " It is a paradox in itself."
 				+ " Watch out.", EnumChatFormatting.RED));
+		l.add(setFormat("Well, now I shall give some more info on some of the things written by Eglarbroad. "
+				+ "Well, here is some info on Void Clouds. They do NOT like Void Gems, that is just a myth. "
+				+ "There is a way to summon them. Just recite this: Nihil, et mundus surga. Venite, et mittamus. Caecitas nihil reale. "
+				+ "That is the only incantation I know.", EnumChatFormatting.RED));
 		l.add(setFormat("Before we delve into some more cloudy things, I need to say this. "
 				+ "I do not know everything. Some things are foggy to me. "
 				+ "Especially things about the nature of Pure Glitch.", EnumChatFormatting.RED));

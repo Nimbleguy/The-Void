@@ -4,6 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.item.ItemIngotVoid;
 import net.minecraft.block.Block;
@@ -88,26 +89,27 @@ public class BlockChamberWall extends Block {
 				}
 			}
 		}
-		else if(w.getBlockMetadata(x, y, z) == 3){
+		else if(w.getBlockMetadata(x, y, z) == 3 && Utils.getGlitchstone(p)){
 			ForgeDirection f = ForgeDirection.getOrientation(side);
 			if(f.equals(ForgeDirection.UP)){
-				p.setLocationAndAngles(x, y - 2, z, p.cameraPitch, p.cameraYaw);
+				p.setLocationAndAngles(x, y - 2, z, p.cameraYaw, p.cameraPitch);
 			}
 			else if(f.equals(ForgeDirection.DOWN)){
-				p.setLocationAndAngles(x, y + 1, z, p.cameraPitch, p.cameraYaw);
-			}
-			else if(f.equals(ForgeDirection.EAST)){
-				p.setLocationAndAngles(x + 1, y, z, p.cameraPitch, p.cameraYaw);
+				p.setLocationAndAngles(x, y + 1, z, p.cameraYaw, p.cameraPitch);
 			}
 			else if(f.equals(ForgeDirection.WEST)){
-				p.setLocationAndAngles(x - 1, y, z, p.cameraPitch, p.cameraYaw);
+				p.setLocationAndAngles(x + 1, y, z, p.cameraYaw, p.cameraPitch);
 			}
-			else if(f.equals(ForgeDirection.NORTH)){
-				p.setLocationAndAngles(x, y, z - 1, p.cameraPitch, p.cameraYaw);
+			else if(f.equals(ForgeDirection.EAST)){
+				p.setLocationAndAngles(x - 1, y, z, p.cameraYaw, p.cameraPitch);
 			}
 			else if(f.equals(ForgeDirection.SOUTH)){
-				p.setLocationAndAngles(x, y, z + 1, p.cameraPitch, p.cameraYaw);
+				p.setLocationAndAngles(x, y, z - 1, p.cameraYaw, p.cameraPitch);
 			}
+			else if(f.equals(ForgeDirection.NORTH)){
+				p.setLocationAndAngles(x, y, z + 1, p.cameraYaw, p.cameraPitch);
+			}
+			return true;
 		}
 		return false;
 	}
