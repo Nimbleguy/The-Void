@@ -1,14 +1,21 @@
 package aj.Java.Nullvoid.item;
 
+import java.util.Random;
+
 import aj.Java.Nullvoid.VoidMod;
+import aj.Java.Nullvoid.gen.WorldGenGlitchTempleCore;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 
 public class ItemIngotNull extends Item {
 	public ItemIngotNull() {
@@ -26,16 +33,16 @@ public class ItemIngotNull extends Item {
     public EnumRarity getRarity(ItemStack par1ItemStack) {
             return EnumRarity.uncommon;
     }
-	/**
+	///**
 	@Override
 	public ItemStack onItemRightClick(ItemStack i, World w, EntityPlayer p) {
 		if(FMLCommonHandler.instance().getSide().isClient()){
 			MovingObjectPosition pos = p.rayTrace(10D, 10F);
-			(new WorldGenReactor()).generate(w, new Random(), pos.blockX, pos.blockY, pos.blockZ);
+			(new WorldGenGlitchTempleCore()).generate(w, new Random(), pos.blockX, pos.blockY, pos.blockZ);
 		}
 		return i;
 	}
-	*/
+	//*/
 	@Override
 	public boolean onEntityItemUpdate(EntityItem item){
 		if (item.posY <= 0D) {
