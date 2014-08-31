@@ -96,14 +96,15 @@ public class ItemVoidBook extends ItemEditableBook {
 		l.add(setFormat(setFormat("TABLE OF CONTENTS:", EnumChatFormatting.BOLD), EnumChatFormatting.DARK_GREEN)
 				+ setFormat(setFormat(setFormat("\nCircuits - Page 4", EnumChatFormatting.RESET), EnumChatFormatting.ITALIC), EnumChatFormatting.WHITE)
 				+ "\nVoidwalker - Page 9"
-				+ "\nNull Goggles - Page 10"
-				+ "\nSword Wall - Page 11"
-				+ "\nIngot Frame - Page 12"
-				+ "\nWeak Glitch Frame - Page 13"
-				+ "\nAnti-Glitch Amulet - Page 14"
-				+ "\nBane of Darkness - Page 15"
-				+ "\nPickaxe of Darkness - Page 16"
-				+ "\nOther Notes - Page 17"
+				+ "\nVoid Bricks - Page 10"
+				+ "\nNull Goggles - Page 11"
+				+ "\nSword Wall - Page 12"
+				+ "\nIngot Frame - Page 13"
+				+ "\nWeak Glitch Frame - Page 14"
+				+ "\nAnti-Glitch Amulet - Page 15"
+				+ "\nBane of Darkness - Page 16"
+				+ "\nPickaxe of Darkness - Page 17"
+				+ "\nOther Notes - Page 18"
 				);
 		l.add(
 				setFormat("INERT NULL CIRCUIT", EnumChatFormatting.BOLD)
@@ -206,6 +207,15 @@ public class ItemVoidBook extends ItemEditableBook {
 				+ "N = Null Crystal. "
 				+ "C = Inert Null Circuit. "
 				+ "I = Fluxuating Null Circuit. "
+				);
+		l.add(
+				setFormat("VOID BRICKS", EnumChatFormatting.BOLD)
+				+ setFormat("\n", EnumChatFormatting.RESET)
+				+ "VVA\n"
+				+ "VVA\n"
+				+ "AAA\n"
+				+ "V = Void Fabric. "
+				+ "A = Air. "
 				);
 		l.add(
 				setFormat("    NULL GOGGLES", EnumChatFormatting.BOLD)

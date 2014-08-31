@@ -26,6 +26,7 @@ import aj.Java.Nullvoid.Tools.ItemBaneOfDarkness;
 import aj.Java.Nullvoid.Tools.ItemDarknessPick;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.block.BlockChamberWall;
+import aj.Java.Nullvoid.block.BlockDecor;
 import aj.Java.Nullvoid.block.BlockGeneric;
 import aj.Java.Nullvoid.block.BlockGlitchFrame;
 import aj.Java.Nullvoid.block.BlockMoltenFlux;
@@ -40,6 +41,7 @@ import aj.Java.Nullvoid.block.BlockVoidOre;
 import aj.Java.Nullvoid.block.BlockVoidReactor;
 import aj.Java.Nullvoid.block.BlockVoidWalker;
 import aj.Java.Nullvoid.block.item.ItemBlockChamberWall;
+import aj.Java.Nullvoid.block.item.ItemBlockDecor;
 import aj.Java.Nullvoid.block.item.ItemBlockStorage;
 import aj.Java.Nullvoid.client.ClientProxy;
 import aj.Java.Nullvoid.client.GUIHandler;
@@ -157,6 +159,16 @@ public class VoidMod implements LoadingCallback {
 	public static Item nullInk = null;
 	public static Item pureGlitch = null;
 	public static Item phantom = null;
+	public static Item nullGoggles = null;
+	public static Item voidGear = null;
+	public static Item gravityBelt = null;
+	public static Item glitchAmulet = null;
+	public static Item ingotFrame = null;
+	public static Item baneOfDark = null;
+	public static Item darkPick = null;
+	public static Item glitchCore = null;
+	public static Item elementalHammer = null;
+	public static Item voidTome = null;
 	public static Potion dissolving = null;
 	public static Block NullOre = null;
 	public static Block VoidFabric = null;
@@ -171,6 +183,8 @@ public class VoidMod implements LoadingCallback {
 	public static Block transparent = null;
 	public static Block storage = null;
 	public static Block phantomB = null;
+	public static Block blockLiquidFlux = null;
+	public static Block decor = null;
 	public static int NullVoidDimID;
 	public static int NullVoidBioID;
 	public static int EntIDBuild;
@@ -181,22 +195,11 @@ public class VoidMod implements LoadingCallback {
 	public static int PotIDDiss;
 	public static String PotBitDiss;
 	public static final String MODID = "nullvoid";
-	public static final String VERSION = "1.7.10-3.3.0-BETA";
+	public static final String VERSION = "1.7.10-4.0.0-BETA";
 	public static boolean shouldRetro = false;
 	public static boolean phantomRingE = true;
 	public static MusicType voidMusic = null;
 	public static Fluid liquidFlux = null;
-	public static Block blockLiquidFlux = null;
-	public static Item nullGoggles = null;
-	public static Item voidGear = null;
-	public static Item gravityBelt = null;
-	public static Item glitchAmulet = null;
-	public static Item ingotFrame = null;
-	public static Item baneOfDark = null;
-	public static Item darkPick = null;
-	public static Item glitchCore = null;
-	public static Item elementalHammer = null;
-	public static Item voidTome = null;
 	public static BiomeGenBase biomeNullVoid = null;
 	@SideOnly(Side.CLIENT)
 	public static TextureNullOre texNullOre;
@@ -244,6 +247,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerBlock(transparent, "transparent");
 		GameRegistry.registerBlock(storage, ItemBlockStorage.class, "storage");
 		GameRegistry.registerBlock(phantomB, "phantomBlock");
+		GameRegistry.registerBlock(decor, ItemBlockDecor.class, "decor");
 
 		// Items
 		GameRegistry.registerItem(bucket, "bucketFlux");
@@ -468,6 +472,9 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(glitchAmulet),
 				"SYS", "YCY", "YYY", 'S', Items.string, 'Y', yingYang, 'C',
 				glitchCore));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(decor, 1, 0),
+				"VV", "VV",
+				'V', VoidFabric));
 		
 		//Tier 2 crafting
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(phantom),
@@ -633,6 +640,7 @@ public class VoidMod implements LoadingCallback {
 		voidReactor = new BlockVoidReactor(Material.iron)
 				.setBlockName("voidReactor");
 		phantomB = new BlockPhantom().setBlockName("phantomBlock");
+		decor = new BlockDecor().setBlockName("decor");
 	}
 
 	@SuppressWarnings("unchecked")

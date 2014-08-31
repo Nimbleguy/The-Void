@@ -17,6 +17,9 @@ public class BlockDecor extends Block {
 	public BlockDecor() {
 		super(Material.rock);
 		this.setCreativeTab(VoidMod.ctab);
+		this.setHarvestLevel("pickaxe", 1, 0);
+		this.setHardness(3F);
+		this.setResistance(50F);
 	}
 	@SuppressWarnings("unchecked")
 	@Override
@@ -27,7 +30,7 @@ public class BlockDecor extends Block {
 			list.add(new ItemStack(block, 1, i));
 		}
 	}
-	private IIcon[] tex = new IIcon[4];
+	private IIcon[] tex = new IIcon[1];
 	@Override
 	public void registerBlockIcons(IIconRegister i) {
 		tex[0] = i.registerIcon("nullvoid:voidBrick");
