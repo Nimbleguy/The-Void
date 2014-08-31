@@ -102,7 +102,7 @@ public class Utils {
 		if(MinecraftServer.getServer().getConfigurationManager() != null && MinecraftServer.getServer().getConfigurationManager().playerEntityList != null){
 			for(EntityPlayerMP p : (List<EntityPlayerMP>)MinecraftServer.getServer().getConfigurationManager().playerEntityList){
 				if(s.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")){
-					if(p.getUniqueID().compareTo(UUID.fromString(s)) == 0){
+					if(p.getPersistentID().compareTo(UUID.fromString(s)) == 0){
 						return p;
 					}
 				}
