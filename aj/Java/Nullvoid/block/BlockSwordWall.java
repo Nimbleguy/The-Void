@@ -17,6 +17,7 @@ public class BlockSwordWall extends BlockContainer {
 		this.setCreativeTab(VoidMod.ctab);
 		this.setHardness(10F);
 		this.setResistance(11F);
+		this.setHarvestLevel("pickaxe", 2);
 	}
 	@Override
 	public void registerBlockIcons(IIconRegister i){

@@ -21,6 +21,7 @@ public class BlockStorage extends Block {
 		this.setCreativeTab(VoidMod.ctab);
 		this.setHardness(20F);
 		this.setResistance(30F);
+		this.setHarvestLevel("pickaxe", 2);
 	}
 	@SuppressWarnings("unchecked")
 	@Override

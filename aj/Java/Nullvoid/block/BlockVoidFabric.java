@@ -12,6 +12,7 @@ public class BlockVoidFabric extends Block {
 		super(Material.iron);
 		setHardness(5F);
 		this.setResistance(1F);
+		this.setHarvestLevel("pickaxe", 2);
 		setCreativeTab(VoidMod.ctab);
 	}
 	@SideOnly(Side.CLIENT)

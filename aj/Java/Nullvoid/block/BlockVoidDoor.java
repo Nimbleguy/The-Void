@@ -34,6 +34,7 @@ public class BlockVoidDoor extends BlockDoor {
 		this.setCreativeTab(VoidMod.ctab);
 		this.setHardness(10F);
 		this.setResistance(15F);
+		this.setHarvestLevel("pickaxe", 1);
 	}
 
 	/**

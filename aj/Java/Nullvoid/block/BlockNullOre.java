@@ -16,6 +16,7 @@ public class BlockNullOre extends BlockOre {
 		super();
 		setCreativeTab(VoidMod.ctab);
 		setHardness(15F);
+		this.setHarvestLevel("pickaxe", 2);
 		setBlockTextureName("nullvoid:nullOre");
 	}
 	@Override

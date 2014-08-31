@@ -29,6 +29,7 @@ public class BlockGlitchFrame extends Block {
 		this.setCreativeTab(VoidMod.ctab);
 		this.setHardness(10F);
 		this.setResistance(10F);
+		this.setHarvestLevel("pickaxe", 1);
 	}
 
 	private IIcon[] icons = new IIcon[2];

@@ -13,6 +13,7 @@ public class BlockVoidOre extends BlockOre {
 	public BlockVoidOre() {
 		super();
 		setCreativeTab(VoidMod.ctab);
+		this.setHarvestLevel("pickaxe", 3);
 		setHardness(100F);
 	}
 	@SideOnly(Side.CLIENT)

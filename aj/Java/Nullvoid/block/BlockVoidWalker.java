@@ -35,6 +35,7 @@ public class BlockVoidWalker extends BlockContainer {
 		setCreativeTab(VoidMod.ctab);
 		setHardness(20F);
 		setResistance(40F);
+		this.setHarvestLevel("pickaxe", 2);
 	}
 
 	@Override
