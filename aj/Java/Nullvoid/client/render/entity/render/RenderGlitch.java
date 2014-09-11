@@ -1,6 +1,6 @@
 package aj.Java.Nullvoid.client.render.entity.render;
 
-import aj.Java.Nullvoid.client.render.entity.model.ModelNull;
+import aj.Java.Nullvoid.client.render.ModelNull;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;

@@ -8,6 +8,10 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntitySwordWall extends TileEntity {
 	public ItemStack sword;
+	@Override
+	public boolean canUpdate(){
+		return false;
+	}
 	public void onClick(EntityPlayer p){
 		System.out.println(sword);
 		if(p.inventory.getCurrentItem() != null){
