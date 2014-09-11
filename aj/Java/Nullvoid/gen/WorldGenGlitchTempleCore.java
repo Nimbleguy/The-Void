@@ -32,17 +32,14 @@ public class WorldGenGlitchTempleCore extends WorldGenerator {
 						w.setBlock(x + xx, y + 15 + mod, z + zz, VoidMod.chamberWall);
 						w.setBlockMetadataWithNotify(x + xx, y + 15 + mod, z + zz, 3, 2);
 					}
-					if(mod < 4){
-						if(((xx  == 0 + mod) || (xx == 7 - mod) || ((zz == 0 + mod) || (zz == 7 - mod)))){
-							w.setBlock(x + xx, y + 15 + mod, z + zz, VoidMod.chamberWall);
-							w.setBlockMetadataWithNotify(x + xx, y + 15 + mod, z + zz, 3, 2);
-						}
-					}
 				}
 			}
 			mod++;
 		}
-		w.setBlock(x + 4, y + 19, z + 4, Blocks.glowstone);
+		w.setBlock(x + 4, y + 18, z + 4, Blocks.glowstone);
+		w.setBlock(x + 3, y + 18, z + 3, Blocks.glowstone);
+		w.setBlock(x + 3, y + 18, z + 4, Blocks.glowstone);
+		w.setBlock(x + 4, y + 18, z + 3, Blocks.glowstone);
 		return true;
 	}
 
