@@ -15,6 +15,7 @@ import aj.Java.Nullvoid.Entity.EntityVoidCloud;
 import aj.Java.Nullvoid.Entity.EntityVoidMaster;
 import aj.Java.Nullvoid.client.render.ModelNull;
 import aj.Java.Nullvoid.client.render.TextureNullOre;
+import aj.Java.Nullvoid.client.render.block.render.TileEntityCrystalSpecialRender;
 import aj.Java.Nullvoid.client.render.block.render.TileEntityReactorSpecialRender;
 import aj.Java.Nullvoid.client.render.entity.model.ModelVoidCloud;
 import aj.Java.Nullvoid.client.render.entity.model.ModelVoidMaster;
@@ -24,6 +25,7 @@ import aj.Java.Nullvoid.client.render.entity.render.RenderNullFloater;
 import aj.Java.Nullvoid.client.render.entity.render.RenderVoidCloud;
 import aj.Java.Nullvoid.client.render.entity.render.RenderVoidMaster;
 import aj.Java.Nullvoid.client.render.item.render.RenderHammer;
+import aj.Java.Nullvoid.tileentity.TileEntityGlitchCrystal;
 import aj.Java.Nullvoid.tileentity.TileEntityVoidReactor;
 
 public class ClientProxy extends CommonProxy {
@@ -42,8 +44,10 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.registerItemRenderer(VoidMod.elementalHammer, new RenderHammer());
 		//Blocks
 		VoidMod.ReactorRender = RenderingRegistry.getNextAvailableRenderId();
+		VoidMod.CrystalRender = RenderingRegistry.getNextAvailableRenderId();
 		VoidMod.texNullOre = new TextureNullOre("nullvoid:nullOre");
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVoidReactor.class, new TileEntityReactorSpecialRender());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGlitchCrystal.class, new TileEntityCrystalSpecialRender());
     }
 	@Override
 	public int addArmor(String armor)

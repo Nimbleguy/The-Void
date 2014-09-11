@@ -28,6 +28,7 @@ import aj.Java.Nullvoid.Tools.ItemElementalHammer;
 import aj.Java.Nullvoid.block.BlockChamberWall;
 import aj.Java.Nullvoid.block.BlockDecor;
 import aj.Java.Nullvoid.block.BlockGeneric;
+import aj.Java.Nullvoid.block.BlockGlitchCrystal;
 import aj.Java.Nullvoid.block.BlockGlitchFrame;
 import aj.Java.Nullvoid.block.BlockMoltenFlux;
 import aj.Java.Nullvoid.block.BlockNullOre;
@@ -66,6 +67,7 @@ import aj.Java.Nullvoid.item.ItemVoidBook;
 import aj.Java.Nullvoid.item.ItemVoidRecord;
 import aj.Java.Nullvoid.item.ItemVoidTome;
 import aj.Java.Nullvoid.item.ItemYingYang;
+import aj.Java.Nullvoid.tileentity.TileEntityGlitchCrystal;
 import aj.Java.Nullvoid.tileentity.TileEntityPhantom;
 import aj.Java.Nullvoid.tileentity.TileEntitySwordWall;
 import aj.Java.Nullvoid.tileentity.TileEntityVoidReactor;
@@ -185,6 +187,7 @@ public class VoidMod implements LoadingCallback {
 	public static Block phantomB = null;
 	public static Block blockLiquidFlux = null;
 	public static Block decor = null;
+	public static Block crystalGlitch = null;
 	public static int NullVoidDimID;
 	public static int NullVoidBioID;
 	public static int EntIDBuild;
@@ -213,6 +216,7 @@ public class VoidMod implements LoadingCallback {
 	@SidedProxy(clientSide = "aj.Java.Nullvoid.client.ClientProxy", serverSide = "aj.Java.Nullvoid.CommonProxy")
 	public static CommonProxy proxy;
 	public static int ReactorRender = -1;
+	public static int CrystalRender = -1;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -248,6 +252,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerBlock(storage, ItemBlockStorage.class, "storage");
 		GameRegistry.registerBlock(phantomB, "phantomBlock");
 		GameRegistry.registerBlock(decor, ItemBlockDecor.class, "decor");
+		GameRegistry.registerBlock(crystalGlitch, "crystalGlitch");
 
 		// Items
 		GameRegistry.registerItem(bucket, "bucketFlux");
@@ -286,6 +291,8 @@ public class VoidMod implements LoadingCallback {
 				"NullVoidReactor");
 		GameRegistry.registerTileEntity(TileEntityPhantom.class,
 				"NullVoidPhantom");
+		GameRegistry.registerTileEntity(TileEntityGlitchCrystal.class,
+				"NullVoidCrystalGlitch");
 
 		// Oredict
 		OreDictionary.registerOre("crystalNull", ingotNull);
@@ -641,6 +648,7 @@ public class VoidMod implements LoadingCallback {
 				.setBlockName("voidReactor");
 		phantomB = new BlockPhantom().setBlockName("phantomBlock");
 		decor = new BlockDecor().setBlockName("decor");
+		crystalGlitch = new BlockGlitchCrystal().setBlockName("crystalGlitch");
 	}
 
 	@SuppressWarnings("unchecked")
