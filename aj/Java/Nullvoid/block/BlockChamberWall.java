@@ -32,32 +32,22 @@ public class BlockChamberWall extends Block {
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item block, CreativeTabs creativeTabs,
 			@SuppressWarnings("rawtypes") List list) {
-		for (int i = 0; i < 4; ++i) {
+		for (int i = 0; i < 5; ++i) {
 			list.add(new ItemStack(block, 1, i));
 		}
 	}
-	private IIcon[] tex = new IIcon[4];
+	private IIcon[] tex = new IIcon[5];
 	@Override
 	public void registerBlockIcons(IIconRegister i) {
+		tex[4] = i.registerIcon("nullvoid:voidBrick");
 		tex[3] = i.registerIcon("nullvoid:chamberBlockade");
-		tex[2] = i.registerIcon("nullvoid:voidFabric");
-		tex[1] = i.registerIcon("nullvoid:chamberWall");
+		tex[2] = i.registerIcon("nullvoid:chamberWall");
+		tex[1] = i.registerIcon("nullvoid:voidFabric");
 		tex[0] = i.registerIcon("nullvoid:chamberDoor");
 	}
 	@Override
 	public IIcon getIcon(int side, int meta){
-		if(meta == 0){
-			return tex[0];
-		}
-		else if(meta == 1){
-			return tex[2];
-		}
-		else if(meta == 2){
-			return tex[1];
-		}
-		else{
-			return tex[3];
-		}
+		return tex[meta];
 	}
 	@Override
 	public boolean onBlockActivated(World w, int x, int y, int z,

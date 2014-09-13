@@ -5,7 +5,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ItemBlockChamberWall extends ItemBlock {
-	public final String[] subtypes = new String[] {"door", "doorExtension", "wall", "blockade"};
+	public final String[] subtypes = new String[] {"door", "doorExtension", "wall", "blockade", "brick"};
 	public ItemBlockChamberWall(Block p_i45328_1_) {
 		super(p_i45328_1_);
 		setHasSubtypes(true);

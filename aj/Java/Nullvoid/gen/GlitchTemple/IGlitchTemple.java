@@ -1,5 +1,8 @@
 package aj.Java.Nullvoid.gen.GlitchTemple;
 
+import java.util.List;
+
+import net.minecraft.world.World;
 import aj.Java.Nullvoid.Coords;
 
 public interface IGlitchTemple {
@@ -7,8 +10,8 @@ public interface IGlitchTemple {
 	public Coords[] getEntrances();
 	public Coords getCenter();
 	
-	public boolean canExitTo(IGlitchTemple part, Coords exit);
-	public boolean canEnterFrom(IGlitchTemple part, Coords entrance);
+	public List<EnumRoom> getCanExitTo(Coords c);
+	public List<EnumRoom> getCanEnterFrom(Coords c);
 	
-	public boolean connectsToTower();
+	public void gen(World w);
 }

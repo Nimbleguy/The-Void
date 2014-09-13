@@ -50,6 +50,7 @@ import aj.Java.Nullvoid.client.MovingSoundPlayer;
 import aj.Java.Nullvoid.client.render.TextureNullOre;
 import aj.Java.Nullvoid.gen.VoidModOreGenerator;
 import aj.Java.Nullvoid.gen.VoidModStructureGenerator;
+import aj.Java.Nullvoid.gen.GlitchTemple.TempleManager;
 import aj.Java.Nullvoid.item.ItemAntiGlitchCore;
 import aj.Java.Nullvoid.item.ItemBucket;
 import aj.Java.Nullvoid.item.ItemCircut;
@@ -540,6 +541,8 @@ public class VoidMod implements LoadingCallback {
 		// Upgrades
 		VoidReactorValidBlocks.add(walker);
 		VoidReactorValidBlocks.add(swordWall);
+		//Glitch Temple
+		TempleManager.initilize();
 		//Sound
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
 			((ClientProxy)proxy).voidSound = new MovingSoundPlayer(Minecraft.getMinecraft().thePlayer);
