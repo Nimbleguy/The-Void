@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import aj.Java.Nullvoid.gen.GlitchTemple.TempleManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -38,6 +39,7 @@ public class VoidWorldData extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound nbt) {
 		hasGlitch = nbt.getBoolean("hasGlitch");
 		spawnedAlpha = nbt.getBoolean("spawnedAlpha");
+		TempleManager.readFromNBT(nbt);
 		NBTTagList list = nbt.getTagList("ChunkGen", Constants.NBT.TAG_COMPOUND);
 		List<NBTTagCompound> l = null;
 		for (Field f : list.getClass().getDeclaredFields()) {
@@ -67,6 +69,7 @@ public class VoidWorldData extends WorldSavedData {
 	public void writeToNBT(NBTTagCompound nbt) {
 		nbt.setBoolean("hasGlitch", hasGlitch);
 		nbt.setBoolean("spawnedAlpha", spawnedAlpha);
+		nbt = TempleManager.saveToNBT(nbt);
 		NBTTagList list = new NBTTagList();
 		for(int i = 0; i < Utils.hasGen.size(); i++){
 			NBTTagCompound t = new NBTTagCompound();

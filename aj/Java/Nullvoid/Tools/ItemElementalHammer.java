@@ -56,20 +56,24 @@ public class ItemElementalHammer extends ItemTool {
 					p.setFire(10);
 					return;
 				case 1:
-					for(int x = (int)p.posX - 2; x < (int)p.posX + 1; x++){
-						for(int y = (int)p.posY; y < (int)p.posY + 2; y++){
-							for(int z = (int)p.posZ - 2; z < (int)p.posZ + 1; z++){
-								w.setBlock(x, y, z, Blocks.ice);
+					for(int x = (int)Math.floor(p.posX - 1); x < (int)Math.floor(p.posX + 2); x++){
+						for(int y = (int)Math.floor(p.posY); y < (int)Math.floor(p.posY + 2); y++){
+							for(int z = (int)Math.floor(p.posZ - 1); z < (int)Math.floor(p.posZ + 2); z++){
+								if(w.isAirBlock(x, y, z)){
+									w.setBlock(x, y, z, Blocks.ice);
+								}
 							}
 						}
 					}
 					i.damageItem(100, p);
 					return;
 				case 2:
-					for(int x = (int)p.posX - 1; x < (int)p.posX + 2; x++){
-						for(int y = (int)p.posY + 2; y < (int)p.posY + 4; y++){
-							for(int z = (int)p.posZ - 1; z < (int)p.posZ + 2; z++){
-								w.setBlock(x, y, z, Blocks.gravel);
+					for(int x = (int)Math.floor(p.posX - 1); x < (int)Math.floor(p.posX + 2); x++){
+						for(int y = (int)Math.floor(p.posY + 2); y < (int)Math.floor(p.posY + 4); y++){
+							for(int z = (int)Math.floor(p.posZ - 1); z < (int)Math.floor(p.posZ + 2); z++){
+								if(w.isAirBlock(x, y, z)){
+									w.setBlock(x, y, z, Blocks.gravel);
+								}
 							}
 						}
 					}
@@ -77,6 +81,7 @@ public class ItemElementalHammer extends ItemTool {
 					return;
 				case 3:
 					PacketHandler.INSTANCE.sendToServer(new PacketGearBelt(999F));
+					p.setVelocity(p.motionX, p.motionY + 999D, p.motionZ);
 					p.motionY = 999D;
 					i.damageItem(100, p);
 					return;
