@@ -54,6 +54,7 @@ import aj.Java.Nullvoid.gen.GlitchTemple.TempleManager;
 import aj.Java.Nullvoid.item.ItemAntiGlitchCore;
 import aj.Java.Nullvoid.item.ItemBucket;
 import aj.Java.Nullvoid.item.ItemCircut;
+import aj.Java.Nullvoid.item.ItemDebug;
 import aj.Java.Nullvoid.item.ItemEssenceDark;
 import aj.Java.Nullvoid.item.ItemEssenceLight;
 import aj.Java.Nullvoid.item.ItemFrame;
@@ -172,6 +173,7 @@ public class VoidMod implements LoadingCallback {
 	public static Item glitchCore = null;
 	public static Item elementalHammer = null;
 	public static Item voidTome = null;
+	public static Item debug = null;
 	public static Potion dissolving = null;
 	public static Block NullOre = null;
 	public static Block VoidFabric = null;
@@ -282,6 +284,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerItem(pureGlitch, "pureGlitch");
 		GameRegistry.registerItem(phantom, "phantomRing");
 		GameRegistry.registerItem(voidTome, "voidTome");
+		GameRegistry.registerItem(debug, "debug");
 
 		// Tile entities
 		GameRegistry.registerTileEntity(TileEntityVoidWalker.class,
@@ -629,6 +632,7 @@ public class VoidMod implements LoadingCallback {
 		pureGlitch = new ItemPureGlitch().setUnlocalizedName("pureGlitch");
 		phantom = new PhantomRing().setUnlocalizedName("phantomRing");
 		voidTome = new ItemVoidTome().setUnlocalizedName("voidTome");
+		debug = new ItemDebug().setUnlocalizedName("debug");
 	}
 
 	private void blocks() {

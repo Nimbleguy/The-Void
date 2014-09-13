@@ -39,6 +39,8 @@ public class WorldGenGlitchTempleCore extends WorldGenerator {
 			mod++;
 		}
 		w.setBlock(x + 4, y + 20, z + 4, Blocks.glowstone);
+		w.setBlock(x + 4, y + 21, z + 4, VoidMod.chamberWall);
+		w.setBlockMetadataWithNotify(x + 4, y + 21, z + 4, 3, 2);
 		for(int xx = 3; xx < 6; xx++){
 			for(int zz = 3; zz < 6; zz++){
 				w.setBlockToAir(xx, y, zz);

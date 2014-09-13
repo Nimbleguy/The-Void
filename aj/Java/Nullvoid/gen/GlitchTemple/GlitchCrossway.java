@@ -7,9 +7,10 @@ import net.minecraft.world.World;
 import aj.Java.Nullvoid.Coords;
 import aj.Java.Nullvoid.VoidMod;
 
-public class GlitchEnterence implements IGlitchTemple {
+public class GlitchCrossway implements IGlitchTemple {
+
 	private Coords center;
-	public GlitchEnterence(Coords center){
+	public GlitchCrossway(Coords center){
 		this.center = center;
 	}
 
@@ -20,7 +21,7 @@ public class GlitchEnterence implements IGlitchTemple {
 
 	@Override
 	public Coords[] getEntrances() {
-		return new Coords[] {new Coords(center.getX(), center.getY() + 6, center.getZ())};
+		return new Coords[] {new Coords(center.getX() + 6, center.getY(), center.getZ()), new Coords(center.getX() - 6, center.getY(), center.getZ()), new Coords(center.getX(), center.getY(), center.getZ() + 6), new Coords(center.getX(), center.getY(), center.getZ() - 6)};
 	}
 
 	@Override
@@ -31,11 +32,11 @@ public class GlitchEnterence implements IGlitchTemple {
 	@Override
 	public void gen(World w) {
 		for(int x = center.getX() - 7; x < center.getX() + 8; x++){
-			for(int y = center.getY() - 7; y < center.getY() + 8; y++){
-				for(int z = center.getZ() - 7; z < center.getZ() + 8; z++){
+			for(int y = center.getY() - 7; y < center.getY() + 8; x++){
+				for(int z = center.getZ() - 7; z < center.getZ() + 8; x++){
 					if((x == center.getX() - 7 || x == center.getX() + 7) || (y == center.getY() - 7 || y == center.getY() + 7) || (z == center.getZ() - 7 || z == center.getZ() + 7)){
 						w.setBlock(x, y, z, VoidMod.chamberWall);
-						w.setBlockMetadataWithNotify(x, y, z, 4, 2);
+						w.setBlockMetadataWithNotify(x, y, z, 4, 3);
 					}
 					else{
 						w.setBlockToAir(x, y, z);
@@ -43,7 +44,7 @@ public class GlitchEnterence implements IGlitchTemple {
 				}
 			}
 		}
-		System.out.println("ENTER");
+		System.out.println("CROSS");
 		//TODO: Finish Generation
 	}
 

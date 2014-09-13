@@ -37,6 +37,6 @@ public class BlockDecor extends Block {
 	}
 	@Override
 	public IIcon getIcon(int side, int meta){
-		return tex[meta];
+		return meta < tex.length ? tex[meta] : tex[0];
 	}
 }
