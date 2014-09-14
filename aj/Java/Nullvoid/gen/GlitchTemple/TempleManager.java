@@ -39,7 +39,7 @@ public class TempleManager {
 			}
 		}
 		Coords current = new Coords(enterenceCenter.getX(), enterenceCenter.getY(), enterenceCenter.getZ());
-		while(roomsGenned <= 0){
+		while(roomsGenned > 0){
 			dir = r.nextInt(3);
 			int mod = r.nextInt(2) == 0 ? -1 : 1;
 			last[dir] = last[dir] + mod;
@@ -47,7 +47,7 @@ public class TempleManager {
 				last[dir] = last[dir] - mod;
 				continue;
 			}
-			if(roomPut[last[1]][last[2]][last[3]] == true){
+			if(roomPut[last[0]][last[1]][last[2]] == true){
 				last[dir] = last[dir] - mod;
 				continue;
 			}
@@ -63,22 +63,18 @@ public class TempleManager {
 				break;
 			}
 			EnumRoom room = EnumRoom.values()[r.nextInt(EnumRoom.values().length)];
+			//System.out.println(rooms.get(room).size());
 			while(room.equals(EnumRoom.ENTERANCE)){
 				room = EnumRoom.values()[r.nextInt(EnumRoom.values().length)];
 			}
 			clazz = rooms.get(room).get(r.nextInt(rooms.get(room).size()));
-			if(clazz == null){
-				map[last[1]][last[2]][last[3]] = null;
+			try {
+				map[last[0]][last[1]][last[2]] = clazz.getConstructor(Coords.class).newInstance(current);
+			} catch (Exception e) {
+				System.err.println("There has been an error when loding temples. Please report this to Nimbleguy:");
+				e.printStackTrace(System.err);
 			}
-			else{
-				try {
-					map[last[1]][last[2]][last[3]] = clazz.getConstructor(Coords.class).newInstance(current);
-				} catch (Exception e) {
-					System.err.println("There has been an error when loding temples. Please report this to Nimbleguy:");
-					e.printStackTrace(System.err);
-				}
-			}
-			roomPut[last[1]][last[2]][last[3]] = true;
+			roomPut[last[0]][last[1]][last[2]] = true;
 			roomsGenned--;
 		}
 		temples.add(this);

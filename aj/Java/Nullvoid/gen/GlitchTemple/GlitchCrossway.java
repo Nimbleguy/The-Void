@@ -32,8 +32,8 @@ public class GlitchCrossway implements IGlitchTemple {
 	@Override
 	public void gen(World w) {
 		for(int x = center.getX() - 7; x < center.getX() + 8; x++){
-			for(int y = center.getY() - 7; y < center.getY() + 8; x++){
-				for(int z = center.getZ() - 7; z < center.getZ() + 8; x++){
+			for(int y = center.getY() - 7; y < center.getY() + 8; y++){
+				for(int z = center.getZ() - 7; z < center.getZ() + 8; z++){
 					if((x == center.getX() - 7 || x == center.getX() + 7) || (y == center.getY() - 7 || y == center.getY() + 7) || (z == center.getZ() - 7 || z == center.getZ() + 7)){
 						w.setBlock(x, y, z, VoidMod.chamberWall);
 						w.setBlockMetadataWithNotify(x, y, z, 4, 3);
