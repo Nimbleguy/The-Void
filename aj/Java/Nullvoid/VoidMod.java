@@ -61,6 +61,7 @@ import aj.Java.Nullvoid.item.ItemFrame;
 import aj.Java.Nullvoid.item.ItemGlitchyAlloy;
 import aj.Java.Nullvoid.item.ItemIngotNull;
 import aj.Java.Nullvoid.item.ItemIngotVoid;
+import aj.Java.Nullvoid.item.ItemLens;
 import aj.Java.Nullvoid.item.ItemNullInk;
 import aj.Java.Nullvoid.item.ItemNullVoidAlloy;
 import aj.Java.Nullvoid.item.ItemPureGlitch;
@@ -129,8 +130,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.util.EnumHelper;
 
-@Mod(modid = VoidMod.MODID, name = "The Void", version = VoidMod.VERSION, guiFactory = "aj.Java.Nullvoid.client.VoidModGUIFactory", dependencies = "required-after:Forge@[10.13.0.1180,);"
+@Mod(modid = VoidMod.MODID, name = "The Void", version = VoidMod.VERSION, guiFactory = "aj.Java.Nullvoid.client.VoidModGUIFactory", dependencies = "required-after:Forge@[10.13.0.1208,);"
 		+ "after:Forestry;"
+		+ "after:Thaumcraft;"
 		+ "required-after:Baubles")
 public class VoidMod implements LoadingCallback {
 	public static List<Block> VoidReactorValidBlocks = new ArrayList<Block>(10);
@@ -174,6 +176,7 @@ public class VoidMod implements LoadingCallback {
 	public static Item elementalHammer = null;
 	public static Item voidTome = null;
 	public static Item debug = null;
+	public static Item lens = null;
 	public static Potion dissolving = null;
 	public static Block NullOre = null;
 	public static Block VoidFabric = null;
@@ -201,9 +204,10 @@ public class VoidMod implements LoadingCallback {
 	public static int PotIDDiss;
 	public static String PotBitDiss;
 	public static final String MODID = "nullvoid";
-	public static final String VERSION = "1.7.10-4.0.0-BETA";
+	public static final String VERSION = "1.7.10-5.0.0-BETA";
 	public static boolean shouldRetro = false;
 	public static boolean phantomRingE = true;
+	public static boolean thaumcraft = false;
 	public static MusicType voidMusic = null;
 	public static Fluid liquidFlux = null;
 	public static BiomeGenBase biomeNullVoid = null;
@@ -285,6 +289,7 @@ public class VoidMod implements LoadingCallback {
 		GameRegistry.registerItem(phantom, "phantomRing");
 		GameRegistry.registerItem(voidTome, "voidTome");
 		GameRegistry.registerItem(debug, "debug");
+		GameRegistry.registerItem(lens, "lens");
 
 		// Tile entities
 		GameRegistry.registerTileEntity(TileEntityVoidWalker.class,
@@ -381,6 +386,13 @@ public class VoidMod implements LoadingCallback {
 		if(Loader.isModLoaded("Forestry")){
 			try {
 				Class.forName("aj.Java.Nullvoid.Forestry.VoidForestry").newInstance();
+			} catch (Exception e) {
+			}
+		}
+		// THAUMIC
+		if(Loader.isModLoaded("Thaumcraft")){
+			try {
+				Class.forName("aj.Java.Nullvoid.Thaumcraft.VoidThaumcraft").newInstance();
 			} catch (Exception e) {
 			}
 		}
@@ -633,6 +645,7 @@ public class VoidMod implements LoadingCallback {
 		phantom = new PhantomRing().setUnlocalizedName("phantomRing");
 		voidTome = new ItemVoidTome().setUnlocalizedName("voidTome");
 		debug = new ItemDebug().setUnlocalizedName("debug");
+		lens = new ItemLens().setUnlocalizedName("lens");
 	}
 
 	private void blocks() {
