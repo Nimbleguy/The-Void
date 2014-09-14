@@ -389,13 +389,6 @@ public class VoidMod implements LoadingCallback {
 			} catch (Exception e) {
 			}
 		}
-		// THAUMIC
-		if(Loader.isModLoaded("Thaumcraft")){
-			try {
-				Class.forName("aj.Java.Nullvoid.Thaumcraft.VoidThaumcraft").newInstance();
-			} catch (Exception e) {
-			}
-		}
 	}
 
 	@EventHandler
@@ -561,6 +554,14 @@ public class VoidMod implements LoadingCallback {
 		//Sound
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
 			((ClientProxy)proxy).voidSound = new MovingSoundPlayer(Minecraft.getMinecraft().thePlayer);
+		}
+		// THAUMIC
+		if(Loader.isModLoaded("Thaumcraft")){
+			try {
+				Class.forName("aj.Java.Nullvoid.Thaumcraft.VoidThaumcraft").newInstance();
+			} catch (Exception e) {
+				
+			}
 		}
 		System.out.println("[NULLVOID]: Shall we traverse the void?");
 	}

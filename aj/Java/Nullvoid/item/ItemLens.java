@@ -38,6 +38,6 @@ public class ItemLens extends Item {
 	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 	    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 15);
-	    return names[i] + "Lens";
+	    return "item." + names[i] + "Lens";
 	}
 }

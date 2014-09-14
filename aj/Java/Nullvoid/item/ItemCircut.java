@@ -51,6 +51,6 @@ public class ItemCircut extends Item {
 	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 	    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 15);
-	    return names[i] + "Circuit";
+	    return "item." + names[i] + "Circuit";
 	}
 }
