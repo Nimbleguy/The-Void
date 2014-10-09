@@ -777,7 +777,7 @@ public class TickListner {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public ISound soundPlay(PlaySoundEvent17 event){
-		if(event != null){
+		if(event != null && event.category != null && Minecraft.getMinecraft() != null && Minecraft.getMinecraft().thePlayer != null && event.manager != null){
 			if(event.category.compareTo(SoundCategory.AMBIENT) == 0){
 				if(Minecraft.getMinecraft().thePlayer.dimension == VoidMod.NullVoidDimID){
 					if(!event.manager.isSoundPlaying(((ClientProxy)VoidMod.proxy).voidSound)){
