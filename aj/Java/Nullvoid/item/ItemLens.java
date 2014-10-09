@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 
 public class ItemLens extends Item {
@@ -19,11 +20,18 @@ public class ItemLens extends Item {
 		setHasSubtypes(true);
 		setMaxDamage(0);
 	}
+	@SideOnly(Side.CLIENT)
+	private static IIcon[] icons = new IIcon[2];
 	public static final String[] names = new String[] {"normal", "thaumic"};
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister)
 	{
-	       this.itemIcon =  par1IconRegister.registerIcon("nullvoid:lens");
+	       icons[0] =  par1IconRegister.registerIcon("nullvoid:lens");
+	       icons[1] =  par1IconRegister.registerIcon("nullvoid:lensThaumic");
+	}
+	@SideOnly(Side.CLIENT)
+	public IIcon getIconFromDamage(int i){
+		return i < icons.length ? icons[i] : icons[0];
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@SideOnly(Side.CLIENT)

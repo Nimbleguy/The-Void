@@ -36,7 +36,7 @@ public class VoidThaumcraft {
 				new ItemStack(VoidMod.lens, 1, 1));
 		lens.setItemTriggers(new ItemStack(VoidMod.lens), new ItemStack(ConfigItems.itemGoggles));
 		
-		lensPages[0] = new ResearchPage("thaum.lens.page.1");
+		lensPages[0] = new ResearchPage("tc.lens.page.1");
 		lensPages[1] = new ResearchPage(lensInfusion);
 		lens.setPages(lensPages[0], lensPages[1]);
 		lens.setParents("INFUSION");
