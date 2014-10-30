@@ -8,6 +8,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 @SideOnly(Side.CLIENT)
 public class TextureNullOre extends TextureAtlasSprite {
@@ -24,7 +25,7 @@ public class TextureNullOre extends TextureAtlasSprite {
 		if(p != null){
 			if (p.inventory.armorInventory[3] != null) {
 				if (p.inventory.armorInventory[3].isItemEqual(new ItemStack(
-						VoidMod.nullGoggles))) {
+						VoidMod.nullGoggles, 1, OreDictionary.WILDCARD_VALUE))) {
 					this.frameCounter = getFrameForDim(p.dimension, true);
 				} else {
 					this.frameCounter = getFrameForDim(p.dimension, false);

@@ -181,7 +181,7 @@ public class VoidMod implements LoadingCallback {
 	public static int PotIDDiss;
 	public static String PotBitDiss;
 	public static final String MODID = "nullvoid";
-	public static final String VERSION = "1.7.10-3.3.0-BETA";
+	public static final String VERSION = "1.7.10-3.4.2-BETA";
 	public static boolean shouldRetro = false;
 	public static boolean phantomRingE = true;
 	public static MusicType voidMusic = null;

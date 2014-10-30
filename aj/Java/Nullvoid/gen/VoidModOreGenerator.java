@@ -38,10 +38,10 @@ public class VoidModOreGenerator implements IWorldGenerator {
 	private void genSurface(World w, Random r, int xx, int zz) {
 		for(int k = 0; k < 2; k++) {
 			int voidOreXCoord = xx + r.nextInt(16);
-			int voidOreYCoord = r.nextInt(5);
+			int voidOreYCoord = r.nextInt(5) + 1;
 			int voidOreZCoord = zz + r.nextInt(16);
 			//System.out.println(voidOreXCoord + " " + voidOreYCoord + " " + voidOreZCoord);
-			(new WorldGenMinable(VoidMod.NullOre, 2)).generate(w, r, voidOreXCoord, voidOreYCoord, voidOreZCoord);
+			(new WorldGenMinable(VoidMod.NullOre, 2, w.getBlock(voidOreXCoord, voidOreYCoord, voidOreZCoord).equals(Blocks.stone) ? Blocks.stone : Blocks.bedrock)).generate(w, r, voidOreXCoord, voidOreYCoord, voidOreZCoord);
 		}
 		int[] xa = new int[16];
 		int[] za = new int[16];
