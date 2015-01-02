@@ -2,21 +2,20 @@ package aj.Java.Nullvoid.Armor;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.Packet.PacketFallDamage;
 import aj.Java.Nullvoid.Packet.PacketGearBelt;
 import aj.Java.Nullvoid.Packet.PacketHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ArmorNull extends ItemArmor {
 	public ArmorNull(ArmorMaterial par2EnumArmorMaterial, int par3, int par4) {
@@ -35,8 +34,7 @@ public class ArmorNull extends ItemArmor {
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, int slot,
-			String type) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, int slot, String type) {
 		return "nullvoid:textures/models/armor/Null_layer_1.png";
 	}
 

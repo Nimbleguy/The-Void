@@ -3,12 +3,9 @@ package aj.Java.Nullvoid.item;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import aj.Java.Nullvoid.Utils;
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.Dimention.TeleporterNullVoid;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -27,12 +24,12 @@ public class ItemVoidTome extends Item {
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer p){
 		if(stack.getItemDamage() == 0){
 			@SuppressWarnings("unchecked")
-			List<Entity> l = (List<Entity>) world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(p.posX - 5, p.posY - 5, p.posZ - 5, p.posX + 5, p.posY + 5, p.posZ + 5));
+			List<Entity> l = (List<Entity>) world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.fromBounds(p.posX - 5, p.posY - 5, p.posZ - 5, p.posX + 5, p.posY + 5, p.posZ + 5));
 			try {
 				for (Entity e : l) {
 					if(!(e instanceof EntityPlayer)){
 						int dim = e.dimension;
-						Utils.setVoidwalking(e, 65536);
+						VoidMod.util.setVoidwalking(e, 65536);
 						e.dimension = VoidMod.NullVoidDimID;
 						MinecraftServer.getServer()
 							.getConfigurationManager()
@@ -49,11 +46,5 @@ public class ItemVoidTome extends Item {
 			}
 		}
 		return stack;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister i){
-		this.itemIcon = i.registerIcon("nullvoid:voidTome");
 	}
 }

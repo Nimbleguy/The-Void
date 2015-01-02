@@ -25,7 +25,7 @@ public class VoidWorldData extends WorldSavedData {
 	}
 	
 	public static VoidWorldData get(World w){
-		MapStorage s = w.perWorldStorage;
+		MapStorage s = w.getPerWorldStorage();
 		VoidWorldData me = (VoidWorldData)s.loadData(VoidWorldData.class, id);
 		if(me == null){
 			me = new VoidWorldData();
@@ -60,8 +60,8 @@ public class VoidWorldData extends WorldSavedData {
 		ChunkCoordIntPair coord = null;
 		for(NBTTagCompound t : l){
 			coord = new ChunkCoordIntPair(t.getInteger("X"), t.getInteger("Z"));
-			Utils.hasGen.put(coord, t.getBoolean("hasGen"));
-			Utils.hasStruct.put(coord, t.getBoolean("hasStruct"));
+			VoidMod.util.hasGen.put(coord, t.getBoolean("hasGen"));
+			VoidMod.util.hasStruct.put(coord, t.getBoolean("hasStruct"));
 		}
 	}
 
@@ -71,13 +71,13 @@ public class VoidWorldData extends WorldSavedData {
 		nbt.setBoolean("spawnedAlpha", spawnedAlpha);
 		nbt = TempleManager.saveToNBT(nbt);
 		NBTTagList list = new NBTTagList();
-		for(int i = 0; i < Utils.hasGen.size(); i++){
+		for(int i = 0; i < VoidMod.util.hasGen.size(); i++){
 			NBTTagCompound t = new NBTTagCompound();
-			ChunkCoordIntPair coord = (ChunkCoordIntPair) Utils.hasGen.keySet().toArray()[i];
+			ChunkCoordIntPair coord = (ChunkCoordIntPair) VoidMod.util.hasGen.keySet().toArray()[i];
 			t.setInteger("X", coord.chunkXPos);
 			t.setInteger("Z", coord.chunkZPos);
-			t.setBoolean("hasGen", Utils.hasGen.get(coord));
-			t.setBoolean("hasStruct", Utils.hasStruct.get(coord));
+			t.setBoolean("hasGen", VoidMod.util.hasGen.get(coord));
+			t.setBoolean("hasStruct", VoidMod.util.hasStruct.get(coord));
 			list.appendTag(t);
 		}
 		nbt.setTag("ChunkGen", list);

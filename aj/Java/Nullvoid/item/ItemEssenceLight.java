@@ -3,7 +3,6 @@ package aj.Java.Nullvoid.item;
 import java.util.List;
 
 import aj.Java.Nullvoid.VoidMod;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
@@ -18,15 +17,10 @@ public class ItemEssenceLight extends Item {
 	}
 
 	@Override
-	public void registerIcons(IIconRegister i) {
-		this.itemIcon = i.registerIcon("nullvoid:lightEssence");
-	}
-
-	@Override
 	public boolean onEntityItemUpdate(EntityItem item) {
 		@SuppressWarnings({ "unchecked" })
 		List<EntityItem> l = item.worldObj.getEntitiesWithinAABB(
-				EntityItem.class, AxisAlignedBB.getBoundingBox(item.posX - 1D,
+				EntityItem.class, AxisAlignedBB.fromBounds(item.posX - 1D,
 						item.posY - 1D, item.posZ - 1D, item.posX + 1D,
 						item.posY + 1D, item.posZ + 1D));
 		loop: for (EntityItem i : l) {

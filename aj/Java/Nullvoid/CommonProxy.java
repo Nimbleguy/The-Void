@@ -2,10 +2,9 @@ package aj.Java.Nullvoid;
 
 public class CommonProxy {
 	public void registerRenderers() {
-        // Empty due to no server rendering.
+        //Empty due to no server rendering.
 	}
-	public int addArmor(String s){
-		// Client ONLY
-		return 0;
+	public void registerIcons(){
+		//Empty due to servers not needing to know about images.
 	}
 }

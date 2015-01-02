@@ -14,12 +14,12 @@ import net.minecraft.world.World;
 public class ItemDebug extends Item {
 	@Override
     public EnumRarity getRarity(ItemStack par1ItemStack) {
-            return EnumRarity.epic;
+            return EnumRarity.EPIC;
     }
 	@Override
 	public ItemStack onItemRightClick(ItemStack i, World w, EntityPlayer p) {
-		MovingObjectPosition pos = Utils.rayTraceLiquid(w, p);
-		(new WorldGenGlitchTempleCore()).generate(w, new Random(), pos.blockX, pos.blockY, pos.blockZ);
+		MovingObjectPosition pos = p.rayTrace(5F, 5F);
+		(new WorldGenGlitchTempleCore()).generate(w, new Random(), pos.getBlockPos());
 		return i;
 	}
 }

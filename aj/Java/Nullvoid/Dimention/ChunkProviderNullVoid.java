@@ -255,11 +255,12 @@ public class ChunkProviderNullVoid implements IChunkProvider {
         }
 
         Chunk chunk = new Chunk(this.worldObj, ablock, abyte, par1, par2);
-        byte[] abyte1 = chunk.getBiomeArray();
+        BiomeGenBase[] abiomegenbase = this.worldObj.getWorldChunkManager().loadBlockGeneratorData((BiomeGenBase[])null, par1 * 16, par2 * 16, 16, 16);
+        byte[] barray = chunk.getBiomeArray();
 
-        for (int k = 0; k < abyte1.length; ++k)
+        for (int l = 0; l < abyte.length; ++l)
         {
-            abyte1[k] = (byte)this.biomesForGeneration[0].biomeID;
+            barray[l] = (byte)abiomegenbase[l].biomeID;
         }
 
         chunk.generateSkylightMap();

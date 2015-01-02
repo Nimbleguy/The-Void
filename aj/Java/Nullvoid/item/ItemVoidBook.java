@@ -3,13 +3,8 @@ package aj.Java.Nullvoid.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.common.FMLCommonHandler;
 import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.GUI.GUIVoidBook;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,6 +17,10 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemVoidBook extends ItemEditableBook {
@@ -31,7 +30,7 @@ public class ItemVoidBook extends ItemEditableBook {
 		setHasSubtypes(true);
 		setMaxDamage(0);
 	}
-	public static final String[] names = new String[] {"myth", "craft", "craft2", "myth2"};
+	public static final String[] names = new String[] {"voidBook_myth", "voidBook_craft", "voidBook_craft2", "voidBook_myth2"};
 	public ItemStack getStack(int meta){
 		ItemStack tomeStack = new ItemStack(this, 1, meta);
 		if(meta == 0){
@@ -490,14 +489,9 @@ public class ItemVoidBook extends ItemEditableBook {
         }
         return stack;
     }
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister i){
-		this.itemIcon = i.registerIcon("nullvoid:voidBook");
-	}
 	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 	    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 15);
-	    return "item.voidBook." + names[i];
+	    return "item." + names[i];
 	}
 }

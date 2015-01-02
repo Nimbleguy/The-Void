@@ -2,14 +2,12 @@ package aj.Java.Nullvoid.item;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import aj.Java.Nullvoid.VoidMod;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTablet extends Item {
 	public ItemTablet(){
@@ -18,12 +16,7 @@ public class ItemTablet extends Item {
 		this.setMaxDamage(0);
 		this.setMaxStackSize(1);
 	}
-	@Override
-	public void registerIcons(IIconRegister i){
-		this.itemIcon = i.registerIcon("nullvoid:tablet");
-	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{

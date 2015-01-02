@@ -1,7 +1,6 @@
 package aj.Java.Nullvoid.item;
 
 import aj.Java.Nullvoid.VoidMod;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,9 +9,6 @@ public class ItemNullVoidAlloy extends Item {
 	public ItemNullVoidAlloy(){
 		super();
 		this.setCreativeTab(VoidMod.ctab);
-	}
-	public void registerIcons(IIconRegister i){
-		this.itemIcon = i.registerIcon("nullvoid:nullVoidAlloy");
 	}
 	@Override
 	public boolean onEntityItemUpdate(EntityItem item){

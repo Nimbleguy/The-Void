@@ -7,9 +7,6 @@ import java.util.UUID;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import aj.Java.Nullvoid.Effects.Effect;
 import aj.Java.Nullvoid.Effects.Effects;
 import aj.Java.Nullvoid.Tools.ItemElementalHammer;
@@ -28,24 +25,21 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Utils {
 	@SideOnly(Side.CLIENT)
 	public static KeyBinding specialKey;
-	static{
+	public Utils(){
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
 			specialKey = new KeyBinding("key.nullvoid_special.desc", Keyboard.KEY_BACKSLASH, "key.nullvoid.category");
 		}
 	}
-	public static HashMap<ChunkCoordIntPair, Boolean> hasGen = new HashMap<ChunkCoordIntPair, Boolean>(1000);
-	public static HashMap<ChunkCoordIntPair, Boolean> hasStruct = new HashMap<ChunkCoordIntPair, Boolean>(1000);
-	public static MovingObjectPosition rayTraceLiquid(World w, EntityPlayer p){
-		Vec3 vec3 = p.getPosition(5F);
-        Vec3 vec31 = p.getLook(5F);
-        Vec3 vec32 = vec3.addVector(vec31.xCoord * 5D, vec31.yCoord * 5D, vec31.zCoord * 5D);
-        return w.rayTraceBlocks(vec3, vec32, true);
-	}
-	public static NBTTagCompound getEntityTag(Entity e){
+	public HashMap<ChunkCoordIntPair, Boolean> hasGen = new HashMap<ChunkCoordIntPair, Boolean>(1000);
+	public HashMap<ChunkCoordIntPair, Boolean> hasStruct = new HashMap<ChunkCoordIntPair, Boolean>(1000);
+	public NBTTagCompound getEntityTag(Entity e){
 		NBTTagCompound entityData = e.getEntityData();
 		NBTTagCompound persist;
 		if (!entityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
@@ -55,19 +49,19 @@ public class Utils {
 		}
 		return persist;
 	}
-	public static void setInVoid(EntityPlayer p, boolean b){
+	public void setInVoid(EntityPlayer p, boolean b){
 		getEntityTag(p).setBoolean("NullInVoid", b);
 	}
-	public static boolean getInVoid(EntityPlayer p){
+	public boolean getInVoid(EntityPlayer p){
 		return getEntityTag(p).getBoolean("NullInVoid");
 	}
-	public static void setBright(EntityPlayer p, float f){
+	public void setBright(EntityPlayer p, float f){
 		getEntityTag(p).setFloat("NullBright", f);
 	}
-	public static float getBright(EntityPlayer p){
+	public float getBright(EntityPlayer p){
 		return getEntityTag(p).getFloat("NullBright");
 	}
-	public static void setEffects(EntityPlayer p, Effects e){
+	public void setEffects(EntityPlayer p, Effects e){
 		StringBuilder s = new StringBuilder(e.getEffects().size());
 		for(int i = 0; i < e.getEffects().size(); i++){
 			s.append(e.getEffects().get(i).name());
@@ -77,7 +71,7 @@ public class Utils {
 		}
 		getEntityTag(p).setString("NullEffects", s.toString());
 	}
-	public static Effects getEffects(EntityPlayer p){
+	public Effects getEffects(EntityPlayer p){
 		Effects e = new Effects();
 		String[] s = getEntityTag(p).getString("NullEffcts").split("|");
 		for(int i = 0; i < s.length; i++){
@@ -85,20 +79,20 @@ public class Utils {
 		}
 		return e;
 	}
-	public static void setVoidwalking(Entity e, int i){
+	public void setVoidwalking(Entity e, int i){
 		getEntityTag(e).setInteger("NullVoidwalking", i);
 	}
-	public static int getVoidwalking(Entity e){
+	public int getVoidwalking(Entity e){
 		return getEntityTag(e).getInteger("NullVoidwalking");
 	}
-	public static void setGlitchstone(EntityPlayer p, boolean b){
+	public void setGlitchstone(EntityPlayer p, boolean b){
 		getEntityTag(p).setBoolean("NullGlitchstone", b);
 	}
-	public static boolean getGlitchstone(EntityPlayer p){
+	public boolean getGlitchstone(EntityPlayer p){
 		return getEntityTag(p).getBoolean("NullGlitchstone");
 	}
 	@SuppressWarnings("unchecked")
-	public static EntityPlayerMP getPlayerFromUUID(String s){
+	public EntityPlayerMP getPlayerFromUUID(String s){
 		if(MinecraftServer.getServer().getConfigurationManager() != null && MinecraftServer.getServer().getConfigurationManager().playerEntityList != null){
 			for(EntityPlayerMP p : (List<EntityPlayerMP>)MinecraftServer.getServer().getConfigurationManager().playerEntityList){
 				if(s.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")){
@@ -110,7 +104,7 @@ public class Utils {
 		}
 		return null;
 	}
-	public static int hammerBalance(ItemStack i){
+	public int hammerBalance(ItemStack i){
 		int[] values = new int[8];
 		values[0] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.FIRE, i);
 		values[1] = ((ItemElementalHammer) i.getItem()).getElement(EnumElement.ICE, i);
@@ -130,6 +124,7 @@ public class Utils {
 		}
 		return index;
 	}
+	/*
 	public static List<ItemStack> getBlockDrops(WorldServer world, int i, int j, int k, EntityPlayer p) {
 		Block block = world.getBlock(i, j, k);
 
@@ -156,4 +151,5 @@ public class Utils {
 
 		return returnList;
 	}
+	*/
 }

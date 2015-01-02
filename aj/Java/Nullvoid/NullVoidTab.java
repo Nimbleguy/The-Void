@@ -10,6 +10,6 @@ public class NullVoidTab extends CreativeTabs {
 	}
 	@Override
 	public Item getTabIconItem() {
-		return VoidMod.circuts;
+		return VoidMod.circuits;
 	}
 }

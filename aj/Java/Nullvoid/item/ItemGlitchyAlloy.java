@@ -1,7 +1,6 @@
 package aj.Java.Nullvoid.item;
 
 import aj.Java.Nullvoid.VoidMod;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,12 +10,9 @@ public class ItemGlitchyAlloy extends Item {
 		super();
 		this.setCreativeTab(VoidMod.ctab);
 	}
-	public void registerIcons(IIconRegister i){
-		this.itemIcon = i.registerIcon("nullvoid:glitchAlloy");
-	}
 	@Override
 	public boolean onEntityItemUpdate(EntityItem item){
-		if(item.posY >= 1024){
+		if(item.posY >= 256){
 			item.setFire(10);
 			item.worldObj.spawnEntityInWorld(new EntityItem(item.worldObj, item.posX, item.posY, item.posZ, new ItemStack(VoidMod.lightEssence, item.getEntityItem().stackSize)));
 			item.setDead();

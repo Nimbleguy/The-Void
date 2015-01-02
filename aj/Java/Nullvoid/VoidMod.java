@@ -46,6 +46,7 @@ import aj.Java.Nullvoid.block.item.ItemBlockDecor;
 import aj.Java.Nullvoid.block.item.ItemBlockStorage;
 import aj.Java.Nullvoid.client.ClientProxy;
 import aj.Java.Nullvoid.client.GUIHandler;
+import aj.Java.Nullvoid.client.HasStates;
 import aj.Java.Nullvoid.client.MovingSoundPlayer;
 import aj.Java.Nullvoid.client.render.TextureNullOre;
 import aj.Java.Nullvoid.gen.VoidModOreGenerator;
@@ -53,7 +54,7 @@ import aj.Java.Nullvoid.gen.VoidModStructureGenerator;
 import aj.Java.Nullvoid.gen.GlitchTemple.TempleManager;
 import aj.Java.Nullvoid.item.ItemAntiGlitchCore;
 import aj.Java.Nullvoid.item.ItemBucket;
-import aj.Java.Nullvoid.item.ItemCircut;
+import aj.Java.Nullvoid.item.ItemCircuit;
 import aj.Java.Nullvoid.item.ItemDebug;
 import aj.Java.Nullvoid.item.ItemEssenceDark;
 import aj.Java.Nullvoid.item.ItemEssenceLight;
@@ -111,31 +112,34 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.util.EnumHelper;
 
-@Mod(modid = VoidMod.MODID, name = "The Void", version = VoidMod.VERSION, guiFactory = "aj.Java.Nullvoid.client.VoidModGUIFactory", dependencies = "required-after:Forge@[10.13.0.1208,);"
+@Mod(modid = VoidMod.MODID, name = "The Void", version = VoidMod.VERSION, guiFactory = "aj.Java.Nullvoid.client.VoidModGUIFactory", dependencies = "required-after:Forge@[1.8-11.14.0.1281-1.8,);"
 		+ "after:Forestry;"
 		+ "after:Thaumcraft;"
 		+ "required-after:Baubles")
 public class VoidMod implements LoadingCallback {
 	public static List<Block> VoidReactorValidBlocks = new ArrayList<Block>(10);
+	
+	public static Utils util = new Utils();
+	
 	public static Achievement mineNull = null;
 	public static Achievement enterNull = null;
 	public static Achievement useTardis = null;
@@ -146,10 +150,14 @@ public class VoidMod implements LoadingCallback {
 	public static Achievement summonGlitch = null;
 	public static Achievement scat = null;
 	public static AchievementPage nullChievements = null;
+	
 	public static Configuration config;
+	
 	public static CreativeTabs ctab = new NullVoidTab(CreativeTabs.getNextID(),
 			"The Null Void");
-	public static Item circuts = null;
+	
+	@HasStates({"circuit_inert", "circuit_energized", "circuit_destablized", "circuit_fluxuating", "circuit_active"})
+	public static Item circuits = null;
 	public static Item ingotNull = null;
 	public static Item ingotVoid = null;
 	public static Item corruptAlloy = null;
@@ -159,6 +167,7 @@ public class VoidMod implements LoadingCallback {
 	public static Item lightEssence = null;
 	public static Item darkEssence = null;
 	public static Item yingYang = null;
+	@HasStates({"voidBook_myth", "voidBook_craft", "voidBook_craft2", "voidBook_myth2"})
 	public static ItemVoidBook voidBook = null;
 	public static Item scatman = null;
 	public static Item pier = null;
@@ -176,12 +185,15 @@ public class VoidMod implements LoadingCallback {
 	public static Item elementalHammer = null;
 	public static Item voidTome = null;
 	public static Item debug = null;
+	@HasStates({"lens_normal", "lens_thaumic"})
 	public static Item lens = null;
+	
 	public static Potion dissolving = null;
-	public static Block NullOre = null;
-	public static Block VoidFabric = null;
+	
+	public static Block nullOre = null;
+	public static Block voidFabric = null;
 	public static Block walker = null;
-	public static Block voiddoor = null;
+	public static Block voidDoor = null;
 	public static Block voidReactor = null;
 	public static Block swordWall = null;
 	public static Block chamberWall = null;
@@ -194,6 +206,7 @@ public class VoidMod implements LoadingCallback {
 	public static Block blockLiquidFlux = null;
 	public static Block decor = null;
 	public static Block crystalGlitch = null;
+	
 	public static int NullVoidDimID;
 	public static int NullVoidBioID;
 	public static int EntIDBuild;
@@ -202,28 +215,39 @@ public class VoidMod implements LoadingCallback {
 	public static int EntIDFloat;
 	public static int EntIDGlitch;
 	public static int PotIDDiss;
+	public static int ReactorRender = -1;
+	public static int CrystalRender = -1;
+	
 	public static String PotBitDiss;
 	public static final String MODID = "nullvoid";
-	public static final String VERSION = "1.7.10-5.0.0-BETA";
+	public static final String VERSION = "1.7.10-4.0.0-BETA";
+	
 	public static boolean shouldRetro = false;
 	public static boolean phantomRingE = true;
 	public static boolean thaumcraft = false;
+	
 	public static MusicType voidMusic = null;
+	
 	public static Fluid liquidFlux = null;
+	
 	public static BiomeGenBase biomeNullVoid = null;
+	
 	@SideOnly(Side.CLIENT)
 	public static TextureNullOre texNullOre;
+	
 	public static ArmorMaterial NullArmor = EnumHelper.addArmorMaterial(
-			"NullArmor", 8, new int[] {2, 4, 3, 1}, 15);
+			"NullArmor", "Null", 8, new int[] {2, 4, 3, 1}, 15);
+	
 	public static ToolMaterial SpecialTool = EnumHelper.addToolMaterial(
 			"NullVoidSpecial", 100, 10000, 100F, 10F, 100);
+	
 	public static int NullArmorRender;
+	
 	@Instance(value = MODID)
 	public static VoidMod me;
+	
 	@SidedProxy(clientSide = "aj.Java.Nullvoid.client.ClientProxy", serverSide = "aj.Java.Nullvoid.CommonProxy")
 	public static CommonProxy proxy;
-	public static int ReactorRender = -1;
-	public static int CrystalRender = -1;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -243,53 +267,52 @@ public class VoidMod implements LoadingCallback {
 		FluidRegistry.registerFluid(liquidFlux);
 
 		// Blocks
-		GameRegistry.registerBlock(walker, "Voidwalker");
-		GameRegistry.registerBlock(voiddoor, "voidDoor");
-		GameRegistry.registerBlock(VoidFabric, "voidFabric");
-		GameRegistry.registerBlock(NullOre, "nullOre");
-		GameRegistry.registerBlock(blockLiquidFlux, "moltenFluxBlock");
-		GameRegistry.registerBlock(voidReactor, "voidReactor");
-		GameRegistry.registerBlock(swordWall, "swordWall");
-		GameRegistry.registerBlock(chamberWall, ItemBlockChamberWall.class,
-				"chamberWall");
-		GameRegistry.registerBlock(voidOre, "voidOre");
-		GameRegistry.registerBlock(generic, "generic");
-		GameRegistry.registerBlock(glitchFrame, "glitchFrame");
-		GameRegistry.registerBlock(transparent, "transparent");
-		GameRegistry.registerBlock(storage, ItemBlockStorage.class, "storage");
-		GameRegistry.registerBlock(phantomB, "phantomBlock");
-		GameRegistry.registerBlock(decor, ItemBlockDecor.class, "decor");
-		GameRegistry.registerBlock(crystalGlitch, "crystalGlitch");
+		GameRegistry.registerBlock(walker, walker.getUnlocalizedName());
+		GameRegistry.registerBlock(voidDoor, voidDoor.getUnlocalizedName());
+		GameRegistry.registerBlock(voidFabric, voidFabric.getUnlocalizedName());
+		GameRegistry.registerBlock(nullOre, nullOre.getUnlocalizedName());
+		GameRegistry.registerBlock(blockLiquidFlux, blockLiquidFlux.getUnlocalizedName());
+		GameRegistry.registerBlock(voidReactor, voidReactor.getUnlocalizedName());
+		GameRegistry.registerBlock(swordWall, swordWall.getUnlocalizedName());
+		GameRegistry.registerBlock(chamberWall, ItemBlockChamberWall.class, chamberWall.getUnlocalizedName());
+		GameRegistry.registerBlock(voidOre, voidOre.getUnlocalizedName());
+		GameRegistry.registerBlock(generic, generic.getUnlocalizedName());
+		GameRegistry.registerBlock(glitchFrame, glitchFrame.getUnlocalizedName());
+		GameRegistry.registerBlock(transparent, transparent.getUnlocalizedName());
+		GameRegistry.registerBlock(storage, ItemBlockStorage.class, storage.getUnlocalizedName());
+		GameRegistry.registerBlock(phantomB, phantomB.getUnlocalizedName());
+		GameRegistry.registerBlock(decor, ItemBlockDecor.class, decor.getUnlocalizedName());
+		GameRegistry.registerBlock(crystalGlitch, crystalGlitch.getUnlocalizedName());
 
 		// Items
-		GameRegistry.registerItem(bucket, "bucketFlux");
-		GameRegistry.registerItem(circuts, "circutsVoidFlux");
-		GameRegistry.registerItem(ingotVoid, "ingotVoid");
-		GameRegistry.registerItem(ingotNull, "ingotNull");
-		GameRegistry.registerItem(nullGoggles, "goggleNull");
-		GameRegistry.registerItem(voidGear, "voidGear");
-		GameRegistry.registerItem(gravityBelt, "gravityBelt");
-		GameRegistry.registerItem(glitchAmulet, "glitchAmulet");
-		GameRegistry.registerItem(corruptAlloy, "corruptAlloy");
-		GameRegistry.registerItem(nullVoidAlloy, "nullVoidAlloy");
-		GameRegistry.registerItem(ingotFrame, "ingotFrame");
-		GameRegistry.registerItem(baneOfDark, "darknessBane");
-		GameRegistry.registerItem(tablet, "tablet");
-		GameRegistry.registerItem(lightEssence, "lightEssence");
-		GameRegistry.registerItem(darkEssence, "darkEssence");
-		GameRegistry.registerItem(darkPick, "darkPick");
-		GameRegistry.registerItem(elementalHammer, "elementHammer");
-		GameRegistry.registerItem(yingYang, "yingYang");
-		GameRegistry.registerItem(glitchCore, "antiGlitchCore");
-		GameRegistry.registerItem(voidBook, "voidBook");
-		GameRegistry.registerItem(scatman, "scatman");
-		GameRegistry.registerItem(pier, "piertonowhere");
-		GameRegistry.registerItem(nullInk, "nullInk");
-		GameRegistry.registerItem(pureGlitch, "pureGlitch");
-		GameRegistry.registerItem(phantom, "phantomRing");
-		GameRegistry.registerItem(voidTome, "voidTome");
-		GameRegistry.registerItem(debug, "debug");
-		GameRegistry.registerItem(lens, "lens");
+		GameRegistry.registerItem(bucket, bucket.getUnlocalizedName());
+		GameRegistry.registerItem(circuits, circuits.getUnlocalizedName());
+		GameRegistry.registerItem(ingotVoid, ingotVoid.getUnlocalizedName());
+		GameRegistry.registerItem(ingotNull, ingotNull.getUnlocalizedName());
+		GameRegistry.registerItem(nullGoggles, nullGoggles.getUnlocalizedName());
+		GameRegistry.registerItem(voidGear, voidGear.getUnlocalizedName());
+		GameRegistry.registerItem(gravityBelt, gravityBelt.getUnlocalizedName());
+		GameRegistry.registerItem(glitchAmulet, glitchAmulet.getUnlocalizedName());
+		GameRegistry.registerItem(corruptAlloy, corruptAlloy.getUnlocalizedName());
+		GameRegistry.registerItem(nullVoidAlloy, nullVoidAlloy.getUnlocalizedName());
+		GameRegistry.registerItem(ingotFrame, ingotFrame.getUnlocalizedName());
+		GameRegistry.registerItem(baneOfDark, baneOfDark.getUnlocalizedName());
+		GameRegistry.registerItem(tablet, tablet.getUnlocalizedName());
+		GameRegistry.registerItem(lightEssence, lightEssence.getUnlocalizedName());
+		GameRegistry.registerItem(darkEssence, darkEssence.getUnlocalizedName());
+		GameRegistry.registerItem(darkPick, darkPick.getUnlocalizedName());
+		GameRegistry.registerItem(elementalHammer, elementalHammer.getUnlocalizedName());
+		GameRegistry.registerItem(yingYang, yingYang.getUnlocalizedName());
+		GameRegistry.registerItem(glitchCore, glitchCore.getUnlocalizedName());
+		GameRegistry.registerItem(voidBook, voidBook.getUnlocalizedName());
+		GameRegistry.registerItem(scatman, "record_scatman");
+		GameRegistry.registerItem(pier, "record_pier");
+		GameRegistry.registerItem(nullInk, nullInk.getUnlocalizedName());
+		GameRegistry.registerItem(pureGlitch, pureGlitch.getUnlocalizedName());
+		GameRegistry.registerItem(phantom, phantom.getUnlocalizedName());
+		GameRegistry.registerItem(voidTome, voidTome.getUnlocalizedName());
+		GameRegistry.registerItem(debug, debug.getUnlocalizedName());
+		GameRegistry.registerItem(lens, lens.getUnlocalizedName());
 
 		// Tile entities
 		GameRegistry.registerTileEntity(TileEntityVoidWalker.class,
@@ -305,7 +328,7 @@ public class VoidMod implements LoadingCallback {
 
 		// Oredict
 		OreDictionary.registerOre("crystalNull", ingotNull);
-		OreDictionary.registerOre("oreNull", NullOre);
+		OreDictionary.registerOre("oreNull", nullOre);
 		OreDictionary.registerOre("gemVoid", ingotVoid);
 		OreDictionary.registerOre("oreVoid", voidOre);
 
@@ -336,9 +359,9 @@ public class VoidMod implements LoadingCallback {
 				EntIDCloud, this, 80, 10, true);
 		// Entities: Spawn
 		EntityRegistry.addSpawn(EntityNullFloater.class, 15, 3, 10,
-				EnumCreatureType.waterCreature, biomeNullVoid);
+				EnumCreatureType.WATER_CREATURE, biomeNullVoid);
 		EntityRegistry.addSpawn(EntityVoidCloud.class, 10, 3, 5,
-				EnumCreatureType.ambient, biomeNullVoid);
+				EnumCreatureType.AMBIENT, biomeNullVoid);
 		// EntityRegistry.addSpawn(EntityVoidMaster.class, 5, 1, 1,
 		// EnumCreatureType.creature, biomeNullVoid);
 		// Entities: Eggs
@@ -394,112 +417,142 @@ public class VoidMod implements LoadingCallback {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		// NullCheivements
-		mineNull = new Achievement("achievement.MineNullOre", "MineNullOre",
-				-2, 0, new ItemStack(ingotNull, 1, 0), (Achievement) null)
-				.initIndependentStat().registerStat();
-		enterNull = new Achievement("achievement.GoToVoid", "GoToVoid", 0, 0,
-				new ItemStack(walker, 1, 0), mineNull).setSpecial()
-				.registerStat();
-		scat = new Achievement("achievement.scat", "scat", -1, -2,
-				VoidMod.scatman, enterNull).registerStat();
-		useTardis = new Achievement("achievement.UseTARDIS", "UseTARDIS", 2, 0,
-				new ItemStack(Blocks.lapis_block, 1, 0), enterNull)
-				.registerStat();
-		fallVoid = new Achievement("achievement.FallVoid", "FallVoid", -3, -1,
-				new ItemStack(voidOre, 1, 0), enterNull).registerStat();
-		craftGoggle = new Achievement("achievement.CraftGoggles",
-				"CraftGoggles", 0, 2, new ItemStack(nullGoggles, 1, 0),
-				enterNull).registerStat();
-		mineVoid = new Achievement("achievement.MineVoid", "MineVoid", 3, 3,
-				new ItemStack(ingotVoid, 1, 0), craftGoggle).registerStat();
-		makeReactor = new Achievement("achievement.MakeReactor", "MakeReactor",
-				2, 4, new ItemStack(voidReactor, 1, 0), mineVoid).setSpecial()
-				.registerStat();
-		summonGlitch = new Achievement("achievement.SummonGlitch",
-				"SummonGlitch", 2, 6, new ItemStack(corruptAlloy), makeReactor)
-				.setSpecial().registerStat();
-		nullChievements = new AchievementPage("The Null Void", mineNull,
-				enterNull, craftGoggle, useTardis, fallVoid, mineVoid,
-				makeReactor, summonGlitch, scat);
+		mineNull = (Achievement) new Achievement("achievement.MineNullOre", "MineNullOre", -2, 0, new ItemStack(ingotNull, 1, 0), (Achievement) null).initIndependentStat().registerStat();
+		enterNull = (Achievement) new Achievement("achievement.GoToVoid", "GoToVoid", 0, 0, new ItemStack(walker, 1, 0), mineNull).setSpecial().registerStat();
+		scat = (Achievement) new Achievement("achievement.scat", "scat", -1, -2, VoidMod.scatman, enterNull).registerStat();
+		useTardis = (Achievement) new Achievement("achievement.UseTARDIS", "UseTARDIS", 2, 0, new ItemStack(Blocks.lapis_block, 1, 0), enterNull).registerStat();
+		fallVoid = (Achievement) new Achievement("achievement.FallVoid", "FallVoid", -3, -1, new ItemStack(voidOre, 1, 0), enterNull).registerStat();
+		craftGoggle = (Achievement) new Achievement("achievement.CraftGoggles", "CraftGoggles", 0, 2, new ItemStack(nullGoggles, 1, 0), enterNull).registerStat();
+		mineVoid = (Achievement) new Achievement("achievement.MineVoid", "MineVoid", 3, 3, new ItemStack(ingotVoid, 1, 0), craftGoggle).registerStat();
+		makeReactor = (Achievement) new Achievement("achievement.MakeReactor", "MakeReactor", 2, 4, new ItemStack(voidReactor, 1, 0), mineVoid).setSpecial().registerStat();
+		summonGlitch = (Achievement) new Achievement("achievement.SummonGlitch", "SummonGlitch", 2, 6, new ItemStack(corruptAlloy), makeReactor).setSpecial().registerStat();
+		nullChievements = new AchievementPage("The Null Void", mineNull, enterNull, craftGoggle, useTardis, fallVoid, mineVoid, makeReactor, summonGlitch, scat);
 
 		// NullChievementPage
 		AchievementPage.registerAchievementPage(nullChievements);
 
 		// Crafting
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(circuts, 1, 0), "RPR", "NEN", "QNQ", 'R',
-				"dustRedstone", 'P', new ItemStack(Items.pumpkin_pie), 'N',
-				"crystalNull", 'E', "dyeLime", 'Q', "gemQuartz"));
-		if (OreDictionary.getOres("ingotCopper").size() != 0
-				&& OreDictionary.getOres("ingotElectrum").size() != 0) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuts,
-					1, 1), "OGO", "NCN", "RRR", 'R', "dustRedstone", 'G',
-					"ingotElectrum", 'C', new ItemStack(circuts, 1, 0), 'O',
-					"ingotCopper", 'N', "crystalNull"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuits, 1, 0),
+				"RPR", "NEN", "QNQ",
+				'R', "dustRedstone",
+				'P', new ItemStack(Items.pumpkin_pie),
+				'N', "crystalNull",
+				'E', "dyeLime",
+				'Q', "gemQuartz"));
+		if (OreDictionary.getOres("ingotCopper").size() != 0 && OreDictionary.getOres("ingotElectrum").size() != 0) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuits, 1, 1),
+					"OGO", "NCN", "RRR",
+					'R', "dustRedstone",
+					'G', "ingotElectrum",
+					'C', new ItemStack(circuits, 1, 0),
+					'O', "ingotCopper",
+					'N', "crystalNull"));
 		} else if (OreDictionary.getOres("ingotCopper").size() != 0) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuts,
-					1, 1), "OGO", "NCN", "RRR", 'R', "dustRedstone", 'G',
-					"dustGlowstone", 'C', new ItemStack(circuts, 1, 0), 'O',
-					"ingotCopper", 'N', "crystalNull"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuits, 1, 1),
+					"OGO", "NCN", "RRR",
+					'R', "dustRedstone",
+					'G', "dustGlowstone",
+					'C', new ItemStack(circuits, 1, 0),
+					'O', "ingotCopper",
+					'N', "crystalNull"));
 		} else {
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuts,
-					1, 1), "GGG", "NCN", "RRR", 'R', "dustRedstone", 'G',
-					"dustGlowstone", 'C', new ItemStack(circuts, 1, 0), 'N',
-					"crystalNull"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuits, 1, 1),
+					"GGG", "NCN", "RRR",
+					'R', "dustRedstone",
+					'G', "dustGlowstone",
+					'C', new ItemStack(circuits, 1, 0),
+					'N', "crystalNull"));
 		}
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuits, 1, 2),
+				"NNN", "NCN", "NRN",
+				'R', "blockRedstone",
+				'N', "crystalNull",
+				'C', new ItemStack(circuits, 1, 1)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(circuits, 1, 3),
+				"REB", "NCN", "YQP",
+				'C', new ItemStack(circuits, 1, 2),
+				'N', "crystalNull",
+				'R', "dyeRed",
+				'B', "dyeCyan",
+				'Y', "dyeYellow",
+				'P', "dyePurple",
+				'Q', "gemQuartz",
+				'E', "blockRedstone"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(circuts, 1, 2), "NNN", "NCN", "NRN", 'R',
-				"blockRedstone", 'N', "crystalNull", 'C', new ItemStack(
-						circuts, 1, 1)));
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(circuts, 1, 3), "REB", "NCN", "YQP", 'C',
-				new ItemStack(circuts, 1, 2), 'N', "crystalNull", 'R',
-				"dyeRed", 'B', "dyeCyan", 'Y', "dyeYellow", 'P', "dyePurple",
-				'Q', "gemQuartz", 'E', "blockRedstone"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(
-				new ItemStack(circuts, 1, 4), "NNN", "RCR", "IEI", 'R',
-				"blockRedstone", 'C', new ItemStack(circuts, 1, 3), 'N',
-				"crystalNull", 'D', "blockIron", 'E', Blocks.end_stone));
+				new ItemStack(circuits, 1, 4),
+				"NNN", "RCR", "IEI",
+				'R', "blockRedstone",
+				'C', new ItemStack(circuits, 1, 3),
+				'N', "crystalNull",
+				'D', "blockIron",
+				'E', Blocks.end_stone));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(walker),
-				"NCN", "EDE", "NIN", 'D', "blockDiamond", 'C', new ItemStack(
-						circuts, 1, 0), 'I', new ItemStack(circuts, 1, 3), 'N',
-				"crystalNull", 'E', Blocks.end_stone));
+				"NCN", "EDE", "NIN",
+				'D', "blockDiamond",
+				'C', new ItemStack(circuits, 1, 0),
+				'I', new ItemStack(circuits, 1, 3),
+				'N', "crystalNull",
+				'E', Blocks.end_stone));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(nullGoggles),
-				"SCS", "GLG", "NGN", 'S', new ItemStack(Items.string), 'C',
-				new ItemStack(circuts, 1, 4), 'N', "crystalNull", 'G',
-				"paneGlass", 'L', Items.leather));
+				"SCS", "GLG", "NGN",
+				'S', new ItemStack(Items.string),
+				'C', new ItemStack(circuits, 1, 4),
+				'N', "crystalNull",
+				'G', "paneGlass",
+				'L', Items.leather));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(swordWall),
-				"NVN", "GSG", "CVC", 'V', new ItemStack(VoidFabric), 'C',
-				new ItemStack(circuts, 1, 3), 'N', "crystalNull", 'G',
-				"gemVoid", 'S', baneOfDark));
+				"NVN", "GSG", "CVC",
+				'V', new ItemStack(voidFabric),
+				'C', new ItemStack(circuits, 1, 3),
+				'N', "crystalNull",
+				'G', "gemVoid",
+				'S', baneOfDark));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ingotFrame),
-				"SWS", "VNV", "SGS", 'V', "gemVoid", 'W', "plankWood", 'N',
-				"crystalNull", 'G', "slimeball", 'S', new ItemStack(
-						Items.string)));
+				"SWS", "VNV", "SGS",
+				'V', "gemVoid",
+				'W', "plankWood",
+				'N', "crystalNull",
+				'G', "slimeball",
+				'S', new ItemStack(Items.string)));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(glitchFrame),
-				"NAN", "VGV", "FAF", 'N', "crystalNull", 'V', "gemVoid", 'G',
-				generic, 'F', VoidFabric, 'A', glitchCore));
+				"NAN", "VGV", "FAF",
+				'N', "crystalNull",
+				'V', "gemVoid",
+				'G', generic,
+				'F', voidFabric,
+				'A', glitchCore));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(baneOfDark),
-				"ABA", "CBC", " G ", 'A', nullVoidAlloy, 'B', lightEssence,
-				'G', glitchCore, 'C', new ItemStack(circuts, 1, 4)));
+				"ABA", "CBC", " G ",
+				'A', nullVoidAlloy,
+				'B', lightEssence,
+				'G', glitchCore,
+				'C', new ItemStack(circuits, 1, 4)));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(darkPick),
-				"DDD", "CGC", " A ", 'D', darkEssence, 'C', new ItemStack(
-						circuts, 1, 4), 'G', corruptAlloy, 'A', glitchCore));
+				"DDD", "CGC", " A ",
+				'D', darkEssence,
+				'C', new ItemStack(circuits, 1, 4),
+				'G', corruptAlloy,
+				'A', glitchCore));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(glitchAmulet),
-				"SYS", "YCY", "YYY", 'S', Items.string, 'Y', yingYang, 'C',
-				glitchCore));
+				"SYS", "YCY", "YYY",
+				'S', Items.string,
+				'Y', yingYang,
+				'C', glitchCore));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(decor, 1, 0),
 				"VV", "VV",
-				'V', VoidFabric));
+				'V', voidFabric));
 		
 		//Tier 2 crafting
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(phantom),
-				"YYY", "YPY", "YYY", 'Y', yingYang, 'P',
-				pureGlitch));
+				"YYY", "YPY", "YYY",
+				'Y', yingYang,
+				'P', pureGlitch));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(voidBook.getStack(2),
-				voidBook.getStack(1), new ItemStack(pureGlitch)));
+				voidBook.getStack(1),
+				new ItemStack(pureGlitch)));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(voidBook.getStack(3),
-				voidBook.getStack(0), new ItemStack(pureGlitch)));
+				voidBook.getStack(0),
+				new ItemStack(pureGlitch)));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(voidTome, 1, 1),
 				"EWE",
 				"WVW",
@@ -509,7 +562,7 @@ public class VoidMod implements LoadingCallback {
 				'W', new ItemStack(walker)));
 		
 		// Smelting
-		GameRegistry.addSmelting(NullOre, new ItemStack(ingotNull), 0.5f);
+		GameRegistry.addSmelting(nullOre, new ItemStack(ingotNull), 0.5f);
 		GameRegistry.addSmelting(voidOre, new ItemStack(ingotVoid), 1f);
 		// Dungeon Loot
 		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST,
@@ -614,20 +667,20 @@ public class VoidMod implements LoadingCallback {
 				.setUnlocalizedName("nullGoggles");
 		voidGear = new ArmorNull(NullArmor, NullArmorRender, 1)
 				.setUnlocalizedName("voidGear");
-		circuts = new ItemCircut().setUnlocalizedName("circuits");
+		circuits = new ItemCircuit().setUnlocalizedName("circuits");
 		ingotNull = new ItemIngotNull().setUnlocalizedName("ingotNull");
 		ingotVoid = new ItemIngotVoid().setUnlocalizedName("ingotVoid");
 		gravityBelt = new GravityBelt().setUnlocalizedName("gravBelt");
 		glitchAmulet = new GlitchAmulet().setUnlocalizedName("glitchAmulet");
 		ingotFrame = new ItemFrame().setUnlocalizedName("ingotFrame");
-		bucket = new ItemBucket(blockLiquidFlux);
+		bucket = new ItemBucket(blockLiquidFlux).setUnlocalizedName("bucketVoidMod");
 		baneOfDark = new ItemBaneOfDarkness(SpecialTool)
 				.setUnlocalizedName("darknessBane");
 		darkPick = new ItemDarknessPick().setUnlocalizedName("darkPick");
 		elementalHammer = new ItemElementalHammer(SpecialTool)
 				.setUnlocalizedName("elementHammer");
 		corruptAlloy = new ItemGlitchyAlloy()
-				.setUnlocalizedName("corruptAlloy");
+				.setUnlocalizedName("glitchAlloy");
 		nullVoidAlloy = new ItemNullVoidAlloy()
 				.setUnlocalizedName("nullVoidAlloy");
 		tablet = new ItemTablet().setUnlocalizedName("tablet");
@@ -650,26 +703,25 @@ public class VoidMod implements LoadingCallback {
 	}
 
 	private void blocks() {
-		voiddoor = new BlockVoidDoor().setBlockName("voidDoor"); // iron
-		NullOre = new BlockNullOre().setBlockName("nullOre");
-		voidOre = new BlockVoidOre().setBlockName("voidOre");
-		generic = new BlockGeneric().setBlockName("generic");
-		VoidFabric = new BlockVoidFabric().setBlockName("voidFabric");
-		walker = new BlockVoidWalker().setBlockName("voidWalker"); // iron
-		swordWall = new BlockSwordWall().setBlockName("swordWall");
-		chamberWall = new BlockChamberWall().setBlockName("chamberWall");
-		glitchFrame = new BlockGlitchFrame().setBlockName("glitchFrame");
-		transparent = new BlockTransparent().setBlockName("transparent");
-		storage = new BlockStorage().setBlockName("storage");
-		liquidFlux = new FluidMoltenFlux("Molten Flux");
-		blockLiquidFlux = new BlockMoltenFlux(liquidFlux)
-				.setBlockName("moltenFlux");
+		voidDoor = new BlockVoidDoor().setUnlocalizedName("voidDoor");
+		nullOre = new BlockNullOre().setUnlocalizedName("nullOre");
+		voidOre = new BlockVoidOre().setUnlocalizedName("voidOre");
+		generic = new BlockGeneric().setUnlocalizedName("generic");
+		voidFabric = new BlockVoidFabric().setUnlocalizedName("voidFabric");
+		walker = new BlockVoidWalker().setUnlocalizedName("voidWalker");
+		swordWall = new BlockSwordWall().setUnlocalizedName("swordWall");
+		chamberWall = new BlockChamberWall().setUnlocalizedName("chamberWall");
+		glitchFrame = new BlockGlitchFrame().setUnlocalizedName("glitchFrame");
+		transparent = new BlockTransparent().setUnlocalizedName("transparent");
+		storage = new BlockStorage().setUnlocalizedName("storage");
+		blockLiquidFlux = new BlockMoltenFlux(liquidFlux).setUnlocalizedName("moltenFlux");
 		liquidFlux.setBlock(blockLiquidFlux);
-		voidReactor = new BlockVoidReactor(Material.iron)
-				.setBlockName("voidReactor");
-		phantomB = new BlockPhantom().setBlockName("phantomBlock");
-		decor = new BlockDecor().setBlockName("decor");
-		crystalGlitch = new BlockGlitchCrystal().setBlockName("crystalGlitch");
+		voidReactor = new BlockVoidReactor().setUnlocalizedName("voidReactor");
+		phantomB = new BlockPhantom().setUnlocalizedName("phantomBlock");
+		decor = new BlockDecor().setUnlocalizedName("decor");
+		crystalGlitch = new BlockGlitchCrystal().setUnlocalizedName("crystalGlitch");
+		
+		liquidFlux = new FluidMoltenFlux("Molten Flux");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -747,7 +799,7 @@ public class VoidMod implements LoadingCallback {
 		voidMusic = EnumHelper.addEnum(MusicType.class, "VOID", 
 				new ResourceLocation("nullvoid:sounds.ambient.piertonowhere"), 
 				Integer.MAX_VALUE, Integer.MAX_VALUE);
-		/**
+		/*
 		try{
 			for(Field f : MusicTicker.class.getDeclaredFields()){
 				if(f.getName().equalsIgnoreCase("field_147677_b")){
@@ -766,7 +818,7 @@ public class VoidMod implements LoadingCallback {
 		}
 		*/
 	}
-	/**
+	/*
 	public MusicTicker.MusicType func_147109_W()
     {
         return Minecraft.getMinecraft().currentScreen instanceof GuiWinGame ? MusicTicker.MusicType.CREDITS : (Minecraft.getMinecraft().thePlayer != null ? (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderHell ? MusicTicker.MusicType.NETHER : (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderNullVoid ? VoidMod.voidMusic : (Minecraft.getMinecraft().thePlayer.worldObj.provider instanceof WorldProviderEnd ? (BossStatus.bossName != null && BossStatus.statusBarTime > 0 ? MusicTicker.MusicType.END_BOSS : MusicTicker.MusicType.END) : (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode && Minecraft.getMinecraft().thePlayer.capabilities.allowFlying ? MusicTicker.MusicType.CREATIVE : MusicTicker.MusicType.GAME)))) : MusicTicker.MusicType.MENU);

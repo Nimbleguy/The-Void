@@ -18,8 +18,8 @@ import net.minecraftforge.common.ForgeChunkManager.Type;
 public class BlockVoidReactor extends BlockContainer {
 	public Ticket ticket = null;
 
-	public BlockVoidReactor(Material p_i45386_1_) {
-		super(p_i45386_1_);
+	public BlockVoidReactor() {
+		super(Material.iron);
 		this.setCreativeTab(VoidMod.ctab);
 		this.setBlockUnbreakable();
 		this.setResistance(9999999999F);

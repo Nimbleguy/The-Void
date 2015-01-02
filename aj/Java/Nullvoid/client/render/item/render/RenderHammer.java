@@ -3,6 +3,7 @@ package aj.Java.Nullvoid.client.render.item.render;
 import org.lwjgl.opengl.GL11;
 
 import aj.Java.Nullvoid.Utils;
+import aj.Java.Nullvoid.VoidMod;
 import aj.Java.Nullvoid.client.render.item.model.ModelHammer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -16,15 +17,15 @@ public class RenderHammer implements IItemRenderer {
 	
 	public RenderHammer() {
         model = new ModelHammer();
-        rl[0] = new ResourceLocation("nullvoid", "textures/models/items/hammer/fire.png");
-        rl[1] = new ResourceLocation("nullvoid", "textures/models/items/hammer/ice.png");
-        rl[2] = new ResourceLocation("nullvoid", "textures/models/items/hammer/earth.png");
-        rl[3] = new ResourceLocation("nullvoid", "textures/models/items/hammer/air.png");
-        rl[4] = new ResourceLocation("nullvoid", "textures/models/items/hammer/order.png");
-        rl[5] = new ResourceLocation("nullvoid", "textures/models/items/hammer/entropy.png");
-        rl[6] = new ResourceLocation("nullvoid", "textures/models/items/hammer/dark.png");
-        rl[7] = new ResourceLocation("nullvoid", "textures/models/items/hammer/light.png");
-        rl[8] = new ResourceLocation("nullvoid", "textures/models/items/hammer/balance.png");
+        rl[0] = new ResourceLocation("nullvoid", "textures/models/item/hammer/fire.png");
+        rl[1] = new ResourceLocation("nullvoid", "textures/models/item/hammer/ice.png");
+        rl[2] = new ResourceLocation("nullvoid", "textures/models/item/hammer/earth.png");
+        rl[3] = new ResourceLocation("nullvoid", "textures/models/item/hammer/air.png");
+        rl[4] = new ResourceLocation("nullvoid", "textures/models/item/hammer/order.png");
+        rl[5] = new ResourceLocation("nullvoid", "textures/models/item/hammer/entropy.png");
+        rl[6] = new ResourceLocation("nullvoid", "textures/models/item/hammer/dark.png");
+        rl[7] = new ResourceLocation("nullvoid", "textures/models/item/hammer/light.png");
+        rl[8] = new ResourceLocation("nullvoid", "textures/models/item/hammer/balance.png");
     }
 	
 	@Override
@@ -44,7 +45,7 @@ public class RenderHammer implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack i, Object... data) 
 	{
 		ResourceLocation txt = null;
-		int typeh = Utils.hammerBalance(i);
+		int typeh = VoidMod.util.hammerBalance(i);
 		txt = rl[0];
 		if(typeh != -1){
 			txt = rl[typeh];
