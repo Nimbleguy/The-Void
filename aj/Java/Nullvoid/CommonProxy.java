@@ -7,4 +7,8 @@ public class CommonProxy {
 	public void registerIcons(){
 		//Empty due to servers not needing to know about images.
 	}
+	public int addArmor(String armor) {
+		//No need for server armor render.
+		return 0;
+	}
 }
