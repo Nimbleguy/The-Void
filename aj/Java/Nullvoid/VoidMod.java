@@ -416,6 +416,9 @@ public class VoidMod implements LoadingCallback {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		//Iconifying
+		proxy.registerIcons();
+		
 		// NullCheivements
 		mineNull = (Achievement) new Achievement("achievement.MineNullOre", "MineNullOre", -2, 0, new ItemStack(ingotNull, 1, 0), (Achievement) null).initIndependentStat().registerStat();
 		enterNull = (Achievement) new Achievement("achievement.GoToVoid", "GoToVoid", 0, 0, new ItemStack(walker, 1, 0), mineNull).setSpecial().registerStat();

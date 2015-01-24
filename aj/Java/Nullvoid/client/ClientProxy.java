@@ -3,6 +3,7 @@ package aj.Java.Nullvoid.client;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.model.ModelBiped;
@@ -68,6 +69,13 @@ public class ClientProxy extends CommonProxy {
 				HasStates hs = f.getAnnotation(HasStates.class);
 				if(hs != null){
 					ModelBakery.addVariantName((Item)f.get(null), hs.value());
+				}
+			}
+			else if(f.getGenericType().toString().contains("Block")){
+				renderItem.getItemModelMesher().register(Item.getItemFromBlock((Block)f.get(null)), 0, new ModelResourceLocation(VoidMod.MODID + ":" + ((Item) (f.get(null))).getUnlocalizedName(), "inventory"));
+				HasStates hs = f.getAnnotation(HasStates.class);
+				if(hs != null){
+					ModelBakery.addVariantName(Item.getItemFromBlock((Block)f.get(null)), hs.value());
 				}
 			}
 		}

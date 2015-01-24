@@ -1,6 +1,5 @@
 package aj.Java.Nullvoid.Armor;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -21,7 +20,7 @@ public class GlitchAmulet extends Item implements IBauble {
 	}
 	@Override
     public EnumRarity getRarity(ItemStack par1ItemStack) {
-            return EnumRarity.epic;
+            return EnumRarity.EPIC;
     }
 	@Override
 	public boolean hasEffect(ItemStack par1ItemStack){
