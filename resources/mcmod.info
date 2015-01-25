@@ -1,16 +1,17 @@
 [
 {
-  "modid": "thevoid",
+  "modid": "TheVoid",
   "name": "The Void",
   "description": "Ever wanted to walk the Void?",
-  "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Nimbleguy"],
-  "credits": "The Forge team for Forge, Azanor for Baubles, and Me for this mod.",
+  "credits": "The Forge team for Forge, Azanor for Baubles",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": ["Baubles"]
+  "dependencies": ["Baubles"],
+  "requiredMods": ["Forge", "Baubles"],
+  "useDependencyInformation": true
 }
 ]

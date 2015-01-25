@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"type=fabric": [ 
+			{ "model": "thevoid:terrainFabric" },
+			{ "model": "thevoid:terrainFabric", "y": 90 },
+			{ "model": "thevoid:terrainFabric", "y": 180 },
+			{ "model": "thevoid:terrainFabric", "y": 270 }
+		],
+		"type=rock": [ 
+			{ "model": "thevoid:terrainRock" },
+			{ "model": "thevoid:terrainRock", "y": 90 },
+			{ "model": "thevoid:terrainRock", "y": 180 },
+			{ "model": "thevoid:terrainRock", "y": 270 }
+		]
+	}
+}
