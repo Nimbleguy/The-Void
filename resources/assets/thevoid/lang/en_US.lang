@@ -4,5 +4,10 @@ tile.voidwalker.name=Voidwalker
 
 item.material.unull.name=Crude Nullon
 item.material.uvoid.name=Shattered Vacuite
+item.keystone.inert.name=Inert Null Keystone
+item.keystone.energized.name=Energized Null Keystone
+item.keystone.destablized.name=Destablized Null Keystone
+item.keystone.fluxuating.name=Fluxuating Null Keystone
+item.keystone.active.name=Active Null Keystone
 
 itemGroup.tabVoid=The Void

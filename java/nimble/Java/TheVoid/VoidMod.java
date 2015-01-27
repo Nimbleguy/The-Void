@@ -3,6 +3,8 @@ package nimble.Java.TheVoid;
 import org.apache.logging.log4j.Level;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -12,10 +14,12 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.Block.BlockTerrain;
 import nimble.Java.TheVoid.Block.BlockVoidwalker;
 import nimble.Java.TheVoid.Configuration.Config;
 import nimble.Java.TheVoid.Events.MiscHandler;
+import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
 import nimble.Java.TheVoid.Utilities.ModInfo;
 import nimble.Java.TheVoid.Utilities.Utils;
@@ -41,6 +45,8 @@ public class VoidMod {
 	
 	@Variant({"materialUNull", "materialUVoid"})
 	public static ItemMaterial material;
+	@Variant({"keystoneInert", "keystoneEnergized", "keystoneDestablized", "keystoneFluxuating", "keystoneActive"})
+	public static ItemKeystone keystone;
 	
 	@EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -62,6 +68,7 @@ public class VoidMod {
 		
 		//Items
 		material = new ItemMaterial();
+		keystone = new ItemKeystone();
 		
 		//Register Variants
 		proxy.registerVariants();
@@ -75,6 +82,44 @@ public class VoidMod {
     {
 		//Register models and textures for blocks and items.
 		proxy.registerTextures();
+		
+		//Crafting Recipes
+		ItemStack crudeNullon = new ItemStack(material, 1, 0);
+		GameRegistry.addShapedRecipe(new ItemStack(keystone, 1, 0),
+				"RCR", "CNC", "RCR",
+				'R', Blocks.netherrack,
+				'C', Blocks.cobblestone,
+				'N', crudeNullon);
+		GameRegistry.addShapedRecipe(new ItemStack(keystone, 1, 1),
+				"GBG", "NKN", "GBG",
+				'K', new ItemStack(keystone, 1, 0),
+				'G', Items.glowstone_dust,
+				'B', Blocks.glowstone,
+				'N', crudeNullon);
+		GameRegistry.addShapedRecipe(new ItemStack(keystone, 1, 2),
+				"NNN", "NKN", "BRB",
+				'K', new ItemStack(keystone, 1, 1),
+				'G', Items.redstone,
+				'B', Blocks.redstone_block,
+				'N', crudeNullon);
+		GameRegistry.addShapedRecipe(new ItemStack(keystone, 1, 3),
+				"CGM", "NKN", "YRI",
+				'K', new ItemStack(keystone, 1, 2),
+				'R', Blocks.redstone_block,
+				'G', Blocks.glowstone,
+				'Y', new ItemStack(Items.dye, 1, 11),
+				'C', new ItemStack(Items.dye, 1, 6),
+				'M', new ItemStack(Items.dye, 1, 13),
+				'I', new ItemStack(Items.dye, 1, 0),
+				'N', crudeNullon);
+		GameRegistry.addShapedRecipe(new ItemStack(keystone, 1, 4),
+				"EDE", "NKN", "NQN",
+				'K', new ItemStack(keystone, 1, 3),
+				'Q', Blocks.quartz_block,
+				'D', Items.diamond,
+				'E', Blocks.end_stone,
+				'N', crudeNullon);
+		
 		
 		//Logging fun
 		util.log("Are you ready to Voidwalk?", Level.INFO);
