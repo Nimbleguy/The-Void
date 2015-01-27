@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import nimble.Java.TheVoid.Block.BlockTerrain;
+import nimble.Java.TheVoid.Block.BlockVoidwalker;
 import nimble.Java.TheVoid.Configuration.Config;
 import nimble.Java.TheVoid.Events.MiscHandler;
 import nimble.Java.TheVoid.Item.ItemMaterial;
@@ -36,6 +37,7 @@ public class VoidMod {
 	
 	@Variant({"terrainFabric", "terrainRock"})
 	public static BlockTerrain terrain;
+	public static BlockVoidwalker voidwalker;
 	
 	@Variant({"materialUNull", "materialUVoid"})
 	public static ItemMaterial material;
@@ -56,6 +58,7 @@ public class VoidMod {
 		
 		//Blocks
 		terrain = new BlockTerrain();
+		voidwalker = new BlockVoidwalker();
 		
 		//Items
 		material = new ItemMaterial();

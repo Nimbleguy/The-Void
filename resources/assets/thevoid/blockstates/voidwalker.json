@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"facing=north": [ 
+			{ "model": "thevoid:voidwalker" }
+		],
+		"facing=east": [ 
+			{ "model": "thevoid:voidwalker", "y": 90 }
+		],
+		"facing=south": [ 
+			{ "model": "thevoid:voidwalker", "y": 180 }
+		],
+		"facing=west": [ 
+			{ "model": "thevoid:voidwalker", "y": 270 }
+		]
+	}
+}

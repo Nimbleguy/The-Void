@@ -1,5 +1,6 @@
 tile.terrain.fabric.name=Void Fabric
 tile.terrain.rock.name=Corrupted Rock
+tile.voidwalker.name=Voidwalker
 
 item.material.unull.name=Crude Nullon
 item.material.uvoid.name=Shattered Vacuite
