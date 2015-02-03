@@ -1,16 +1,55 @@
 {
 	"variants": {
-		"facing=north": [ 
+		"facing=north,keystone=false,nullon=false": [ 
 			{ "model": "thevoid:voidwalker" }
 		],
-		"facing=east": [ 
+		"facing=east,keystone=false,nullon=false": [ 
 			{ "model": "thevoid:voidwalker", "y": 90 }
 		],
-		"facing=south": [ 
+		"facing=south,keystone=false,nullon=false": [ 
 			{ "model": "thevoid:voidwalker", "y": 180 }
 		],
-		"facing=west": [ 
+		"facing=west,keystone=false,nullon=false": [ 
 			{ "model": "thevoid:voidwalker", "y": 270 }
+		],
+		
+		"facing=north,keystone=false,nullon=true": [ 
+			{ "model": "thevoid:voidwalkerNullon" }
+		],
+		"facing=east,keystone=false,nullon=true": [ 
+			{ "model": "thevoid:voidwalkerNullon", "y": 90 }
+		],
+		"facing=south,keystone=false,nullon=true": [ 
+			{ "model": "thevoid:voidwalkerNullon", "y": 180 }
+		],
+		"facing=west,keystone=false,nullon=true": [ 
+			{ "model": "thevoid:voidwalkerNullon", "y": 270 }
+		],
+		
+		"facing=north,keystone=true,nullon=false": [ 
+			{ "model": "thevoid:voidwalkerKeystone" }
+		],
+		"facing=east,keystone=true,nullon=false": [ 
+			{ "model": "thevoid:voidwalkerKeystone", "y": 90 }
+		],
+		"facing=south,keystone=true,nullon=false": [ 
+			{ "model": "thevoid:voidwalkerKeystone", "y": 180 }
+		],
+		"facing=west,keystone=true,nullon=false": [ 
+			{ "model": "thevoid:voidwalkerKeystone", "y": 270 }
+		],
+		
+		"facing=north,keystone=true,nullon=true": [ 
+			{ "model": "thevoid:voidwalkerKeystoneNullon" }
+		],
+		"facing=east,keystone=true,nullon=true": [ 
+			{ "model": "thevoid:voidwalkerKeystoneNullon", "y": 90 }
+		],
+		"facing=south,keystone=true,nullon=true": [ 
+			{ "model": "thevoid:voidwalkerKeystoneNullon", "y": 180 }
+		],
+		"facing=west,keystone=true,nullon=true": [ 
+			{ "model": "thevoid:voidwalkerKeystoneNullon", "y": 270 }
 		]
 	}
 }

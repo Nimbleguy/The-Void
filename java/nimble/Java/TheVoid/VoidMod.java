@@ -1,9 +1,12 @@
 package nimble.Java.TheVoid;
 
+import java.util.HashMap;
+
 import org.apache.logging.log4j.Level;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -17,6 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.Block.BlockTerrain;
 import nimble.Java.TheVoid.Block.BlockVoidwalker;
+import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
 import nimble.Java.TheVoid.Configuration.Config;
 import nimble.Java.TheVoid.Events.MiscHandler;
 import nimble.Java.TheVoid.Item.ItemKeystone;
@@ -32,6 +36,8 @@ public class VoidMod {
 	public static Utils util = new Utils();
 	public static Config config;
 	public static VoidTab tab;
+	
+	public HashMap<Object[], Integer> voidTime = new HashMap<Object[], Integer>();
 	
 	@SidedProxy(clientSide = "nimble.Java.TheVoid.Client.ClientProxy", serverSide = "nimble.Java.TheVoid.CommonProxy")
 	public static CommonProxy proxy;
@@ -65,6 +71,9 @@ public class VoidMod {
 		//Blocks
 		terrain = new BlockTerrain();
 		voidwalker = new BlockVoidwalker();
+		
+		//TileEntities
+		GameRegistry.registerTileEntity(TileEntityVoidwalker.class, "Voidwalker");
 		
 		//Items
 		material = new ItemMaterial();
@@ -120,14 +129,13 @@ public class VoidMod {
 				'E', Blocks.end_stone,
 				'N', crudeNullon);
 		
-		
-		//Logging fun
-		util.log("Are you ready to Voidwalk?", Level.INFO);
+		//Register Void Times
+		voidTime.put(new Object[] {material, 0}, 300);
     }
 	
 	@EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
-		
+    public void postInit(FMLPostInitializationEvent event){
+		//Logging fun
+		util.log("Are you ready to Voidwalk?", Level.INFO);
     }
 }
