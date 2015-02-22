@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.logging.log4j.Level;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -16,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,7 +35,7 @@ import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
 import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
 
-public class BlockVoidwalker extends BlockContainer {
+public class BlockVoidwalker extends Block implements ITileEntityProvider {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool KEYSTONE = PropertyBool.create("keystone");
@@ -117,15 +118,26 @@ public class BlockVoidwalker extends BlockContainer {
 				TileEntity e = worldIn.getTileEntity(pos);
 				if(e instanceof TileEntityVoidwalker){
 					TileEntityVoidwalker v = (TileEntityVoidwalker)e;
-					v.using = true;
-					EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 5);
-					
-					NBTTagCompound nbt = VoidMod.util.getVoidTag(player);
-					nbt.setInteger("VoidwalkerConsume", 600);
-					NBTTagCompound posTag = new NBTTagCompound();
-					posTag.setInteger("x", pos.getX());
-					posTag.setInteger("y", pos.getY());
-					posTag.setInteger("z", pos.getZ());
+					if(v.getStackInSlot(0) != null && v.getStackInSlot(1) != null){
+						v.using = true;
+						EntityPlayer player = worldIn.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 5);
+						if(player != null && player instanceof EntityPlayerMP && player.dimension == 0){
+							NBTTagCompound nbt = VoidMod.util.getVoidTag(player);
+							nbt.setInteger("VoidwalkerConsume", 600);
+							NBTTagCompound posTag = new NBTTagCompound();
+							posTag.setInteger("x", pos.getX());
+							posTag.setInteger("y", pos.getY());
+							posTag.setInteger("z", pos.getZ());
+							posTag.setInteger("dim", player.dimension);
+							nbt.setTag("VoidwalkerPos", posTag);
+							nbt.setBoolean("InVoid", true);
+							VoidMod.util.setVoidTag(player, nbt);
+							
+							v.setInventorySlotContents(0, null);
+							
+							VoidMod.util.sendToDim((EntityPlayerMP)player, VoidMod.config.dimid, false);
+						}
+					}
 				}
 			}
 		}
@@ -153,9 +165,8 @@ public class BlockVoidwalker extends BlockContainer {
 							v.setInventorySlotContents(1, new ItemStack(i.getItem(), v.getInventoryStackLimit(), i.getMetadata()));
 						}
 						else{
-							int a = n - i.stackSize;
 							playerIn.inventory.decrStackSize(playerIn.inventory.currentItem, i.stackSize);
-							v.setInventorySlotContents(1, new ItemStack(i.getItem(), (v.getStackInSlot(1) != null ? v.getStackInSlot(1).stackSize : 0) + a, i.getMetadata()));
+							v.setInventorySlotContents(1, new ItemStack(i.getItem(), (v.getStackInSlot(1) != null ? v.getStackInSlot(1).stackSize : 0) + i.stackSize, i.getMetadata()));
 						}
 						return true;
 					}
@@ -174,6 +185,7 @@ public class BlockVoidwalker extends BlockContainer {
 				}
 			}
 		}
+		worldIn.notifyBlockOfStateChange(pos, this);
 		return false;
 	}
 	

@@ -8,6 +8,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -18,11 +20,14 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import nimble.Java.TheVoid.Biome.BiomeGenVoid;
 import nimble.Java.TheVoid.Block.BlockTerrain;
 import nimble.Java.TheVoid.Block.BlockVoidwalker;
 import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
 import nimble.Java.TheVoid.Configuration.Config;
+import nimble.Java.TheVoid.Dimension.WorldProviderVoid;
 import nimble.Java.TheVoid.Events.MiscHandler;
+import nimble.Java.TheVoid.Events.PlayerHandler;
 import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
 import nimble.Java.TheVoid.Utilities.ModInfo;
@@ -37,7 +42,7 @@ public class VoidMod {
 	public static Config config;
 	public static VoidTab tab;
 	
-	public HashMap<Object[], Integer> voidTime = new HashMap<Object[], Integer>();
+	public static HashMap<String, Integer> voidTime = new HashMap<String, Integer>();
 	
 	@SidedProxy(clientSide = "nimble.Java.TheVoid.Client.ClientProxy", serverSide = "nimble.Java.TheVoid.CommonProxy")
 	public static CommonProxy proxy;
@@ -53,6 +58,8 @@ public class VoidMod {
 	public static ItemMaterial material;
 	@Variant({"keystoneInert", "keystoneEnergized", "keystoneDestablized", "keystoneFluxuating", "keystoneActive"})
 	public static ItemKeystone keystone;
+	
+	public static BiomeGenBase biomeVoid;
 	
 	@EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -82,7 +89,15 @@ public class VoidMod {
 		//Register Variants
 		proxy.registerVariants();
 		
+		//Biomes
+		biomeVoid = new BiomeGenVoid(config.biomeid);
+		
+		//Dimension
+		DimensionManager.registerProviderType(config.dimid, WorldProviderVoid.class, false);
+		DimensionManager.registerDimension(config.dimid, config.dimid);
+		
 		//Events
+		FMLCommonHandler.instance().bus().register(new PlayerHandler());
 		FMLCommonHandler.instance().bus().register(new MiscHandler());
     }
 	
@@ -130,7 +145,7 @@ public class VoidMod {
 				'N', crudeNullon);
 		
 		//Register Void Times
-		voidTime.put(new Object[] {material, 0}, 300);
+		voidTime.put(material.getUnlocalizedName(new ItemStack(material)), 300);
     }
 	
 	@EventHandler

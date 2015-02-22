@@ -1,9 +1,12 @@
 package nimble.Java.TheVoid.Events;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -18,24 +21,45 @@ public class PlayerHandler {
 			if(event.side.isServer()){
 				NBTTagCompound v = VoidMod.util.getVoidTag(event.player);
 				if(v.getBoolean("InVoid")){
-					if(v.getInteger("VoidwalkerConsume") == 0){
-						NBTTagCompound pos = v.getCompoundTag("VoidwalkerPos");
-						BlockPos p = new BlockPos(pos.getInteger("x"), pos.getInteger("y"), pos.getInteger("z"));
-						
-						EntityPlayer player = event.player;
-						TileEntity e = player.worldObj.getTileEntity(p);
-						if(e instanceof TileEntityVoidwalker){
-							TileEntityVoidwalker tev = (TileEntityVoidwalker)e;
-							
+					if(event.player.dimension == VoidMod.config.dimid && event.player instanceof EntityPlayerMP){
+						if(v.getInteger("VoidwalkerConsume") == 0){
+							NBTTagCompound pos = v.getCompoundTag("VoidwalkerPos");
+							BlockPos p = new BlockPos(pos.getInteger("x"), pos.getInteger("y"), pos.getInteger("z"));
+
+							EntityPlayerMP player = (EntityPlayerMP) event.player;
+							TileEntity e = player.mcServer.worldServerForDimension(pos.getInteger("dim")).getTileEntity(p);
+							if(e != null && e instanceof TileEntityVoidwalker){
+								TileEntityVoidwalker tev = (TileEntityVoidwalker)e;
+								ItemStack item;
+								if((item = tev.getStackInSlot(1)) != null){
+									v.setInteger("VoidwalkerConsume", VoidMod.voidTime.get(VoidMod.material.getUnlocalizedName(new ItemStack(item.getItem(), 0, item.getMetadata()))));
+									tev.decrStackSize(1, 1);
+								}
+								else{
+									VoidMod.util.sendToDim(player, 0, false);
+									player.addChatMessage(new ChatComponentText("Dull flickers of darkness fade from your vision..."));
+								}
+							}
+							else{
+								player.addChatMessage(new ChatComponentText("Your connection to The Void shatters, leaving wisps of your previous world."));
+								VoidMod.util.sendToDim(player, 0, true);
+							}
 						}
-						else{
-							//TODO: K-k-k-k-ick 'em out-out-out
+						else if(v.getInteger("VoidwalkerConsume") > 0){
+							v.setInteger("VoidwalkerConsume", v.getInteger("VoidwalkerConsume") - 1);
 						}
 					}
-					else if(v.getInteger("VoidwalkerConsume") > 0){
-						v.setInteger("VoidwalkerConsume", v.getInteger("VoidwalkerConsume") - 1);
+					else{
+						v.setBoolean("InVoid", false);
 					}
 				}
+				else{
+					if(event.player.dimension == VoidMod.config.dimid && event.player instanceof EntityPlayerMP){
+						event.player.addChatMessage(new ChatComponentText("The world around you seems false..."));
+						VoidMod.util.sendToDim((EntityPlayerMP)event.player, 0, true);
+					}
+				}
+				VoidMod.util.setVoidTag(event.player, v);
 			}
 		}
 	}

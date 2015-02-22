@@ -5,7 +5,8 @@ import nimble.Java.TheVoid.VoidMod;
 
 public class Config {
 	private Configuration config;
-	public int test = 0;
+	public int dimid = -42;
+	public int biomeid = 64;
 	
 	public Config(Configuration c){
 		config = c;
@@ -16,7 +17,8 @@ public class Config {
 	}
 	
 	public void loadConfig() {
-	    test = config.getInt("My Config Integer", EnumConfigCategories.GENERAL.getCategory(), test, 0, Integer.MAX_VALUE, "Testing stuff");
+	    dimid = config.getInt("dimid", EnumConfigCategories.DIMENSION.getCategory(), dimid, Integer.MIN_VALUE, Integer.MAX_VALUE, "Void Dimension ID");
+	    biomeid = config.getInt("biomeid", EnumConfigCategories.DIMENSION.getCategory(), biomeid, 0, Integer.MAX_VALUE, "Void Biome ID");
 
 	    if(config.hasChanged()){
 	    	config.save();
@@ -27,7 +29,8 @@ public class Config {
 	}
 	
 	public enum EnumConfigCategories{
-		GENERAL(Configuration.CATEGORY_GENERAL);
+		GENERAL(Configuration.CATEGORY_GENERAL),
+		DIMENSION("dimension");
 		
 		private String category;
 		private EnumConfigCategories(String s){

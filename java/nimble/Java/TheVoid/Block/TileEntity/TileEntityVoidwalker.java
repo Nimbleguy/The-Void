@@ -24,7 +24,7 @@ import nimble.Java.TheVoid.Block.BlockVoidwalker;
 import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
 
-public class TileEntityVoidwalker extends TileEntityLockable implements ISidedInventory {
+public class TileEntityVoidwalker extends TileEntity implements ISidedInventory {
 
 	private ItemStack[] inv;
 	public boolean using = false;
@@ -190,18 +190,6 @@ public class TileEntityVoidwalker extends TileEntityLockable implements ISidedIn
 		for(int i = 0; i < inv.length; i++){
 			inv[i] = null;
 		}
-	}
-
-	@Override
-	public Container createContainer(InventoryPlayer playerInventory,
-			EntityPlayer playerIn) {
-		//TODO: Container
-		return new ContainerFurnace(playerInventory, this);
-	}
-
-	@Override
-	public String getGuiID() {
-		return "thevoid:voidwalker";
 	}
 
 	@Override

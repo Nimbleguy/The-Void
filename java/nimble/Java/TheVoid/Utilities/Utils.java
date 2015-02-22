@@ -4,13 +4,22 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Random;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import nimble.Java.TheVoid.Dimension.TeleporterVoid;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -24,14 +33,24 @@ public class Utils {
 	}
 	
 	public NBTTagCompound getEntityTag(EntityPlayer e){
-		NBTTagCompound entityData = e.getEntityData();
-		NBTTagCompound persist;
-		if (!entityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
-		    entityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persist = new NBTTagCompound()));
-		} else {
-		    persist = entityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		if(e != null){
+			NBTTagCompound entityData = e.getEntityData();
+			NBTTagCompound persist;
+			if (!entityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
+		    	entityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persist = new NBTTagCompound()));
+			} else {
+		    	persist = entityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+			}
+			return persist;
 		}
-		return persist;
+		else{
+			return new NBTTagCompound();
+		}
+	}
+	public void setEntityTag(EntityPlayer e, NBTTagCompound nbt){
+		if(e != null){
+		    e.getEntityData().setTag(EntityPlayer.PERSISTED_NBT_TAG, nbt);
+		}
 	}
 	
 	public NBTTagCompound getVoidTag(EntityPlayer e){
@@ -44,13 +63,10 @@ public class Utils {
 		}
 		return persist;
 	}
-	
-	public void setInVoid(EntityPlayer p, int ticksToConsume, BlockPos pos){
-		NBTTagCompound v = getVoidTag(p);
-		v.setIntArray("VoidwalkerPos", new int[] {pos.getX(), pos.getY(), pos.getZ()});
-		v.setInteger("VoidwalkerConsume", ticksToConsume);
-		v.setBoolean("InVoid", true);
-		//TODO: Transport player to void.
+	public void setVoidTag(EntityPlayer e, NBTTagCompound nbt){
+		NBTTagCompound ent = getEntityTag(e);
+		ent.setTag("Void", nbt);
+		setEntityTag(e, ent);
 	}
 	
 	public void spawnItemStack(World worldIn, double p_180173_1_, double p_180173_3_, double p_180173_5_, ItemStack p_180173_7_)
@@ -84,4 +100,37 @@ public class Utils {
             worldIn.spawnEntityInWorld(entityitem);
         }
     }
+	
+	public void sendToDim(EntityPlayerMP p, int dimid, boolean unsafe){
+		if(unsafe){
+			if(!p.worldObj.isRemote && !p.isDead){
+            	MinecraftServer minecraftserver = MinecraftServer.getServer();
+            	int cDim = p.dimension;
+            	WorldServer cWorld = minecraftserver.worldServerForDimension(cDim);
+            	WorldServer nWorld = minecraftserver.worldServerForDimension(dimid);
+            	p.dimension = dimid;
+            	
+            	p.worldObj.removeEntity(p);
+            	p.isDead = false;
+            	Entity entity = EntityList.createEntityByName(EntityList.getEntityString(p), nWorld);
+            	
+            	if (entity != null)
+            	{
+                	entity.copyDataFromOld(p);
+                	
+                	BlockPos blockpos = p.worldObj.getTopSolidOrLiquidBlock(p.getPosition());
+                	entity.moveToBlockPosAndAngles(blockpos, entity.rotationYaw, entity.rotationPitch);
+                	nWorld.spawnEntityInWorld(entity);
+                	entity.setWorld(nWorld);
+            	}
+            	
+            	p.isDead = true;
+            	cWorld.resetUpdateEntityTick();
+            	nWorld.resetUpdateEntityTick();
+			}
+		}
+		else{
+			p.mcServer.getConfigurationManager().transferPlayerToDimension(p, dimid, new TeleporterVoid(p.mcServer.worldServerForDimension(dimid)));
+		}
+	}
 }
