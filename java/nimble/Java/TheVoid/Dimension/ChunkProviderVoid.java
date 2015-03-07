@@ -7,18 +7,21 @@ import java.util.Random;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IProgressUpdate;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.MapGenBase;
+import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.structure.MapGenStructure;
 import nimble.Java.TheVoid.VoidMod;
 
 public class ChunkProviderVoid implements IChunkProvider {
 	
 	private World world;
     private Random seed;
-    private List<MapGenBase> structures = new ArrayList<MapGenBase>();
+    private List<MapGenStructure> structures = new ArrayList<MapGenStructure>();
     
     public ChunkProviderVoid(World w, long nrSeed){
     	seed = new Random(nrSeed);
@@ -55,8 +58,15 @@ public class ChunkProviderVoid implements IChunkProvider {
 	}
 
 	@Override
-	public void populate(IChunkProvider p_73153_1_, int x, int z) {
-		//Nothing here?
+	public void populate(IChunkProvider c, int x, int z) {
+		Random r = new Random();
+		ChunkCoordIntPair cc = new ChunkCoordIntPair(x, z);
+		
+		for(MapGenStructure mgs : structures){
+			mgs.func_175794_a(world, r, cc);
+		}
+		
+		
 	}
 
 	@Override

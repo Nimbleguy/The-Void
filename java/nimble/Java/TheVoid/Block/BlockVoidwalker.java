@@ -34,6 +34,7 @@ import nimble.Java.TheVoid.VoidMod;
 import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
 import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
+import nimble.Java.TheVoid.Packet.PacketGamma;
 
 public class BlockVoidwalker extends Block implements ITileEntityProvider {
 	
@@ -130,6 +131,7 @@ public class BlockVoidwalker extends Block implements ITileEntityProvider {
 							posTag.setInteger("z", pos.getZ());
 							posTag.setInteger("dim", player.dimension);
 							nbt.setTag("VoidwalkerPos", posTag);
+							VoidMod.packet.INSTANCE.sendTo(new PacketGamma(-4.2f, false), (EntityPlayerMP)player);
 							nbt.setBoolean("InVoid", true);
 							VoidMod.util.setVoidTag(player, nbt);
 							

@@ -30,6 +30,7 @@ import nimble.Java.TheVoid.Events.MiscHandler;
 import nimble.Java.TheVoid.Events.PlayerHandler;
 import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
+import nimble.Java.TheVoid.Packet.PacketHandler;
 import nimble.Java.TheVoid.Utilities.ModInfo;
 import nimble.Java.TheVoid.Utilities.Utils;
 import nimble.Java.TheVoid.Utilities.Variant;
@@ -41,6 +42,7 @@ public class VoidMod {
 	public static Utils util = new Utils();
 	public static Config config;
 	public static VoidTab tab;
+	public static PacketHandler packet = new PacketHandler();
 	
 	public static HashMap<String, Integer> voidTime = new HashMap<String, Integer>();
 	
@@ -75,6 +77,9 @@ public class VoidMod {
 		//Creative Tab
 		tab = new VoidTab();
 		
+		//Fluids
+		
+		
 		//Blocks
 		terrain = new BlockTerrain();
 		voidwalker = new BlockVoidwalker();
@@ -91,6 +96,9 @@ public class VoidMod {
 		
 		//Biomes
 		biomeVoid = new BiomeGenVoid(config.biomeid);
+		
+		//Packets
+		packet.init();
 		
 		//Dimension
 		DimensionManager.registerProviderType(config.dimid, WorldProviderVoid.class, false);

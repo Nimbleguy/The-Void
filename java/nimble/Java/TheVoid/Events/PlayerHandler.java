@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import nimble.Java.TheVoid.VoidMod;
 import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
+import nimble.Java.TheVoid.Packet.PacketGamma;
 
 public class PlayerHandler {
 
@@ -22,6 +23,7 @@ public class PlayerHandler {
 				NBTTagCompound v = VoidMod.util.getVoidTag(event.player);
 				if(v.getBoolean("InVoid")){
 					if(event.player.dimension == VoidMod.config.dimid && event.player instanceof EntityPlayerMP){
+						VoidMod.packet.INSTANCE.sendTo(new PacketGamma(-4.2f, true), (EntityPlayerMP)event.player);
 						if(v.getInteger("VoidwalkerConsume") == 0){
 							NBTTagCompound pos = v.getCompoundTag("VoidwalkerPos");
 							BlockPos p = new BlockPos(pos.getInteger("x"), pos.getInteger("y"), pos.getInteger("z"));
@@ -38,11 +40,15 @@ public class PlayerHandler {
 								else{
 									VoidMod.util.sendToDim(player, 0, false);
 									player.addChatMessage(new ChatComponentText("Dull flickers of darkness fade from your vision..."));
+									v.setBoolean("InVoid", false);
+									VoidMod.packet.INSTANCE.sendTo(new PacketGamma(v.getFloat("Gamma"), true), (EntityPlayerMP)event.player);
 								}
 							}
 							else{
 								player.addChatMessage(new ChatComponentText("Your connection to The Void shatters, leaving wisps of your previous world."));
+								v.setBoolean("InVoid", false);
 								VoidMod.util.sendToDim(player, 0, true);
+								VoidMod.packet.INSTANCE.sendTo(new PacketGamma(v.getFloat("Gamma"), true), (EntityPlayerMP)event.player);
 							}
 						}
 						else if(v.getInteger("VoidwalkerConsume") > 0){
@@ -51,12 +57,14 @@ public class PlayerHandler {
 					}
 					else{
 						v.setBoolean("InVoid", false);
+						VoidMod.packet.INSTANCE.sendTo(new PacketGamma(v.getFloat("Gamma"), true), (EntityPlayerMP)event.player);
 					}
 				}
 				else{
 					if(event.player.dimension == VoidMod.config.dimid && event.player instanceof EntityPlayerMP){
 						event.player.addChatMessage(new ChatComponentText("The world around you seems false..."));
 						VoidMod.util.sendToDim((EntityPlayerMP)event.player, 0, true);
+						VoidMod.packet.INSTANCE.sendTo(new PacketGamma(v.getFloat("Gamma"), true), (EntityPlayerMP)event.player);
 					}
 				}
 				VoidMod.util.setVoidTag(event.player, v);

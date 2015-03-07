@@ -4,18 +4,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import nimble.Java.TheVoid.VoidMod;
 
 public class WorldChunkManagerVoid extends WorldChunkManager {
 	
-	private BiomeGenBase biomeGenerator;
+	private BiomeGenBase biomeGenerator = VoidMod.biomeVoid;
 	private int rainfall;
 	
 	public WorldChunkManagerVoid(){
-		biomeGenerator = VoidMod.biomeVoid;
 		rainfall = 0;
 	}
 	
