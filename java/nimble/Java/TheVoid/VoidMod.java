@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.Biome.BiomeGenVoid;
+import nimble.Java.TheVoid.Block.BlockCondensedVoid;
 import nimble.Java.TheVoid.Block.BlockTerrain;
 import nimble.Java.TheVoid.Block.BlockVoidwalker;
 import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
@@ -28,6 +29,7 @@ import nimble.Java.TheVoid.Configuration.Config;
 import nimble.Java.TheVoid.Dimension.WorldProviderVoid;
 import nimble.Java.TheVoid.Events.MiscHandler;
 import nimble.Java.TheVoid.Events.PlayerHandler;
+import nimble.Java.TheVoid.Fluid.FluidCondensedVoid;
 import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
 import nimble.Java.TheVoid.Packet.PacketHandler;
@@ -55,6 +57,9 @@ public class VoidMod {
 	@Variant({"terrainFabric", "terrainRock"})
 	public static BlockTerrain terrain;
 	public static BlockVoidwalker voidwalker;
+	public static BlockCondensedVoid condensedVoid;
+	
+	public static FluidCondensedVoid fluidVoid;
 	
 	@Variant({"materialUNull", "materialUVoid"})
 	public static ItemMaterial material;
@@ -78,11 +83,15 @@ public class VoidMod {
 		tab = new VoidTab();
 		
 		//Fluids
-		
+		fluidVoid = new FluidCondensedVoid();
 		
 		//Blocks
 		terrain = new BlockTerrain();
 		voidwalker = new BlockVoidwalker();
+		condensedVoid = new BlockCondensedVoid(fluidVoid);
+		
+		//Fluid Block Registration
+		fluidVoid.setBlock(condensedVoid);
 		
 		//TileEntities
 		GameRegistry.registerTileEntity(TileEntityVoidwalker.class, "Voidwalker");
