@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class FluidCondensedVoid extends Fluid {
 
@@ -17,15 +18,17 @@ public class FluidCondensedVoid extends Fluid {
 		this.setRarity(EnumRarity.UNCOMMON);
 		this.setLuminosity(2);
 		
-		try {
-			Method m = TextureAtlasSprite.class.getMethod("makeAtlasSprite", ResourceLocation.class);
-			m.setAccessible(true);
-			TextureAtlasSprite tas = (TextureAtlasSprite) m.invoke(null, new ResourceLocation("thevoid", "textures/blocks/condensedVoid"));
-			this.setFlowingIcon(tas);
-			this.setStillIcon(tas);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient()){
+			try {
+				Method m = TextureAtlasSprite.class.getMethod("makeAtlasSprite", ResourceLocation.class);
+				m.setAccessible(true);
+				TextureAtlasSprite tas = (TextureAtlasSprite) m.invoke(null, new ResourceLocation("thevoid", "textures/blocks/condensedVoid"));
+				this.setFlowingIcon(tas);
+				this.setStillIcon(tas);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

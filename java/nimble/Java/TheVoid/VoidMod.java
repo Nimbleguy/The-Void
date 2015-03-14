@@ -7,10 +7,12 @@ import org.apache.logging.log4j.Level;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import nimble.Java.TheVoid.Armor.ItemMonocle;
 import nimble.Java.TheVoid.Biome.BiomeGenVoid;
 import nimble.Java.TheVoid.Block.BlockCondensedVoid;
 import nimble.Java.TheVoid.Block.BlockTerrain;
@@ -48,6 +51,8 @@ public class VoidMod {
 	
 	public static HashMap<String, Integer> voidTime = new HashMap<String, Integer>();
 	
+	public static ArmorMaterial armorMonocle = EnumHelper.addArmorMaterial("MONOCLE", ModInfo.MODID + ":monocle", 10, new int[] {2, 0, 0, 0}, 18);
+	
 	@SidedProxy(clientSide = "nimble.Java.TheVoid.Client.ClientProxy", serverSide = "nimble.Java.TheVoid.CommonProxy")
 	public static CommonProxy proxy;
 	
@@ -57,14 +62,12 @@ public class VoidMod {
 	@Variant({"terrainFabric", "terrainRock"})
 	public static BlockTerrain terrain;
 	public static BlockVoidwalker voidwalker;
-	public static BlockCondensedVoid condensedVoid;
-	
-	public static FluidCondensedVoid fluidVoid;
 	
 	@Variant({"materialUNull", "materialUVoid"})
 	public static ItemMaterial material;
 	@Variant({"keystoneInert", "keystoneEnergized", "keystoneDestablized", "keystoneFluxuating", "keystoneActive"})
 	public static ItemKeystone keystone;
+	public static ItemMonocle monocle;
 	
 	public static BiomeGenBase biomeVoid;
 	
@@ -82,16 +85,9 @@ public class VoidMod {
 		//Creative Tab
 		tab = new VoidTab();
 		
-		//Fluids
-		fluidVoid = new FluidCondensedVoid();
-		
 		//Blocks
 		terrain = new BlockTerrain();
 		voidwalker = new BlockVoidwalker();
-		condensedVoid = new BlockCondensedVoid(fluidVoid);
-		
-		//Fluid Block Registration
-		fluidVoid.setBlock(condensedVoid);
 		
 		//TileEntities
 		GameRegistry.registerTileEntity(TileEntityVoidwalker.class, "Voidwalker");
@@ -99,6 +95,7 @@ public class VoidMod {
 		//Items
 		material = new ItemMaterial();
 		keystone = new ItemKeystone();
+		monocle = new ItemMonocle();
 		
 		//Register Variants
 		proxy.registerVariants();
