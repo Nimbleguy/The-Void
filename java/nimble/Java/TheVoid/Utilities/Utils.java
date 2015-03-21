@@ -59,9 +59,9 @@ public class Utils {
 		if (!persist.hasKey("Void")) {
 		    persist.setTag("Void", (voidTag = new NBTTagCompound()));
 		} else {
-		    persist = persist.getCompoundTag("Void");
+		    voidTag = persist.getCompoundTag("Void");
 		}
-		return persist;
+		return voidTag;
 	}
 	public void setVoidTag(EntityPlayer e, NBTTagCompound nbt){
 		NBTTagCompound ent = getEntityTag(e);
