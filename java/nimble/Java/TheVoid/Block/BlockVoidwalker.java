@@ -46,6 +46,7 @@ public class BlockVoidwalker extends Block implements ITileEntityProvider {
 		super(Material.iron);
 		
 		setUnlocalizedName("voidwalker");
+		this.setHardness(3.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		setCreativeTab(VoidMod.tab);
 		

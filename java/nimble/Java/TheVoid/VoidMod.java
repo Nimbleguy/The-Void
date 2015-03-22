@@ -11,6 +11,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.Armor.ItemMonocle;
 import nimble.Java.TheVoid.Biome.BiomeGenVoid;
 import nimble.Java.TheVoid.Block.BlockCondensedVoid;
+import nimble.Java.TheVoid.Block.BlockNullOre;
 import nimble.Java.TheVoid.Block.BlockTerrain;
 import nimble.Java.TheVoid.Block.BlockVoidwalker;
 import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
@@ -32,6 +34,7 @@ import nimble.Java.TheVoid.Configuration.Config;
 import nimble.Java.TheVoid.Dimension.WorldProviderVoid;
 import nimble.Java.TheVoid.Events.MiscHandler;
 import nimble.Java.TheVoid.Events.PlayerHandler;
+import nimble.Java.TheVoid.Events.TextureHandler;
 import nimble.Java.TheVoid.Fluid.FluidCondensedVoid;
 import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
@@ -62,6 +65,8 @@ public class VoidMod {
 	@Variant({"terrainFabric", "terrainRock"})
 	public static BlockTerrain terrain;
 	public static BlockVoidwalker voidwalker;
+	@Variant({"oreNullon", "oreVaculite"})
+	public static BlockNullOre nullore;
 	
 	@Variant({"materialUNull", "materialUVoid"})
 	public static ItemMaterial material;
@@ -88,6 +93,7 @@ public class VoidMod {
 		//Blocks
 		terrain = new BlockTerrain();
 		voidwalker = new BlockVoidwalker();
+		nullore = new BlockNullOre();
 		
 		//TileEntities
 		GameRegistry.registerTileEntity(TileEntityVoidwalker.class, "Voidwalker");
@@ -113,6 +119,7 @@ public class VoidMod {
 		//Events
 		FMLCommonHandler.instance().bus().register(new PlayerHandler());
 		FMLCommonHandler.instance().bus().register(new MiscHandler());
+		MinecraftForge.EVENT_BUS.register(new TextureHandler());
     }
 	
 	@EventHandler
@@ -156,6 +163,21 @@ public class VoidMod {
 				'Q', Blocks.quartz_block,
 				'D', Items.diamond,
 				'E', Blocks.end_stone,
+				'N', crudeNullon);
+		
+		GameRegistry.addShapedRecipe(new ItemStack(voidwalker),
+				"NNN", "EDE", "QKQ",
+				'K', new ItemStack(keystone, 1, 0),
+				'Q', Blocks.quartz_block,
+				'D', Blocks.diamond_block,
+				'E', Blocks.end_stone,
+				'N', crudeNullon);
+		
+		GameRegistry.addShapedRecipe(new ItemStack(monocle),
+				"GKG", "NPN", "GNG",
+				'K', new ItemStack(keystone, 1, 2),
+				'G', Items.gold_nugget,
+				'P', Blocks.glass_pane,
 				'N', crudeNullon);
 		
 		//Register Void Times

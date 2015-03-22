@@ -12,7 +12,7 @@ public class VoidTab extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return Item.getItemFromBlock(Blocks.bedrock);
+		return Item.getItemFromBlock(VoidMod.terrain);
 	}
 
 }

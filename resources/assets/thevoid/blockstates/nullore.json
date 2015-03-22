@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"type=nullon": [ 
+			{ "model": "thevoid:oreNullon" }
+		],
+		"type=vaculite": [ 
+			{ "model": "thevoid:oreVaculite" }
+		]
+	}
+}

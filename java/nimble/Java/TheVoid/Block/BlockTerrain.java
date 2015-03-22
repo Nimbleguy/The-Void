@@ -31,6 +31,7 @@ public class BlockTerrain extends Block {
 	
 	public BlockTerrain() {
 		super(Material.rock);
+		this.setHardness(1.0F);
 		setUnlocalizedName("terrain");
 		this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumTerrainType.FABRIC));
 		setCreativeTab(VoidMod.tab);
