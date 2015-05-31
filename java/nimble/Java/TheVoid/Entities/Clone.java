@@ -3,12 +3,14 @@ package nimble.Java.TheVoid.Entities;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class Clone extends EntityLivingBase{
 	InventoryPlayer inv;
-	public Clone(World worldIn) {
+	public Clone(World worldIn, BlockPos pos) {
 		super(worldIn);
+		this.setPosition(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override

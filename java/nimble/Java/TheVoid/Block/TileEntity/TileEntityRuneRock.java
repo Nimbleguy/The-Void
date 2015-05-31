@@ -10,6 +10,9 @@ public class TileEntityRuneRock extends TileEntity {
 		super();
 		type = t;
 	}
+	public TileEntityRuneRock(){
+		super();
+	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound tag){
