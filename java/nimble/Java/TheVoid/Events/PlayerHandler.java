@@ -82,7 +82,7 @@ public class PlayerHandler {
 					}
 				}
 				VoidMod.util.setVoidTag(event.player, v);
-				
+				/*
 				if(VoidMod.omnicharm.omni.get(event.player) != null){
 					Field field = null;
 					for(Field f : EntityLivingBase.class.getDeclaredFields()){
@@ -96,7 +96,7 @@ public class PlayerHandler {
 						VoidMod.packet.INSTANCE.sendTo(new PacketMotion(0, 0), (EntityPlayerMP)event.player);
 					}
 					
-					for(EntityPlayerMP p : VoidMod.omnicharm.omni.get(event.player)){
+					for(Clone p : VoidMod.omnicharm.omni.get(event.player)){
 						if(p.getHealth() > event.player.getHealth()){
 							p.setHealth(event.player.getHealth());
 						}
@@ -112,11 +112,11 @@ public class PlayerHandler {
 						p.onUpdateEntity();
 						p.onUpdate();
 					}
-				}
+				}*/
 			}
 		}
 	}
-	
+	/*
 	@SubscribeEvent
 	public void livingJump(LivingJumpEvent event){
 		if(event.entityLiving instanceof EntityPlayerMP){
@@ -144,7 +144,7 @@ public class PlayerHandler {
 				}
 			}
 		}
-	}
+	}*/
 	
 	@SubscribeEvent
 	public void playerDrop(PlayerDropsEvent event){
