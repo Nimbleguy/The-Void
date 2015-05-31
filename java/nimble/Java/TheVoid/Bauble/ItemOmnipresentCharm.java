@@ -93,7 +93,7 @@ public class ItemOmnipresentCharm extends Item implements IBauble {
 			if (player.isSneaking()){
 				ticksSnuck++;
 				if (ticksSnuck >= 50){
-					Clone clone = new Clone(player.worldObj, new BlockPos(player.posX, player.posY, player.posZ));
+					Clone clone = new Clone(player.worldObj, new BlockPos(player.posX, player.posY, player.posZ), player);
 					clone.setAngles(player.rotationYaw, player.rotationPitch);
 					player.worldObj.spawnEntityInWorld(clone);//THIS IS A COMMENT
 					clones.put(player, clone);
