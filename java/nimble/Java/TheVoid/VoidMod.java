@@ -117,6 +117,7 @@ public class VoidMod {
 		GameRegistry.registerTileEntity(TileEntityNothing.class, "Nothing");
 		GameRegistry.registerTileEntity(TileEntityRuneRock.class, "RuneRock");
 		
+		
 		//Items
 		material = new ItemMaterial();
 		keystone = new ItemKeystone();
