@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.VoidMod;
+import nimble.Java.TheVoid.Entities.Clone;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.IBauble;
@@ -32,7 +33,7 @@ public class ItemOmnipresentCharm extends Item implements IBauble {
 	
 	public ItemOmnipresentCharm(){
 		super();
-		setUnlocalizedName("omnicharm");
+		this.setUnlocalizedName("omnicharm");
 		this.setCreativeTab(VoidMod.tab);
 		this.setMaxStackSize(1);
 		this.setHasSubtypes(true);
@@ -83,17 +84,28 @@ public class ItemOmnipresentCharm extends Item implements IBauble {
 	public void onUnequipped(ItemStack arg0, EntityLivingBase arg1) {
 		
 	}
-
+	
+	int ticksSnuck = 0;
 	@Override
-	public void onWornTick(ItemStack arg0, EntityLivingBase arg1) {
-		if(arg1 instanceof EntityPlayerMP){
+	public void onWornTick(ItemStack item, EntityLivingBase entity) {
+		if (entity instanceof EntityPlayerMP){
+			EntityPlayerMP player = (EntityPlayerMP) entity;
+			if (player.isSneaking()){
+				ticksSnuck++;
+				if (ticksSnuck >= 50){
+					player.worldObj.spawnEntityInWorld(new Clone(player.worldObj));
+				}
+			}
+		}
+		
+		/*if(arg1 instanceof EntityPlayerMP){
 			EntityPlayerMP p = (EntityPlayerMP)arg1;
 			NBTTagCompound tag = VoidMod.util.getVoidTag(p);
 			if(p.isSneaking()){
 				if(tag.getInteger("OmnipresentCooldown") <= 0){
-					//for(WorldServer ws : MinecraftServer.getServer().worldServers){
-						int dimid = /*ws.provider.getDimensionId()*/p.dimension;
-						System.out.println(dimid);
+					//for(WorldServer ws : MinecraftServer.getServer().worldServers){*/
+						//int dimid = /*ws.provider.getDimensionId()*/p.dimension;
+						/*System.out.println(dimid);
 						if(!p.worldObj.isRemote && !p.isDead){
 							MinecraftServer minecraftserver = MinecraftServer.getServer();
 		            		WorldServer nWorld = minecraftserver.worldServerForDimension(dimid);
@@ -129,7 +141,7 @@ public class ItemOmnipresentCharm extends Item implements IBauble {
 				}
 			}
 			VoidMod.util.setVoidTag(p, tag);
-		}
+		}*/
 	}
 
 }

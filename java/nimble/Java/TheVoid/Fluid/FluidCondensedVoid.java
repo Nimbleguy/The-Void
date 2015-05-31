@@ -2,6 +2,7 @@ package nimble.Java.TheVoid.Fluid;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Random;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.EnumRarity;
@@ -14,7 +15,7 @@ public class FluidCondensedVoid extends Fluid {
 	public FluidCondensedVoid() {
 		super("Condensed Void");
 		this.setDensity(100);
-		this.setTemperature(-9001);//.-.
+		this.setTemperature(new Random().nextInt(9000)-4500);
 		this.setRarity(EnumRarity.UNCOMMON);
 		this.setLuminosity(2);
 		
