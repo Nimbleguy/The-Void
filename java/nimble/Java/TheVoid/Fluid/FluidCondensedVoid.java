@@ -14,7 +14,7 @@ public class FluidCondensedVoid extends Fluid {
 	public FluidCondensedVoid() {
 		super("Condensed Void");
 		this.setDensity(100);
-		this.setTemperature(-9001);
+		this.setTemperature(-9001);//.-.
 		this.setRarity(EnumRarity.UNCOMMON);
 		this.setLuminosity(2);
 		
