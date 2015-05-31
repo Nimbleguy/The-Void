@@ -94,6 +94,7 @@ public class ItemOmnipresentCharm extends Item implements IBauble {
 				ticksSnuck++;
 				if (ticksSnuck >= 50){
 					player.worldObj.spawnEntityInWorld(new Clone(player.worldObj));
+					ticksSnuck=0;
 				}
 			}
 		}
