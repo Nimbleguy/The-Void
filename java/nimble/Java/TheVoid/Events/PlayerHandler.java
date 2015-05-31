@@ -26,7 +26,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.VoidMod;
 import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
 import nimble.Java.TheVoid.Packet.PacketGamma;
-import nimble.Java.TheVoid.Packet.PacketMotion;
 
 public class PlayerHandler {
 
