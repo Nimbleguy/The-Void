@@ -8,11 +8,14 @@ import org.apache.logging.log4j.Level;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.tileentity.TileEntityEndPortalRenderer;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import nimble.Java.TheVoid.CommonProxy;
 import nimble.Java.TheVoid.VoidMod;
+import nimble.Java.TheVoid.Block.TileEntity.TileEntityNothing;
 import nimble.Java.TheVoid.Utilities.ModInfo;
 import nimble.Java.TheVoid.Utilities.Variant;
 
@@ -26,6 +29,9 @@ public class ClientProxy extends CommonProxy {
 				if(f.getType().getSuperclass().getName().contains("Item")){
 					Variant v = f.getAnnotation(Variant.class);
 					if(v != null){
+						if(v.skip()){
+							continue;
+						}
 						for(int i = 0; i < v.value().length; i++){
 							renderItem.getItemModelMesher().register((Item)f.get(null), i, new ModelResourceLocation(ModInfo.MODID + ":" + v.value()[i], "inventory"));
 						}
@@ -37,6 +43,9 @@ public class ClientProxy extends CommonProxy {
 				else if(f.getType().getSuperclass().getName().contains("Block")){
 					Variant v = f.getAnnotation(Variant.class);
 					if(v != null){
+						if(v.skip()){
+							continue;
+						}
 						for(int i = 0; i < v.value().length; i++){
 							renderItem.getItemModelMesher().register(Item.getItemFromBlock((Block)f.get(null)), i, new ModelResourceLocation(ModInfo.MODID + ":" + v.value()[i], "inventory"));
 						}
@@ -51,6 +60,7 @@ public class ClientProxy extends CommonProxy {
 			VoidMod.util.log("Could not register the texture of an item or block.", Level.ERROR);
 		}
 	}
+	
 	@Override
 	public void registerVariants(){
 		try{
@@ -59,6 +69,9 @@ public class ClientProxy extends CommonProxy {
 				if(f.getType().getSuperclass().getName().contains("Item")){
 					Variant v = f.getAnnotation(Variant.class);
 					if(v != null){
+						if(v.skip()){
+							continue;
+						}
 						String[] s = v.value();
 						for(int i = 0; i < s.length; i++){
 							s[i] = ModInfo.MODID + ":" + s[i];
@@ -69,6 +82,9 @@ public class ClientProxy extends CommonProxy {
 				else if(f.getType().getSuperclass().getName().contains("Block")){
 					Variant v = f.getAnnotation(Variant.class);
 					if(v != null){
+						if(v.skip()){
+							continue;
+						}
 						String[] s = v.value();
 						for(int i = 0; i < s.length; i++){
 							s[i] = ModInfo.MODID + ":" + s[i];
@@ -83,4 +99,8 @@ public class ClientProxy extends CommonProxy {
 		}
 	}
 	
+	@Override
+	public void registerTESRS(){
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNothing.class, new TileEntityEndPortalRenderer());
+	}
 }

@@ -22,23 +22,32 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.Armor.ItemMonocle;
+import nimble.Java.TheVoid.Bauble.ItemOmnipresentCharm;
 import nimble.Java.TheVoid.Biome.BiomeGenVoid;
 import nimble.Java.TheVoid.Block.BlockCondensedVoid;
+import nimble.Java.TheVoid.Block.BlockNothing;
 import nimble.Java.TheVoid.Block.BlockNullOre;
+import nimble.Java.TheVoid.Block.BlockRuneRock;
 import nimble.Java.TheVoid.Block.BlockTerrain;
 import nimble.Java.TheVoid.Block.BlockVoidwalker;
+import nimble.Java.TheVoid.Block.TileEntity.TileEntityNothing;
+import nimble.Java.TheVoid.Block.TileEntity.TileEntityRuneRock;
 import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
+import nimble.Java.TheVoid.Client.Gui.VoidGuiHandler;
 import nimble.Java.TheVoid.Configuration.Config;
 import nimble.Java.TheVoid.Dimension.WorldProviderVoid;
 import nimble.Java.TheVoid.Events.MiscHandler;
 import nimble.Java.TheVoid.Events.PlayerHandler;
 import nimble.Java.TheVoid.Events.TextureHandler;
 import nimble.Java.TheVoid.Fluid.FluidCondensedVoid;
+import nimble.Java.TheVoid.Generation.GenerationHandler;
 import nimble.Java.TheVoid.Item.ItemKeystone;
 import nimble.Java.TheVoid.Item.ItemMaterial;
 import nimble.Java.TheVoid.Packet.PacketHandler;
+import nimble.Java.TheVoid.Utilities.AssetData;
 import nimble.Java.TheVoid.Utilities.ModInfo;
 import nimble.Java.TheVoid.Utilities.Utils;
 import nimble.Java.TheVoid.Utilities.Variant;
@@ -48,9 +57,11 @@ import nimble.Java.TheVoid.Utilities.Variant;
 public class VoidMod {
 	
 	public static Utils util = new Utils();
+	public static AssetData assets = new AssetData();
 	public static Config config;
 	public static VoidTab tab;
 	public static PacketHandler packet = new PacketHandler();
+	public static VoidGuiHandler gui = new VoidGuiHandler();
 	
 	public static HashMap<String, Integer> voidTime = new HashMap<String, Integer>();
 	
@@ -67,12 +78,16 @@ public class VoidMod {
 	public static BlockVoidwalker voidwalker;
 	@Variant({"oreNullon", "oreVaculite"})
 	public static BlockNullOre nullore;
+	@Variant(skip = true)
+	public static BlockNothing nothing;
+	public static BlockRuneRock runerock;
 	
-	@Variant({"materialUNull", "materialUVoid"})
+	@Variant({"materialUNull", "materialUVoid", "materialNull", "materialVoid"})
 	public static ItemMaterial material;
 	@Variant({"keystoneInert", "keystoneEnergized", "keystoneDestablized", "keystoneFluxuating", "keystoneActive"})
 	public static ItemKeystone keystone;
 	public static ItemMonocle monocle;
+	public static ItemOmnipresentCharm omnicharm;
 	
 	public static BiomeGenBase biomeVoid;
 	
@@ -94,14 +109,19 @@ public class VoidMod {
 		terrain = new BlockTerrain();
 		voidwalker = new BlockVoidwalker();
 		nullore = new BlockNullOre();
+		nothing = new BlockNothing();
+		runerock = new BlockRuneRock();
 		
 		//TileEntities
 		GameRegistry.registerTileEntity(TileEntityVoidwalker.class, "Voidwalker");
+		GameRegistry.registerTileEntity(TileEntityNothing.class, "Nothing");
+		GameRegistry.registerTileEntity(TileEntityRuneRock.class, "RuneRock");
 		
 		//Items
 		material = new ItemMaterial();
 		keystone = new ItemKeystone();
 		monocle = new ItemMonocle();
+		omnicharm = new ItemOmnipresentCharm();
 		
 		//Register Variants
 		proxy.registerVariants();
@@ -118,8 +138,12 @@ public class VoidMod {
 		
 		//Events
 		FMLCommonHandler.instance().bus().register(new PlayerHandler());
+		MinecraftForge.EVENT_BUS.register(new PlayerHandler());
 		FMLCommonHandler.instance().bus().register(new MiscHandler());
 		MinecraftForge.EVENT_BUS.register(new TextureHandler());
+		
+		//Worldgen
+		GameRegistry.registerWorldGenerator(new GenerationHandler(), 0);
     }
 	
 	@EventHandler
@@ -127,6 +151,7 @@ public class VoidMod {
     {
 		//Register models and textures for blocks and items.
 		proxy.registerTextures();
+		proxy.registerTESRS();
 		
 		//Crafting Recipes
 		ItemStack crudeNullon = new ItemStack(material, 1, 0);
@@ -182,6 +207,9 @@ public class VoidMod {
 		
 		//Register Void Times
 		voidTime.put(material.getUnlocalizedName(new ItemStack(material)), 300);
+		
+		//Register GUIs
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, gui);
     }
 	
 	@EventHandler

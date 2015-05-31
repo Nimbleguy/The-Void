@@ -24,7 +24,7 @@ public class ItemMaterial extends Item {
 		GameRegistry.registerItem(this, getUnlocalizedName().replace("item.", ""));
 	}
 	
-	private String[] metanames = new String[] {"unull", "uvoid"};
+	private String[] metanames = new String[] {"unull", "uvoid", "null", "void"};
 	@SideOnly(Side.CLIENT)
     public void getSubItems(Item itemIn, CreativeTabs tab, List list)
     {

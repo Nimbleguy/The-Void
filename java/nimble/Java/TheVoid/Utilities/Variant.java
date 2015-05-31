@@ -9,5 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Variant {
 	
-	String[] value();
+	String[] value() default {};
+	boolean skip() default false;
 }

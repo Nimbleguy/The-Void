@@ -101,8 +101,11 @@ public class ChunkProviderVoid implements IChunkProvider {
 	}
 
 	@Override
-	public BlockPos getStrongholdGen(World worldIn, String p_180513_2_,
-			BlockPos p_180513_3_) {
+	public BlockPos getStrongholdGen(World w, String type, BlockPos pPos) {
+		if(type.equalsIgnoreCase("Stronghold")){
+			Random omegaR = new Random(world.getSeed());
+			return new BlockPos(omegaR.nextInt(100000) * 8, 63, omegaR.nextInt(100000) * 8);
+		}
 		return null;
 	}
 

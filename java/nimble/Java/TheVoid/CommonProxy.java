@@ -14,4 +14,8 @@ public class CommonProxy {
 		//Only in client.
 	}
 	
+	public void registerTESRS(){
+		//Only in client.
+	}
+	
 }

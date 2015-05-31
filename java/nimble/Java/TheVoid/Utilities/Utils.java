@@ -1,6 +1,9 @@
 package nimble.Java.TheVoid.Utilities;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -132,5 +135,20 @@ public class Utils {
 		else{
 			p.mcServer.getConfigurationManager().transferPlayerToDimension(p, dimid, new TeleporterVoid(p.mcServer.worldServerForDimension(dimid)));
 		}
+	}
+	
+	public String secureString(String s){
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update((s + s.hashCode()).getBytes("UTF-8"));
+			return new String(md.digest());
+		} catch (NoSuchAlgorithmException e) {
+			//This should not happen.
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			//This should not happen.
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

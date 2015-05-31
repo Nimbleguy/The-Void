@@ -1,18 +1,32 @@
 package nimble.Java.TheVoid.Events;
 
+import java.lang.reflect.Field;
+
+import baubles.api.BaublesApi;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.player.PlayerDropsEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.VoidMod;
 import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
 import nimble.Java.TheVoid.Packet.PacketGamma;
+import nimble.Java.TheVoid.Packet.PacketMotion;
 
 public class PlayerHandler {
 
@@ -21,7 +35,7 @@ public class PlayerHandler {
 		if(event.phase.equals(TickEvent.Phase.END)){
 			if(event.side.isServer()){
 				NBTTagCompound v = VoidMod.util.getVoidTag(event.player);
-				if(v.getBoolean("InVoid")){
+				if(v.getBoolean("InVoid") && !v.getBoolean("Clone")){
 					if(event.player.dimension == VoidMod.config.dimid && event.player instanceof EntityPlayerMP){
 						VoidMod.packet.INSTANCE.sendTo(new PacketGamma(-4.2f, true), (EntityPlayerMP)event.player);
 						if(v.getInteger("VoidwalkerConsume") == 0){
@@ -60,7 +74,7 @@ public class PlayerHandler {
 						VoidMod.packet.INSTANCE.sendTo(new PacketGamma(v.getFloat("Gamma"), true), (EntityPlayerMP)event.player);
 					}
 				}
-				else{
+				else if(!v.getBoolean("Clone")){
 					if(event.player.dimension == VoidMod.config.dimid && event.player instanceof EntityPlayerMP){
 						event.player.addChatMessage(new ChatComponentText("The world around you seems false..."));
 						VoidMod.util.sendToDim((EntityPlayerMP)event.player, 0, true);
@@ -68,6 +82,163 @@ public class PlayerHandler {
 					}
 				}
 				VoidMod.util.setVoidTag(event.player, v);
+				
+				if(VoidMod.omnicharm.omni.get(event.player) != null){
+					Field field = null;
+					for(Field f : EntityLivingBase.class.getDeclaredFields()){
+						if(f.getName().equalsIgnoreCase("field_70773_bE") || f.getName().equalsIgnoreCase("jumpTicks")){
+							field = f;
+						}
+					}
+					field.setAccessible(true);
+					
+					if(event.player instanceof EntityPlayerMP){
+						VoidMod.packet.INSTANCE.sendTo(new PacketMotion(0, 0), (EntityPlayerMP)event.player);
+					}
+					
+					for(EntityPlayerMP p : VoidMod.omnicharm.omni.get(event.player)){
+						if(p.getHealth() > event.player.getHealth()){
+							p.setHealth(event.player.getHealth());
+						}
+						else if(p.getHealth() < event.player.getHealth()){
+							event.player.setHealth(p.getHealth());
+						}
+						p.inventory = event.player.inventory;
+						p.setSneaking(event.player.isSneaking());
+						p.setSprinting(event.player.isSprinting());
+						
+						p.rotationYaw = event.player.rotationYaw;
+						p.rotationPitch = event.player.rotationPitch;
+						p.onUpdateEntity();
+						p.onUpdate();
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void livingJump(LivingJumpEvent event){
+		if(event.entityLiving instanceof EntityPlayerMP){
+			EntityPlayerMP player = (EntityPlayerMP)event.entityLiving;
+			NBTTagCompound tag = VoidMod.util.getVoidTag(player);
+			if(VoidMod.omnicharm.omni.get(player) != null){
+				Field field = null;
+				for(Field f : EntityLivingBase.class.getDeclaredFields()){
+					if(f.getName().equalsIgnoreCase("field_70773_bE") || f.getName().equalsIgnoreCase("jumpTicks")){
+						field = f;
+					}
+				}
+				field.setAccessible(true);
+				for(EntityPlayerMP p : VoidMod.omnicharm.omni.get(player)){
+					try {
+						if(field.getInt(p) <= 0 && p.onGround){
+							p.jump();
+							field.setInt(p, 10);
+						}
+					}
+					catch (Exception e) {
+						//TODO: Proper errors
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void playerDrop(PlayerDropsEvent event){
+		if(event.entityPlayer instanceof EntityPlayerMP){
+			EntityPlayerMP player = (EntityPlayerMP)event.entityPlayer;
+			if(VoidMod.util.getVoidTag(player).getBoolean("Clone")){
+				event.setCanceled(true);
+			}
+		}
+	}
+	
+	/*
+	@SubscribeEvent
+	public void playerInteract(PlayerInteractEvent event){
+		if(event.entityPlayer instanceof EntityPlayerMP){
+			EntityPlayerMP player = (EntityPlayerMP)event.entityPlayer;
+			if(VoidMod.omnicharm.omni.get(event.entityPlayer) != null){
+				for(EntityPlayerMP p : VoidMod.omnicharm.omni.get(player)){
+					
+				}
+			}
+		}
+	}
+	*/
+	
+	@SubscribeEvent
+	public void playerChat(ServerChatEvent event){
+		if(VoidMod.util.secureString(event.message).equals("i���>C<�s��� ��O��x�L����ȕw")){
+			//OMEGA
+			try {
+				boolean matched = true;
+				NBTTagCompound tag = JsonToNBT.func_180713_a(VoidMod.assets.omegaGenerator);
+				NBTTagList list = tag.getTagList("Blocks", 10);
+				//++
+				for(int i = 0; i < list.tagCount(); i++){
+					NBTTagCompound block = list.getCompoundTagAt(i);
+					IBlockState state = event.player.worldObj.getBlockState(new BlockPos(Math.floor(event.player.posX) + block.getInteger("x") - 3, Math.floor(event.player.posY) + block.getInteger("y") - 1, Math.floor(event.player.posZ) + block.getInteger("z") - 3));
+					if(!(GameRegistry.findUniqueIdentifierFor(state.getBlock()).name.equals(block.getString("name")) && GameRegistry.findUniqueIdentifierFor(state.getBlock()).modId.equals(block.getString("modid")) && (state.getBlock().getMetaFromState(state) == block.getInteger("meta") || block.getInteger("meta") == -1))){
+						matched = false;
+						System.out.println(block.toString());
+						System.out.println((Math.floor(event.player.posX) + block.getInteger("x") - 3) + " " + (Math.floor(event.player.posY) + block.getInteger("y") - 1) + " " + (Math.floor(event.player.posZ) + block.getInteger("z") - 3));
+						System.out.println(state.toString());
+						System.out.println();
+					}
+				}
+				if(!matched){
+					matched = true;
+					//-+
+					for(int i = 0; i < list.tagCount(); i++){
+						NBTTagCompound block = list.getCompoundTagAt(i);
+						IBlockState state = event.player.worldObj.getBlockState(new BlockPos(Math.floor(event.player.posX) + block.getInteger("x") + 3, Math.floor(event.player.posY) + block.getInteger("y") - 1, Math.floor(event.player.posZ) + block.getInteger("z") - 3));
+						if(!(GameRegistry.findUniqueIdentifierFor(state.getBlock()).name.equals(block.getString("name")) && GameRegistry.findUniqueIdentifierFor(state.getBlock()).modId.equals(block.getString("modid")) && (state.getBlock().getMetaFromState(state) == block.getInteger("meta") || block.getInteger("meta") == -1))){
+							matched = false;
+						}
+					}
+					if(!matched){
+						matched = true;
+						//+-
+						for(int i = 0; i < list.tagCount(); i++){
+							NBTTagCompound block = list.getCompoundTagAt(i);
+							IBlockState state = event.player.worldObj.getBlockState(new BlockPos(Math.floor(event.player.posX) + block.getInteger("x") - 3, Math.floor(event.player.posY) + block.getInteger("y") - 1, Math.floor(event.player.posZ) + block.getInteger("z") + 3));
+							if(!(GameRegistry.findUniqueIdentifierFor(state.getBlock()).name.equals(block.getString("name")) && GameRegistry.findUniqueIdentifierFor(state.getBlock()).modId.equals(block.getString("modid")) && (state.getBlock().getMetaFromState(state) == block.getInteger("meta") || block.getInteger("meta") == -1))){
+								matched = false;
+							}
+						}
+						if(!matched){
+							matched = true;
+							//--
+							for(int i = 0; i < list.tagCount(); i++){
+								NBTTagCompound block = list.getCompoundTagAt(i);
+								IBlockState state = event.player.worldObj.getBlockState(new BlockPos(Math.floor(event.player.posX) + block.getInteger("x") + 3, Math.floor(event.player.posY) + block.getInteger("y") - 1, Math.floor(event.player.posZ) + block.getInteger("z") + 3));
+								if(!(GameRegistry.findUniqueIdentifierFor(state.getBlock()).name.equals(block.getString("name")) && GameRegistry.findUniqueIdentifierFor(state.getBlock()).modId.equals(block.getString("modid")) && (state.getBlock().getMetaFromState(state) == block.getInteger("meta") || block.getInteger("meta") == -1))){
+									matched = false;
+								}
+							}
+							if(matched){
+								System.out.println("yay");
+							}
+						}
+						else{
+							System.out.println("yay");
+						}
+					}
+					else{
+						System.out.println("yay");
+					}
+				}
+				else{
+					System.out.println("yay");
+				}
+				
+			} catch (NBTException e) {
+				//TODO: Proper errors
+				e.printStackTrace();
 			}
 		}
 	}

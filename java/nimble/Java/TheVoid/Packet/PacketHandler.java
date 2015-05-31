@@ -12,5 +12,7 @@ public class PacketHandler {
 	public void init(){
 		INSTANCE.registerMessage(PacketGamma.class, PacketGamma.class, 0, Side.CLIENT);
 		INSTANCE.registerMessage(PacketGamma.class, PacketGamma.class, 0, Side.SERVER);
+		INSTANCE.registerMessage(PacketMotion.class, PacketMotion.class, 1, Side.CLIENT);
+		INSTANCE.registerMessage(PacketMotion.class, PacketMotion.class, 1, Side.SERVER);
 	}
 }

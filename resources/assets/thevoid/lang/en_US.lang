@@ -3,14 +3,18 @@ tile.terrain.rock.name=Corrupted Rock
 tile.voidwalker.name=Voidwalker
 tile.nullore.nullon.name=Nullon Deposit
 tile.nullore.vaculite.name=Solidified Vaculite
+tile.runerock.name=Runic Rock
 
 item.material.unull.name=Crude Nullon
 item.material.uvoid.name=Shattered Vacuite
+item.material.null.name=Refined Nullon
+item.material.void.name=Radiant Vaculite
 item.keystone.inert.name=Inert Null Keystone
 item.keystone.energized.name=Energized Null Keystone
 item.keystone.destablized.name=Destablized Null Keystone
 item.keystone.fluxuating.name=Fluxuating Null Keystone
 item.keystone.active.name=Active Null Keystone
 item.monocle.name=Nullon Monocle
+item.omnicharm.name=Omnipresent Charm
 
 itemGroup.tabVoid=The Void
