@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import nimble.Java.TheVoid.Armor.ItemMonocle;
 import nimble.Java.TheVoid.Bauble.ItemOmnipresentCharm;
@@ -39,6 +40,7 @@ import nimble.Java.TheVoid.Block.TileEntity.TileEntityVoidwalker;
 import nimble.Java.TheVoid.Client.Gui.VoidGuiHandler;
 import nimble.Java.TheVoid.Configuration.Config;
 import nimble.Java.TheVoid.Dimension.WorldProviderVoid;
+import nimble.Java.TheVoid.Entities.Clone;
 import nimble.Java.TheVoid.Events.MiscHandler;
 import nimble.Java.TheVoid.Events.PlayerHandler;
 import nimble.Java.TheVoid.Events.TextureHandler;
@@ -145,6 +147,9 @@ public class VoidMod {
 		
 		//Worldgen
 		GameRegistry.registerWorldGenerator(new GenerationHandler(), 0);
+		
+		//Entities
+		EntityRegistry.registerModEntity(Clone.class, "VoidClone", EntityRegistry.findGlobalUniqueEntityId(), this, 0, 0, true);
     }
 	
 	@EventHandler
