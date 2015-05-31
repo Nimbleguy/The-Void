@@ -29,7 +29,7 @@ import baubles.api.IBauble;
 
 public class ItemOmnipresentCharm extends Item implements IBauble {
 
-	public HashMap<EntityPlayerMP, List<EntityPlayerMP>> omni = new HashMap<EntityPlayerMP, List<EntityPlayerMP>>();
+	public HashMap <EntityPlayerMP, Clone> clones = new HashMap<EntityPlayerMP, Clone>();
 	
 	public ItemOmnipresentCharm(){
 		super();
@@ -93,7 +93,10 @@ public class ItemOmnipresentCharm extends Item implements IBauble {
 			if (player.isSneaking()){
 				ticksSnuck++;
 				if (ticksSnuck >= 50){
-					player.worldObj.spawnEntityInWorld(new Clone(player.worldObj));
+					Clone clone = new Clone(player.worldObj);
+					player.worldObj.spawnEntityInWorld(clone);//THIS IS A COMMENT
+					clone.setLocationAndAngles(player.lastTickPosX, player.lastTickPosY, player.lastTickPosZ, player.rotationYaw, player.rotationPitch);
+					clones.put(player, clone);
 					ticksSnuck=0;
 				}
 			}
