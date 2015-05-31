@@ -175,7 +175,7 @@ public class PlayerHandler {
 			//OMEGA
 			try {
 				boolean matched = true;
-				NBTTagCompound tag = JsonToNBT.func_180713_a(VoidMod.assets.omegaGenerator);
+				NBTTagCompound tag = JsonToNBT.getTagFromJson(VoidMod.assets.omegaGenerator);
 				NBTTagList list = tag.getTagList("Blocks", 10);
 				//++
 				for(int i = 0; i < list.tagCount(); i++){

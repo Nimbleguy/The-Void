@@ -96,11 +96,6 @@ public class ChunkProviderVoid implements IChunkProvider {
 	}
 
 	@Override
-	public List func_177458_a(EnumCreatureType p_177458_1_, BlockPos p_177458_2_) {
-		return world.getBiomeGenForCoords(p_177458_2_).getSpawnableList(p_177458_1_);
-	}
-
-	@Override
 	public BlockPos getStrongholdGen(World w, String type, BlockPos pPos) {
 		if(type.equalsIgnoreCase("Stronghold")){
 			Random omegaR = new Random(world.getSeed());
@@ -123,6 +118,11 @@ public class ChunkProviderVoid implements IChunkProvider {
 
 	@Override
 	public void saveExtraData() {
+	}
+
+	@Override
+	public List getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+		return world.getBiomeGenForCoords(pos).getSpawnableList(creatureType);
 	}
 
 }

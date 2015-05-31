@@ -78,11 +78,6 @@ public class TileEntityVoidwalker extends TileEntity implements ISidedInventory 
 	public void onDataPacket(NetworkManager network, S35PacketUpdateTileEntity packet){
 		readFromNBT(packet.getNbtCompound());
 	}
-	
-	@Override
-	public String getName() {
-		return "Voidwalker";
-	}
 
 	@Override
 	public boolean hasCustomName() {
@@ -220,6 +215,11 @@ public class TileEntityVoidwalker extends TileEntity implements ISidedInventory 
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public String getCommandSenderName() {
+		return "Voidwalker";
 	}
 
 }

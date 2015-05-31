@@ -16,7 +16,7 @@ public class TemplateGeneration {
 	public void generate(Random random, int x, int y, int z, World world,
 			IChunkProvider chunkGenerator, IChunkProvider chunkProvider, String struct) {
 		try {
-			NBTTagCompound tag = JsonToNBT.func_180713_a(struct);
+			NBTTagCompound tag = JsonToNBT.getTagFromJson(struct);
 			NBTTagList list = tag.getTagList("Blocks", 10);
 			for(int i = 0; i < list.tagCount(); i++){
 				NBTTagCompound block = list.getCompoundTagAt(i);
