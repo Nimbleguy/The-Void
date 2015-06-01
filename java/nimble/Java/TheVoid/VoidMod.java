@@ -149,7 +149,7 @@ public class VoidMod {
 		GameRegistry.registerWorldGenerator(new GenerationHandler(), 0);
 		
 		//Entities
-		EntityRegistry.registerModEntity(Clone.class, "VoidClone", EntityRegistry.findGlobalUniqueEntityId(), this, 0, 0, true);
+		EntityRegistry.registerModEntity(Clone.class, "VoidClone", EntityRegistry.findGlobalUniqueEntityId(), this, 1, 1, true);
     }
 	
 	@EventHandler
