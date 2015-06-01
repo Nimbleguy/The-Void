@@ -212,7 +212,7 @@ public class VoidMod {
 				'N', crudeNullon);
 		
 		//Register Void Times
-		voidTime.put(material.getUnlocalizedName(new ItemStack(material)), 300);
+		voidTime.put(material.getUnlocalizedName(new ItemStack(material)), 1200);
 		
 		//Register GUIs
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, gui);
