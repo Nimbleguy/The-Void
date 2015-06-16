@@ -66,14 +66,24 @@ public class GenerationHandler implements IWorldGenerator {
 		switch(world.provider.getDimensionId()){
 		default:
 			if(world.provider.getDimensionId() == VoidMod.config.dimid){
-				new SpikeGeneration().generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-				
 				//Omega Valley
-				Random omegaR = new Random(world.getSeed());
-				if(omegaR.nextInt(100000) == chunkX && omegaR.nextInt(100000) == chunkZ && !VoidWorldData.get(world).omegaValley){
-					BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(8 * chunkX, 63, 8 * chunkZ));
+				if(chunkX * 8 == 0 && chunkZ * 8 == 0){
+					BlockPos pos = new BlockPos(chunkX * 8, 63, chunkZ * 8);
 					new TemplateGeneration().generate(random, pos.getX(), pos.getY(), pos.getZ(), world, chunkGenerator, chunkProvider, VoidMod.assets.omegaValley);
-					VoidWorldData.get(world).omegaValley = true;
+				}
+				
+				//Spikes
+				//new SpikeGeneration().generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+				if(random.nextInt(20) == 1){
+					BlockPos pos = new BlockPos(chunkX * 8, 63, chunkZ * 8);
+					if(random.nextInt(20) == 1){
+						//Omega
+						new TemplateGeneration().generate(random, pos.getX(), pos.getY(), pos.getZ(), world, chunkGenerator, chunkProvider, VoidMod.assets.pillarO1);
+					}
+					else{
+						//Vaculite
+						new TemplateGeneration().generate(random, pos.getX(), pos.getY(), pos.getZ(), world, chunkGenerator, chunkProvider, VoidMod.assets.pillarV1);
+					}
 				}
 			}
 		}

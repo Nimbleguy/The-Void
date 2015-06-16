@@ -6,8 +6,6 @@ import net.minecraft.world.WorldSavedData;
 import nimble.Java.TheVoid.Utilities.ModInfo;
 
 public class VoidWorldData extends WorldSavedData {
-	
-	public boolean omegaValley = false;
 
 	public VoidWorldData() {
 		super(ModInfo.MODID);
@@ -15,12 +13,10 @@ public class VoidWorldData extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		omegaValley = nbt.getBoolean("omegaValley");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setBoolean("omegaValley", omegaValley);
 	}
 	
 	public static VoidWorldData get(World world) {
