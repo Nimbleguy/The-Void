@@ -79,6 +79,13 @@ public class PlayerHandler {
 						VoidMod.util.sendToDim((EntityPlayerMP)event.player, 0, true);
 						VoidMod.packet.INSTANCE.sendTo(new PacketGamma(v.getFloat("Gamma"), true), (EntityPlayerMP)event.player);
 					}
+					else if(event.player instanceof EntityPlayerMP){
+						VoidMod.packet.INSTANCE.sendTo(new PacketGamma(0, false), (EntityPlayerMP)event.player);
+						if(v.getFloat("Gamma") < 0){
+							VoidMod.packet.INSTANCE.sendTo(new PacketGamma(0, true), (EntityPlayerMP)event.player);
+							VoidMod.packet.INSTANCE.sendTo(new PacketGamma(0, false), (EntityPlayerMP)event.player);
+						}
+					}
 				}
 				VoidMod.util.setVoidTag(event.player, v);
 				/*
